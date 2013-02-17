@@ -1,0 +1,69 @@
+hide {
+	display: none;
+}
+.errorMsg {
+    color: #FF0000;
+}
+
+ul#users-inner,
+ul#groups-inner   
+{
+   height: 0px;
+}
+
+.table-auto {
+	width: auto;
+}
+
+th {
+	cursor: pointer; 
+    font-weight: bold; 
+    background-repeat: no-repeat; 
+    background-position: center right; 
+    padding-left: 20px; 
+    border-right: 1px solid #dad9c7; 
+    margin-left: -1px; ;  
+}
+th.sorting { 
+   background-image: url(../img/unsorted.gif);     
+}
+
+th.sorting_asc { 
+   background-image: url(../img/small_desc.gif);
+   
+}
+
+th.sorting_desc {
+   background-image: url(../img/small_asc.gif);
+}
+
+
+
+div#grpListTable_paginate a,
+div#empListTable_paginate a
+    {
+    border: 1px solid #aaa;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding: 2px 5px;
+    margin: 0 3px;
+    cursor: pointer;
+    *cursor: hand;
+    background-color: #ddd;
+}
+
+div.dataTables_paginate a:hover {
+    background-color: #ccc;
+}
+ 
+ 
+div.dataTables_paginate {
+    float: right;
+    margin: -10px;
+    line-height: 22px;
+}
+ 
+
+
+
+

@@ -1,0 +1,42 @@
+Project summary: 
+----------------
+A timesheet management systems. Artifacts could be either Timesheet or Status Report.
+
+Technologies:
+-------------
+* Front end: Jsp/Spring EL/HTML5/CSS3
+* Back end: Java 6, Spring 3, Hibernate 4
+* Database: Hsqldb 2 (in memory) for dev, MySQL for Prod
+* Server: Jetty for dev, Apache Tomcat for prod
+* IDE: Eclipse
+* Build: Maven 3
+
+Code control flow:
+------------------
+jsp -> controller -> service -> repository -> database
+
+Development Status:
+-------------------
+* Environment - DB needs to be a standalone server. DB, appserver and webserver hosted on Amazon cloud.
+* Security - Using SpringSecurity & its preset schema. Pretty much complete. 
+* Domain model - Using annotation based hibernate mappings. Nothing to change for now.
+* Repositories - Spring wired hibernate session factory. Nothing to change, dependent on the domain model.
+* Services - Spring transactional services, Tweak services based on the UI input.
+* Controllers - Need major overhaul based on the UI
+* Display model - Needs major overhaul based on the UI
+* UI - Manage employee security groups implemented with basic validation. Needs widespread implementation and/or major overhaul.
+
+Deliverables & Status:
+----------------------
+* Authentication and Authorization (role based access) works.
+* Add/Update employee works (as far as login is concerned). No elegant UI.
+* Get dashboard (list of tasks) for the logged in user works.
+* Create Timesheet workflow works (for users that have preset workflow config data).
+* Manage security groups form based UI works with basic validation.
+* TODO: CRUD Workflow config UI.
+* TODO: Search and CRUD employee UI with security group.
+* TODO: Update workflow (when one task is complete, mark the next as active etc).
+* TODO: Add XLS (hssf poi) and PDF (apache fop) capability for importing/exporting Timesheet.
+* TODO: Add mail capability (Spring mail) to send updates or to send the timesheet as xls/pdf attachments.
+
+

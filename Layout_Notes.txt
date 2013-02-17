@@ -1,0 +1,33 @@
+ Landing page
+ ==============
+ will have announcements, notices and blog
+ 
+ Timesheet page menu
+ =====================
+ Menu drop down , new  copy from
+ Side bar (collapsible) for previous timesheets to try pout top panel instead of sidebar
+ prev times sheet will have status 
+ they can be configured to be shown chrono or by grouped status  
+  
+ Active Timesheet Page
+ =====================
+ Table with rows for all the tasks for this user
+ tasks are grouped by context 
+ Cost code will have callouts on hover
+ Input boxes for hours with edit and reset hours (disabled for approved timesheets)
+ Buttons: save for later, submit, reset all task hours, export: to xls and pdf buttons
+ 
+ 
+ Reports 
+ =============
+ Predifined reports : 
+ Restified inpage 
+ 
+ 
+ Administration 
+ =============
+ crud users 
+ crud roles 
+ crud groups
+ task management/assignment
+ 
