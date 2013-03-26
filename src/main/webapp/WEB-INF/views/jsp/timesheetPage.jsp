@@ -31,9 +31,7 @@
 								<th><u>Saturday</u></th>
 								<th><u>Sunday</u></th>
 								<th></th>
-								<th><a
-									href="${pageContext.request.contextPath}/timesheet/addCostCodeRow/${timesheet.id}?costCode=NAW"><span
-										class="icon-plus-sign"></span></a></th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -92,10 +90,10 @@
 												path="tsCostCenters[${status.index}].sunday.date" /> <form:hidden
 												path="tsCostCenters[${status.index}].sunday.id" /></td>
 										<td><a
-											href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow/${timesheet.id}?costCode=${timesheet.tsCostCenters[status.index].costCode}"><span
+											href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}"><span
 												class="icon-trash"></span></a></td>
 										<td><a
-											href="${pageContext.request.contextPath}/timesheet/addCostCodeRow/${timesheet.id}?costCode=NAW"><span
+											href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&costCode=NAW"><span
 												class="icon-plus-sign"></span></a></td>
 									</tr>
 								</c:forEach>
@@ -104,7 +102,7 @@
 
 					</table>
 					<div id="timeSheetControls" class="control-group">
-						<input type="submit" value="Save"> <input type="button"
+						<input type="submit" value="Save"> <input type="reset"
 							id="cancel" name="cancel" value="Cancel">
 					</div>
 				</form:form>

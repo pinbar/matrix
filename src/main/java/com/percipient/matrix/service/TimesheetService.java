@@ -31,297 +31,298 @@ import com.percipient.matrix.util.DateUtil;
 
 public interface TimesheetService {
 
-	public List<TimesheetView> getTimesheetPreview();
+public List<TimesheetView> getTimesheetPreview();
 
-	public TimesheetView getTimesheet(Date weekEnding);
+public TimesheetView getTimesheet(Date weekEnding);
 
-	public List<TimesheetView> getTimesheets();
+public List<TimesheetView> getTimesheets();
 
-	public TimesheetView createTimesheet(Date asDate);
+public TimesheetView createTimesheet(Date asDate);
 
-	public TimesheetView saveTimesheet(TimesheetView timesheetView);
+public TimesheetView saveTimesheet(TimesheetView timesheetView);
 
-	public void deleteTimesheet(Integer timesheetId);
+public void deleteTimesheet(Integer timesheetId);
 
-	public TimesheetView addCostCodeRow(Integer timesheetId, String costCode);
+public TimesheetView addCostCodeRow(Integer timesheetId, String costCode);
 
-	public void deleteCostCodeRow(Integer timesheetId, String costCode);
+public void deleteCostCodeRow(Integer timesheetId, String costCode);
 
 }
 
 @Service
 class TimesheetServiceImpl implements TimesheetService {
 
-	@Autowired
-	private EmployeeRepository employeeRepository;
+@Autowired
+private EmployeeRepository employeeRepository;
 
-	@Autowired
-	private TimesheetRepository timesheetRepository;
+@Autowired
+private TimesheetRepository timesheetRepository;
 
-	@Autowired
-	private UserInfo userInfo;
+@Autowired
+private UserInfo userInfo;
 
-	@Autowired
-	DateUtil dateUtil;
+@Autowired
+DateUtil dateUtil;
 
-	@Transactional
-	public List<TimesheetView> getTimesheetPreview() {
+@Transactional
+public List<TimesheetView> getTimesheetPreview() {
+    
+    Employee employee = employeeRepository.getEmployeeByUserName(userInfo
+            .getUserName());
+    List<Timesheet> timesheetList = timesheetRepository.getTimesheets(employee);
+    Collections.sort(timesheetList, DateComparator);
+    List<TimesheetView> timesheetViewList = new ArrayList<TimesheetView>();
+    
+    if (timesheetList.size() == 0 || !hasCurrentWeekEnding(timesheetList)) {
+        TimesheetView tsv = createTimesheet(dateUtil.getCurrentWeekEndingDate());
+        timesheetViewList.add(tsv);
+    }
+    
+    for (Timesheet timesheet : timesheetList) {
+        timesheetViewList.add(getTimeSheetView(timesheet));
+    }
+    
+    return timesheetViewList;
+}
 
-		Employee employee = employeeRepository.getEmployeeByUserName(userInfo
-				.getUserName());
-		List<Timesheet> timesheetList = timesheetRepository
-				.getTimesheets(employee);
-		Collections.sort(timesheetList, DateComparator);
-		List<TimesheetView> timesheetViewList = new ArrayList<TimesheetView>();
+private boolean hasCurrentWeekEnding(List<Timesheet> timesheetList) {
+    Date weekEndDate = dateUtil.getCurrentWeekEndingDate();
+    for (Timesheet ts : timesheetList) {
+        if (weekEndDate.equals(ts.getWeekEnding())) {
+            return true;
+        }
+    }
+    return false;
+}
 
-		if (timesheetList.size() == 0 || !hasCurrentWeekEnding(timesheetList)) {
-			TimesheetView tsv = createTimesheet(dateUtil
-					.getCurrentWeekEndingDate());
-			timesheetViewList.add(tsv);
-		}
+@Transactional
+public TimesheetView getTimesheet(Date weekEnding) {
+    
+    Employee employee = employeeRepository.getEmployeeByUserName(userInfo
+            .getUserName());
+    List<Timesheet> timesheetList = timesheetRepository.getTimesheets(employee);
+    TimesheetView timesheetView = null;
+    
+    for (Timesheet timesheet : timesheetList) {
+        if (weekEnding.compareTo(timesheet.getWeekEnding()) != 0) {
+            continue;
+        }
+        return getTimeSheetView(timesheet);
+    }
+    return timesheetView;
+}
 
-		for (Timesheet timesheet : timesheetList) {
-			timesheetViewList.add(getTimeSheetView(timesheet));
-		}
+@Transactional
+public List<TimesheetView> getTimesheets() {
+    
+    Employee employee = employeeRepository.getEmployeeByUserName(userInfo
+            .getUserName());
+    List<Timesheet> timesheetList = timesheetRepository.getTimesheets(employee);
+    
+    List<TimesheetView> timesheetViewList = new ArrayList<TimesheetView>();
+    if (timesheetList.size() == 0 || !hasCurrentWeekEnding(timesheetList)) {
+        TimesheetView tsv = createTimesheet(dateUtil.getCurrentWeekEndingDate());
+        timesheetViewList.add(tsv);
+    } else {
+        for (Timesheet timesheet : timesheetList) {
+            TimesheetView timesheetView = getTimeSheetPreview(timesheet);
+            timesheetViewList.add(timesheetView);
+        }
+    }
+    
+    return timesheetViewList;
+}
 
-		return timesheetViewList;
-	}
+@Override
+@Transactional
+public TimesheetView saveTimesheet(TimesheetView timesheetView) {
+    Timesheet ts = getTimesheetFromView(timesheetView);
+    timesheetRepository.save(ts);
+    return getTimeSheetView(ts);
+}
 
-	private boolean hasCurrentWeekEnding(List<Timesheet> timesheetList) {
-		Date weekEndDate = dateUtil.getCurrentWeekEndingDate();
-		for (Timesheet ts : timesheetList) {
-			if (weekEndDate.equals(ts.getWeekEnding())) {
-				return true;
-			}
-		}
-		return false;
-	}
+@Override
+@Transactional
+public void deleteTimesheet(Integer timesheetId) {
+    Timesheet timesheet = timesheetRepository.getTimesheet(timesheetId);
+    timesheetRepository.delete(timesheet);
+}
 
-	@Transactional
-	public TimesheetView getTimesheet(Date weekEnding) {
+@Override
+public TimesheetView createTimesheet(Date date) {
+    TimesheetView timesheetView = new TimesheetView();
+    timesheetView.setWeekEnding(dateUtil.getAsString(date));
+    timesheetView.setStatus("PENDING");
+    
+    List<TSCostCenterView> tsCCViews = new ArrayList<TSCostCenterView>();
+    TSCostCenterView blankTSCCView = addNewTSCostCenterView("", date);
+    tsCCViews.add(blankTSCCView);
+    timesheetView.setTsCostCenters(tsCCViews);
+    return timesheetView;
+}
 
-		Employee employee = employeeRepository.getEmployeeByUserName(userInfo
-				.getUserName());
-		List<Timesheet> timesheetList = timesheetRepository
-				.getTimesheets(employee);
-		TimesheetView timesheetView = null;
+@Override
+@Transactional
+public TimesheetView addCostCodeRow(Integer timesheetId, String costCode) {
+    Timesheet timesheet;
+    if (null == timesheetId) {
+        timesheet = getTimesheetFromView(createTimesheet(dateUtil
+                .getCurrentWeekEndingDate()));
+    } else {
+        timesheet = timesheetRepository.getTimesheet(timesheetId);
+    }
+    TimesheetView timesheetView = getTimeSheetView(timesheet);
+    TSCostCenterView blankTSCCView = addNewTSCostCenterView(costCode,
+            timesheet.getWeekEnding());
+    timesheetView.getTsCostCenters().add(blankTSCCView);
+    return timesheetView;
+}
 
-		for (Timesheet timesheet : timesheetList) {
-			if (weekEnding.compareTo(timesheet.getWeekEnding()) != 0) {
-				continue;
-			}
-			return getTimeSheetView(timesheet);
-		}
-		return timesheetView;
-	}
+@Override
+@Transactional
+public void deleteCostCodeRow(Integer timesheetId, String costCode) {
+    Timesheet timesheet = timesheetRepository.getTimesheet(timesheetId);
+    Set<TimesheetItem> tsItemSet = timesheet.getTimesheetItems();
+    Set<TimesheetItem> tmpItemSet = new HashSet<TimesheetItem>();
+    for (TimesheetItem tsItem : tsItemSet) {
+        if (tsItem.getCostCode().equalsIgnoreCase(costCode)) {
+            tmpItemSet.add(tsItem);
+        }
+    }
+    timesheet.getTimesheetItems().removeAll(tmpItemSet);
+}
 
-	@Transactional
-	public List<TimesheetView> getTimesheets() {
+private Timesheet getTimesheetFromView(TimesheetView timesheetView) {
+    Timesheet timesheet = new Timesheet();
+    timesheet.setId(timesheetView.getId());
+    Employee employee = employeeRepository.getEmployeeByUserName(userInfo
+            .getUserName());
+    timesheet.setEmployeeId(employee.getId());
+    timesheet.setStatus("PENDING");
+    timesheet.setWeekEnding(dateUtil.getAsDate(timesheetView.getWeekEnding()));
+    timesheet.setTimesheetItems(getTimesheetItems(timesheetView));
+    return timesheet;
+}
 
-		Employee employee = employeeRepository.getEmployeeByUserName(userInfo
-				.getUserName());
-		List<Timesheet> timesheetList = timesheetRepository
-				.getTimesheets(employee);
+private Set<TimesheetItem> getTimesheetItems(TimesheetView timesheetView) {
+    Set<TimesheetItem> tsItems = new HashSet<TimesheetItem>();
+    for (TSCostCenterView tsCCview : timesheetView.getTsCostCenters()) {
+        for (TimesheetItemView tsItemview : tsCCview.getTimesheetItems()) {
+            TimesheetItem item = new TimesheetItem();
+            item.setId(tsItemview.getId());
+            item.setCostCode(tsCCview.getCostCode());
+            item.setHours(tsItemview.getHours());
+            item.setDate(dateUtil.getAsDate(tsItemview.getDate()));
+            tsItems.add(item);
+        }
+    }
+    return tsItems;
+}
 
-		List<TimesheetView> timesheetViewList = new ArrayList<TimesheetView>();
-		if (timesheetList.size() == 0 || !hasCurrentWeekEnding(timesheetList)) {
-			TimesheetView tsv = createTimesheet(dateUtil
-					.getCurrentWeekEndingDate());
-			timesheetViewList.add(tsv);
-		} else {
-			for (Timesheet timesheet : timesheetList) {
-				TimesheetView timesheetView = getTimeSheetPreview(timesheet);
-				timesheetViewList.add(timesheetView);
-			}
-		}
+private TimesheetView getTimeSheetPreview(Timesheet timesheet) {
+    TimesheetView timesheetView = new TimesheetView();
+    timesheetView.setId(timesheet.getId());
+    timesheetView.setStatus(timesheet.getStatus());
+    timesheetView
+            .setWeekEnding(dateUtil.getAsString(timesheet.getWeekEnding()));
+    return timesheetView;
+}
 
-		return timesheetViewList;
-	}
+private TimesheetView getTimeSheetView(Timesheet timesheet) {
+    TimesheetView timesheetView = new TimesheetView();
+    timesheetView.setId(timesheet.getId());
+    timesheetView.setStatus(timesheet.getStatus());
+    timesheetView
+            .setWeekEnding(dateUtil.getAsString(timesheet.getWeekEnding()));
+    timesheetView.setTsCostCenters(getTSCostCenterView(timesheet));
+    
+    return timesheetView;
+}
 
-	@Override
-	@Transactional
-	public TimesheetView saveTimesheet(TimesheetView timesheetView) {
-		Timesheet ts = getTimesheetFromView(timesheetView);
-		timesheetRepository.save(ts);
-		return getTimeSheetView(ts);
-	}
+private List<TSCostCenterView> getTSCostCenterView(Timesheet timesheet) {
+    List<TSCostCenterView> tsCCViewList = new ArrayList<TSCostCenterView>();
+    Map<String, List<TimesheetItemView>> costCodeTimesheetItemsMap = new HashMap<String, List<TimesheetItemView>>();
+    for (TimesheetItem tsItem : timesheet.getTimesheetItems()) {
+        if (costCodeTimesheetItemsMap.containsKey(tsItem.getCostCode())) {
+            costCodeTimesheetItemsMap.get(tsItem.getCostCode()).add(
+                    getTimeSheetItemView(tsItem));
+        } else {
+            List<TimesheetItemView> tsItemsList = new ArrayList<TimesheetItemView>();
+            tsItemsList.add(getTimeSheetItemView(tsItem));
+            costCodeTimesheetItemsMap.put(tsItem.getCostCode(), tsItemsList);
+        }
+    }
+    
+    for (Map.Entry<String, List<TimesheetItemView>> tsCostCenter : costCodeTimesheetItemsMap
+            .entrySet()) {
+        TSCostCenterView tsCCView = new TSCostCenterView();
+        tsCCView.setCostCode(tsCostCenter.getKey());
+        for (TimesheetItemView tsItemView : tsCostCenter.getValue()) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dateUtil.getAsDate(tsItemView.getDate()));
+            populateTSCCViewDayOfWeek(tsCCView, tsItemView, cal);
+        }
+        tsCCViewList.add(tsCCView);
+    }
+    
+    return tsCCViewList;
+}
 
-	@Override
-	@Transactional
-	public void deleteTimesheet(Integer timesheetId) {
-		Timesheet timesheet = timesheetRepository.getTimesheet(timesheetId);
-		timesheetRepository.delete(timesheet);
-	}
+private TimesheetItemView getTimeSheetItemView(TimesheetItem tsItem) {
+    TimesheetItemView tsItemView = new TimesheetItemView();
+    tsItemView.setId(tsItem.getId());
+    tsItemView.setHours(tsItem.getHours());
+    tsItemView.setDate(dateUtil.getAsString(tsItem.getDate()));
+    return tsItemView;
+}
 
-	@Override
-	public TimesheetView createTimesheet(Date date) {
-		TimesheetView timesheetView = new TimesheetView();
-		timesheetView.setWeekEnding(dateUtil.getAsString(date));
-		timesheetView.setStatus("PENDING");
+private TSCostCenterView addNewTSCostCenterView(String costCode, Date date) {
+    TSCostCenterView tsCCView = new TSCostCenterView();
+    tsCCView.setCostCode(costCode);
+    Iterator it = DateUtils.iterator(date, DateUtils.RANGE_WEEK_MONDAY);
+    while (it.hasNext()) {
+        Calendar cal = (Calendar) it.next();
+        TimesheetItemView tsItemview = new TimesheetItemView();
+        tsItemview.setHours(0.00);
+        tsItemview.setDate(dateUtil.getAsString(cal.getTime()));
+        populateTSCCViewDayOfWeek(tsCCView, tsItemview, cal);
+    }
+    return tsCCView;
+}
 
-		List<TSCostCenterView> tsCCViews = new ArrayList<TSCostCenterView>();
-		TSCostCenterView blankTSCCView = addNewTSCostCenterView("", date);
-		tsCCViews.add(blankTSCCView);
-		timesheetView.setTsCostCenters(tsCCViews);
-		return timesheetView;
-	}
+private void populateTSCCViewDayOfWeek(TSCostCenterView tsCCView,
+        TimesheetItemView tsItemview, Calendar cal) {
+    
+    String dayOfWeek = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG,
+            Locale.getDefault());
+    
+    if (dayOfWeek.equalsIgnoreCase("Monday")) {
+        tsCCView.setMonday(tsItemview);
+    } else if (dayOfWeek.equalsIgnoreCase("Tuesday")) {
+        tsCCView.setTuesday(tsItemview);
+    } else if (dayOfWeek.equalsIgnoreCase("Wednesday")) {
+        tsCCView.setWednesday(tsItemview);
+    } else if (dayOfWeek.equalsIgnoreCase("Thursday")) {
+        tsCCView.setThursday(tsItemview);
+    } else if (dayOfWeek.equalsIgnoreCase("Friday")) {
+        tsCCView.setFriday(tsItemview);
+    } else if (dayOfWeek.equalsIgnoreCase("Saturday")) {
+        tsCCView.setSaturday(tsItemview);
+    } else if (dayOfWeek.equalsIgnoreCase("Sunday")) {
+        tsCCView.setSunday(tsItemview);
+    }
+}
 
-	@Override
-	@Transactional
-	public TimesheetView addCostCodeRow(Integer timesheetId, String costCode) {
-		Timesheet timesheet = timesheetRepository.getTimesheet(timesheetId);
-		TimesheetView timesheetView = getTimeSheetView(timesheet);
-		TSCostCenterView blankTSCCView = addNewTSCostCenterView(costCode,
-				timesheet.getWeekEnding());
-		timesheetView.getTsCostCenters().add(blankTSCCView);
-		return timesheetView;
-	}
-
-	@Override
-	@Transactional
-	public void deleteCostCodeRow(Integer timesheetId, String costCode) {
-		Timesheet timesheet = timesheetRepository.getTimesheet(timesheetId);
-		Set<TimesheetItem> tsItemSet = timesheet.getTimesheetItems();
-		Set<TimesheetItem> tmpItemSet = new HashSet<TimesheetItem>();
-		for (TimesheetItem tsItem : tsItemSet) {
-			if (tsItem.getCostCode().equalsIgnoreCase(costCode)) {
-				tmpItemSet.add(tsItem);
-			}
-		}
-		timesheet.getTimesheetItems().removeAll(tmpItemSet);
-	}
-
-	private Timesheet getTimesheetFromView(TimesheetView timesheetView) {
-		Timesheet timesheet = new Timesheet();
-		timesheet.setId(timesheetView.getId());
-		Employee employee = employeeRepository.getEmployeeByUserName(userInfo
-				.getUserName());
-		timesheet.setEmployeeId(employee.getId());
-		timesheet.setStatus("PENDING");
-		timesheet.setWeekEnding(dateUtil.getAsDate(timesheetView
-				.getWeekEnding()));
-		timesheet.setTimesheetItems(getTimesheetItems(timesheetView));
-		return timesheet;
-	}
-
-	private Set<TimesheetItem> getTimesheetItems(TimesheetView timesheetView) {
-		Set<TimesheetItem> tsItems = new HashSet<TimesheetItem>();
-		for (TSCostCenterView tsCCview : timesheetView.getTsCostCenters()) {
-			for (TimesheetItemView tsItemview : tsCCview.getTimesheetItems()) {
-				TimesheetItem item = new TimesheetItem();
-				item.setId(tsItemview.getId());
-				item.setCostCode(tsCCview.getCostCode());
-				item.setHours(tsItemview.getHours());
-				item.setDate(dateUtil.getAsDate(tsItemview.getDate()));
-				tsItems.add(item);
-			}
-		}
-		return tsItems;
-	}
-
-	private TimesheetView getTimeSheetPreview(Timesheet timesheet) {
-		TimesheetView timesheetView = new TimesheetView();
-		timesheetView.setId(timesheet.getId());
-		timesheetView.setStatus(timesheet.getStatus());
-		timesheetView.setWeekEnding(dateUtil.getAsString(timesheet
-				.getWeekEnding()));
-		return timesheetView;
-	}
-
-	private TimesheetView getTimeSheetView(Timesheet timesheet) {
-		TimesheetView timesheetView = new TimesheetView();
-		timesheetView.setId(timesheet.getId());
-		timesheetView.setStatus(timesheet.getStatus());
-		timesheetView.setWeekEnding(dateUtil.getAsString(timesheet
-				.getWeekEnding()));
-		timesheetView.setTsCostCenters(getTSCostCenterView(timesheet));
-
-		return timesheetView;
-	}
-
-	private List<TSCostCenterView> getTSCostCenterView(Timesheet timesheet) {
-		List<TSCostCenterView> tsCCViewList = new ArrayList<TSCostCenterView>();
-		Map<String, List<TimesheetItemView>> costCodeTimesheetItemsMap = new HashMap<String, List<TimesheetItemView>>();
-		for (TimesheetItem tsItem : timesheet.getTimesheetItems()) {
-			if (costCodeTimesheetItemsMap.containsKey(tsItem.getCostCode())) {
-				costCodeTimesheetItemsMap.get(tsItem.getCostCode()).add(
-						getTimeSheetItemView(tsItem));
-			} else {
-				List<TimesheetItemView> tsItemsList = new ArrayList<TimesheetItemView>();
-				tsItemsList.add(getTimeSheetItemView(tsItem));
-				costCodeTimesheetItemsMap
-						.put(tsItem.getCostCode(), tsItemsList);
-			}
-		}
-
-		for (Map.Entry<String, List<TimesheetItemView>> tsCostCenter : costCodeTimesheetItemsMap
-				.entrySet()) {
-			TSCostCenterView tsCCView = new TSCostCenterView();
-			tsCCView.setCostCode(tsCostCenter.getKey());
-			for (TimesheetItemView tsItemView : tsCostCenter.getValue()) {
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(dateUtil.getAsDate(tsItemView.getDate()));
-				populateTSCCViewDayOfWeek(tsCCView, tsItemView, cal);
-			}
-			tsCCViewList.add(tsCCView);
-		}
-
-		return tsCCViewList;
-	}
-
-	private TimesheetItemView getTimeSheetItemView(TimesheetItem tsItem) {
-		TimesheetItemView tsItemView = new TimesheetItemView();
-		tsItemView.setId(tsItem.getId());
-		tsItemView.setHours(tsItem.getHours());
-		tsItemView.setDate(dateUtil.getAsString(tsItem.getDate()));
-		return tsItemView;
-	}
-
-	private TSCostCenterView addNewTSCostCenterView(String costCode, Date date) {
-		TSCostCenterView tsCCView = new TSCostCenterView();
-		tsCCView.setCostCode(costCode);
-		Iterator it = DateUtils.iterator(date, DateUtils.RANGE_WEEK_MONDAY);
-		while (it.hasNext()) {
-			Calendar cal = (Calendar) it.next();
-			TimesheetItemView tsItemview = new TimesheetItemView();
-			tsItemview.setHours(0.00);
-			tsItemview.setDate(dateUtil.getAsString(cal.getTime()));
-			populateTSCCViewDayOfWeek(tsCCView, tsItemview, cal);
-		}
-		return tsCCView;
-	}
-
-	private void populateTSCCViewDayOfWeek(TSCostCenterView tsCCView,
-			TimesheetItemView tsItemview, Calendar cal) {
-
-		String dayOfWeek = cal.getDisplayName(Calendar.DAY_OF_WEEK,
-				Calendar.LONG, Locale.getDefault());
-
-		if (dayOfWeek.equalsIgnoreCase("Monday")) {
-			tsCCView.setMonday(tsItemview);
-		} else if (dayOfWeek.equalsIgnoreCase("Tuesday")) {
-			tsCCView.setTuesday(tsItemview);
-		} else if (dayOfWeek.equalsIgnoreCase("Wednesday")) {
-			tsCCView.setWednesday(tsItemview);
-		} else if (dayOfWeek.equalsIgnoreCase("Thursday")) {
-			tsCCView.setThursday(tsItemview);
-		} else if (dayOfWeek.equalsIgnoreCase("Friday")) {
-			tsCCView.setFriday(tsItemview);
-		} else if (dayOfWeek.equalsIgnoreCase("Saturday")) {
-			tsCCView.setSaturday(tsItemview);
-		} else if (dayOfWeek.equalsIgnoreCase("Sunday")) {
-			tsCCView.setSunday(tsItemview);
-		}
-	}
-
-	public static Comparator<Timesheet> DateComparator = new Comparator<Timesheet>() {
-
-		/* reverse chronological comparator */
-		@Override
-		public int compare(Timesheet o1, Timesheet o2) {
-			return o2.getWeekEnding().compareTo(o1.getWeekEnding());
-		}
-
-	};
+public static Comparator<Timesheet> DateComparator = new Comparator<Timesheet>() {
+    
+    /*
+     * reverse chronological comparator
+     */
+    @Override
+    public int compare(Timesheet o1, Timesheet o2) {
+        return o2.getWeekEnding().compareTo(o1.getWeekEnding());
+    }
+    
+};
 
 }
