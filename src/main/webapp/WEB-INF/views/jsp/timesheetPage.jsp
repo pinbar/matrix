@@ -35,8 +35,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:if test="${timesheet != null}">						
-								<p>Timesheet for week ending: <b>${timesheet.weekEnding}</b></p>
+							<c:if test="${timesheet != null}">
+								<p>
+									Timesheet for week ending: <b>${timesheet.weekEnding}</b>
+								</p>
 								<form:hidden path="weekEnding" />
 								<form:hidden path="id" />
 
@@ -89,11 +91,20 @@
 												type="text" class="input-small" /> <form:hidden
 												path="tsCostCenters[${status.index}].sunday.date" /> <form:hidden
 												path="tsCostCenters[${status.index}].sunday.id" /></td>
-										<td><a
+										<td>
+										<c:choose>
+										<c:when test="${!empty timesheet.id && !empty timesheet.tsCostCenters[status.index].costCode }">
+										<a
 											href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}"><span
-												class="icon-trash"></span></a></td>
+												class="icon-trash"></span></a>
+										</c:when>
+										<c:otherwise>
+										<span class="icon-trash"></span>
+										</c:otherwise>	
+										</c:choose>	
+												</td>
 										<td><a
-											href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&costCode=NAW"><span
+											href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}"><span
 												class="icon-plus-sign"></span></a></td>
 									</tr>
 								</c:forEach>

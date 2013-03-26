@@ -112,9 +112,11 @@ public String saveTimesheet(TimesheetView timesheetView, Model model) {
     return "timesheetPage";
 }
 
-@RequestMapping(value = "/deleteCostCodeRow/{timesheetId}", method = RequestMethod.GET)
-public String deleteTimesheetCostCodeRow(Model model,
-        @PathVariable Integer timesheetId, @RequestParam String costCode) {
+@RequestMapping(value = "/deleteCostCodeRow", method = RequestMethod.GET)
+public String deleteTimesheetCostCodeRow(
+        Model model,
+        @RequestParam(value = "timesheetid", required = false) Integer timesheetId,
+        @RequestParam(value = "costCode", required = false) String costCode) {
     timesheetService.deleteCostCodeRow(timesheetId, costCode);
     return getTimesheetPreview(model);
     
