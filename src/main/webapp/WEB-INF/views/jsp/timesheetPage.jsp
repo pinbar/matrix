@@ -31,7 +31,9 @@
 								<th><u>Saturday</u></th>
 								<th><u>Sunday</u></th>
 								<th></th>
-								<th></th>
+								<th><a
+									href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}"><span
+										class="icon-plus-sign"></span></a></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -91,18 +93,9 @@
 												type="text" class="input-small" /> <form:hidden
 												path="tsCostCenters[${status.index}].sunday.date" /> <form:hidden
 												path="tsCostCenters[${status.index}].sunday.id" /></td>
-										<td>
-										<c:choose>
-										<c:when test="${!empty timesheet.id && !empty timesheet.tsCostCenters[status.index].costCode }">
-										<a
+										<td><a
 											href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}"><span
-												class="icon-trash"></span></a>
-										</c:when>
-										<c:otherwise>
-										<span class="icon-trash"></span>
-										</c:otherwise>	
-										</c:choose>	
-												</td>
+												class="icon-trash"></span></a></td>
 										<td><a
 											href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}"><span
 												class="icon-plus-sign"></span></a></td>

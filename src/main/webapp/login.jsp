@@ -6,7 +6,7 @@
 	href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet" media="screen">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/common.css">
+	href="${pageContext.request.contextPath}/resources/css/common.css">
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="resources/bootstrap/js/bootstrap.min.js"></script>

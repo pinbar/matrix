@@ -181,6 +181,9 @@ public TimesheetView addCostCodeRow(Integer timesheetId, String costCode) {
 @Override
 @Transactional
 public void deleteCostCodeRow(Integer timesheetId, String costCode) {
+    if (null == timesheetId || null == costCode) {
+        return;
+    }
     Timesheet timesheet = timesheetRepository.getTimesheet(timesheetId);
     Set<TimesheetItem> tsItemSet = timesheet.getTimesheetItems();
     Set<TimesheetItem> tmpItemSet = new HashSet<TimesheetItem>();

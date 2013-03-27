@@ -86,7 +86,7 @@ public String createNewTimesheet(@PathVariable String weekEnding, Model model) {
 
 @RequestMapping(value = "/addCostCodeRow", method = RequestMethod.GET)
 public String addCostCodeRow(
-        @RequestParam(value = "timesheetid", required = false) Integer timesheetId,
+        @RequestParam(value = "timesheetId", required = false) Integer timesheetId,
         @RequestParam(value = "costCode", required = false) String costCode,
         Model model) {
     TimesheetView timesheetView = timesheetService.addCostCodeRow(timesheetId,
@@ -115,7 +115,7 @@ public String saveTimesheet(TimesheetView timesheetView, Model model) {
 @RequestMapping(value = "/deleteCostCodeRow", method = RequestMethod.GET)
 public String deleteTimesheetCostCodeRow(
         Model model,
-        @RequestParam(value = "timesheetid", required = false) Integer timesheetId,
+        @RequestParam(value = "timesheetId", required = false) Integer timesheetId,
         @RequestParam(value = "costCode", required = false) String costCode) {
     timesheetService.deleteCostCodeRow(timesheetId, costCode);
     return getTimesheetPreview(model);
