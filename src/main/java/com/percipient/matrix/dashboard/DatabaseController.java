@@ -23,49 +23,49 @@ import com.percipient.matrix.view.DatabaseView;
 @RequestMapping(value = "/database")
 public class DatabaseController {
 
-	public static final String MODEL_ATTRIBUTE_DB_VIEW = "db";
+    public static final String MODEL_ATTRIBUTE_DB_VIEW = "db";
 
-	@Autowired
-	DatabaseService databaseService;
+    @Autowired
+    DatabaseService databaseService;
 
-	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String getGroupList(Model model) {
-		DatabaseView dbView = new DatabaseView();
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String getGroupList(Model model) {
+        DatabaseView dbView = new DatabaseView();
 
-		List<User> users = (List<User>) databaseService.getTableData(User.class
-				.getSimpleName());
-		dbView.setUsers(users);
+        List<User> users = (List<User>) databaseService.getTableData(User.class
+                .getSimpleName());
+        dbView.setUsers(users);
 
-		List<Group> groups = (List<Group>) databaseService
-				.getTableData(Group.class.getSimpleName());
-		dbView.setGroups(groups);
-		
-		List<GroupMember> groupMembers = (List<GroupMember>) databaseService
-				.getTableData(GroupMember.class.getSimpleName());
-		dbView.setGroupMembers(groupMembers);
-		
-		List<GroupAuthority> groupAuthorities = (List<GroupAuthority>) databaseService
-				.getTableData(GroupAuthority.class.getSimpleName());
-		dbView.setGroupAuthorities(groupAuthorities);
+        List<Group> groups = (List<Group>) databaseService
+                .getTableData(Group.class.getSimpleName());
+        dbView.setGroups(groups);
 
-		List<Employee> employees = (List<Employee>) databaseService
-				.getTableData(Employee.class.getSimpleName());
-		dbView.setEmployees(employees);
-		
-		List<Timesheet> timesheeets = (List<Timesheet>) databaseService
-				.getTableData(Timesheet.class.getSimpleName());
-		dbView.setTimesheets(timesheeets);
-		
-		List<TimesheetItem> timesheeetItems = (List<TimesheetItem>) databaseService
-				.getTableData(TimesheetItem.class.getSimpleName());
-		dbView.setTimesheetItems(timesheeetItems);
-		
-		List<CostCenter> costCenters = (List<CostCenter>) databaseService
-				.getTableData(CostCenter.class.getSimpleName());
-		dbView.setCostCenters(costCenters);
-		
-		model.addAttribute(MODEL_ATTRIBUTE_DB_VIEW, dbView);
-		return "databasePage";
-	}
+        List<GroupMember> groupMembers = (List<GroupMember>) databaseService
+                .getTableData(GroupMember.class.getSimpleName());
+        dbView.setGroupMembers(groupMembers);
+
+        List<GroupAuthority> groupAuthorities = (List<GroupAuthority>) databaseService
+                .getTableData(GroupAuthority.class.getSimpleName());
+        dbView.setGroupAuthorities(groupAuthorities);
+
+        List<Employee> employees = (List<Employee>) databaseService
+                .getTableData(Employee.class.getSimpleName());
+        dbView.setEmployees(employees);
+
+        List<Timesheet> timesheeets = (List<Timesheet>) databaseService
+                .getTableData(Timesheet.class.getSimpleName());
+        dbView.setTimesheets(timesheeets);
+
+        List<TimesheetItem> timesheeetItems = (List<TimesheetItem>) databaseService
+                .getTableData(TimesheetItem.class.getSimpleName());
+        dbView.setTimesheetItems(timesheeetItems);
+
+        List<CostCenter> costCenters = (List<CostCenter>) databaseService
+                .getTableData(CostCenter.class.getSimpleName());
+        dbView.setCostCenters(costCenters);
+
+        model.addAttribute(MODEL_ATTRIBUTE_DB_VIEW, dbView);
+        return "databasePage";
+    }
 }

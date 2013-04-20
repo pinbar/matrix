@@ -10,37 +10,37 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class ClientView {
 
-	@NotNull
-	@Min(1)
-	@Max(99)
-	private Integer id;
-	@NotBlank
-	private String name;
-	
-	private Set<String> employees;
-	
-	public Integer getId() {
-		return id;
-	}
+    @NotNull
+    @Min(1)
+    @Max(99)
+    private Integer id;
+    @NotBlank
+    private String name;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    private Set<String> employees;
 
-	public String getName() {
-		return name;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Set<String> getEmployees() {
-		return employees;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setEmployees(Set<String> employees) {
-		this.employees = employees;
-	}
-	
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<String> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<String> employees) {
+        this.employees = employees;
+    }
+
 }

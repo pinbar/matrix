@@ -15,31 +15,31 @@ import com.percipient.matrix.service.EmployeeService;
 @RequestMapping(value = "/report")
 public class ReportController {
 
-	public static final String MODEL_ATTRIBUTE_CLIENTS = "clients";
-	public static final String MODEL_ATTRIBUTE_EMPLOYEES = "employees";
+    public static final String MODEL_ATTRIBUTE_CLIENTS = "clients";
+    public static final String MODEL_ATTRIBUTE_EMPLOYEES = "employees";
 
-	@Autowired
-	EmployeeService employeeService;
+    @Autowired
+    EmployeeService employeeService;
 
-	@Autowired
-	ClientService clientService;
+    @Autowired
+    ClientService clientService;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String go() {
-		return "reportPage";
-	}
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String go() {
+        return "reportPage";
+    }
 
-	@RequestMapping(value = "/client/list", method = RequestMethod.GET)
-	public String getGroupList(Model model) {
-		List<?> clients = clientService.getClients();
-		model.addAttribute(MODEL_ATTRIBUTE_CLIENTS, clients);
-		return "reportPage";
-	}
+    @RequestMapping(value = "/client/list", method = RequestMethod.GET)
+    public String getGroupList(Model model) {
+        List<?> clients = clientService.getClients();
+        model.addAttribute(MODEL_ATTRIBUTE_CLIENTS, clients);
+        return "reportPage";
+    }
 
-	@RequestMapping(value = "/employee/list", method = RequestMethod.GET)
-	public String getEmployeeList(Model model) {
-		List<?> employees = employeeService.getEmployees();
-		model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEES, employees);
-		return "reportPage";
-	}
+    @RequestMapping(value = "/employee/list", method = RequestMethod.GET)
+    public String getEmployeeList(Model model) {
+        List<?> employees = employeeService.getEmployees();
+        model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEES, employees);
+        return "reportPage";
+    }
 }

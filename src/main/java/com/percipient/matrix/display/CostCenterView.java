@@ -4,26 +4,36 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class CostCenterView {
 
-	@NotBlank
-	private String costCode;
+    private Integer id;
 
-	@NotBlank
-	private String name;
+    @NotBlank
+    private String costCode;
 
-	public String getCostCode() {
-		return costCode;
-	}
+    @NotBlank
+    private String name;
 
-	public void setCostCode(String costCode) {
-		this.costCode = costCode;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getCostCode() {
+        return costCode;
+    }
+
+    public void setCostCode(String costCode) {
+        this.costCode = costCode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }

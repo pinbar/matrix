@@ -18,62 +18,62 @@ import javax.persistence.Table;
 @Table(name = "timesheets")
 public class Timesheet {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
-	private Integer id;
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private Integer id;
 
-	@Column(name = "week_ending")
-	private Date weekEnding;
+    @Column(name = "week_ending")
+    private Date weekEnding;
 
-	@Column(name = "status")
-	private String status;
-	
-	@Column(name = "employee_id")
-	private Integer employeeId;
-	
-	@OneToMany(cascade = { CascadeType.ALL}, orphanRemoval=true)
-	@JoinTable(name = "timesheets_timesheet_items", joinColumns = { @JoinColumn(name = "timesheet_id") }, inverseJoinColumns = { @JoinColumn(name = "timesheet_item_id") })
-	private Set<TimesheetItem> timesheetItems = new HashSet<TimesheetItem>();
+    @Column(name = "status")
+    private String status;
 
-	public Set<TimesheetItem> getTimesheetItems() {
-		return timesheetItems;
-	}
+    @Column(name = "employee_id")
+    private Integer employeeId;
 
-	public void setTimesheetItems(Set<TimesheetItem> timesheetItems) {
-		this.timesheetItems = timesheetItems;
-	}
+    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JoinTable(name = "timesheets_timesheet_items", joinColumns = { @JoinColumn(name = "timesheet_id") }, inverseJoinColumns = { @JoinColumn(name = "timesheet_item_id") })
+    private Set<TimesheetItem> timesheetItems = new HashSet<TimesheetItem>();
 
-	public Integer getId() {
-		return id;
-	}
+    public Set<TimesheetItem> getTimesheetItems() {
+        return timesheetItems;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setTimesheetItems(Set<TimesheetItem> timesheetItems) {
+        this.timesheetItems = timesheetItems;
+    }
 
-	public Date getWeekEnding() {
-		return weekEnding;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setWeekEnding(Date weekEnding) {
-		this.weekEnding = weekEnding;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public Date getWeekEnding() {
+        return weekEnding;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setWeekEnding(Date weekEnding) {
+        this.weekEnding = weekEnding;
+    }
 
-	public Integer getEmployeeId() {
-		return employeeId;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setEmployeeId(Integer employeeId) {
-		this.employeeId = employeeId;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
+    }
 
 }

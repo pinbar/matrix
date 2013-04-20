@@ -14,47 +14,46 @@ import com.percipient.matrix.display.ClientView;
 import com.percipient.matrix.domain.Client;
 import com.percipient.matrix.domain.Employee;
 
-
 public interface ClientService {
 
-	public List<ClientView> getClients();
+    public List<ClientView> getClients();
 
 }
 
 @Service
 class ClientServiceImpl implements ClientService {
 
-	@Autowired
-	private ClientRepository clientRepository;
+    @Autowired
+    private ClientRepository clientRepository;
 
-	@Override
-	@Transactional
-	public List<ClientView> getClients() {
-		List<Client> clients = clientRepository.getClients();
+    @Override
+    @Transactional
+    public List<ClientView> getClients() {
+        List<Client> clients = clientRepository.getClients();
 
-		List<ClientView> clientViews = new ArrayList<ClientView>();
-		for (Client client : clients) {
-			ClientView clientView = getClientViewFromClient(client);
-			clientViews.add(clientView);
-		}
-		return clientViews;
-	}
+        List<ClientView> clientViews = new ArrayList<ClientView>();
+        for (Client client : clients) {
+            ClientView clientView = getClientViewFromClient(client);
+            clientViews.add(clientView);
+        }
+        return clientViews;
+    }
 
-	private ClientView getClientViewFromClient(Client client) {
+    private ClientView getClientViewFromClient(Client client) {
 
-		ClientView clientView = new ClientView();
-		clientView.setId(client.getId());
-		clientView.setName(client.getName());
-		clientView.setEmployees(getEmplyees(client));
-		return clientView;
-	}
-	
-	private Set<String> getEmplyees(Client client) {
-		Set<String> employees = new HashSet<String>();
-		for(Employee employee : client.getEmployees()) {
-			employees.add(employee.getFirstName());
-		}
-		return employees;
-	}
+        ClientView clientView = new ClientView();
+        clientView.setId(client.getId());
+        clientView.setName(client.getName());
+        clientView.setEmployees(getEmplyees(client));
+        return clientView;
+    }
+
+    private Set<String> getEmplyees(Client client) {
+        Set<String> employees = new HashSet<String>();
+        for (Employee employee : client.getEmployees()) {
+            employees.add(employee.getFirstName());
+        }
+        return employees;
+    }
 
 }

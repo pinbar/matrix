@@ -8,18 +8,18 @@ import org.springframework.stereotype.Repository;
 
 public interface DatabaseRepository {
 
-	public List<?> getTableData(String entityName);
+    public List<?> getTableData(String entityName);
 }
 
 @Repository
 class DatabaseRepositoryImpl implements DatabaseRepository {
 
-	@Autowired
-	private SessionFactory sessionFactory;
+    @Autowired
+    private SessionFactory sessionFactory;
 
-	public List<?> getTableData(String entityName) {
-		String query = "from " + entityName;
-		return (List<?>) sessionFactory.getCurrentSession().createQuery(query)
-				.list();
-	}
+    public List<?> getTableData(String entityName) {
+        String query = "from " + entityName;
+        return (List<?>) sessionFactory.getCurrentSession().createQuery(query)
+                .list();
+    }
 }

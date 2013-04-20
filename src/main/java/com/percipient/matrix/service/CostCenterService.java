@@ -13,35 +13,73 @@ import com.percipient.matrix.domain.CostCenter;
 
 public interface CostCenterService {
 
-	public List<CostCenterView> getCostCenters();
+    public List<CostCenterView> getCostCenters();
+
+    public void saveCostCenter(CostCenterView costCenterView);
+
+    public CostCenterView getCostCenter(Integer costCenterId);
+
+    public void deleteGroup(CostCenterView costCenterView);
 
 }
 
 @Service
 class CostCenterServiceImpl implements CostCenterService {
 
-	@Autowired
-	private CostCenterRepository costCenterRepository;
+    @Autowired
+    private CostCenterRepository costCenterRepository;
 
-	@Override
-	@Transactional
-	public List<CostCenterView> getCostCenters() {
+    @Override
+    @Transactional
+    public List<CostCenterView> getCostCenters() {
 
-		List<CostCenter> costCenters = costCenterRepository.getCostCenters();
-		List<CostCenterView> costCenterViews = new ArrayList<CostCenterView>();
-		for (CostCenter costCenter : costCenters) {
-			CostCenterView costCenterView = getCostCenterViewFromCostCenter(costCenter);
-			costCenterViews.add(costCenterView);
-		}
-		return costCenterViews;
-	}
+        List<CostCenter> costCenters = costCenterRepository.getCostCenters();
+        List<CostCenterView> costCenterViews = new ArrayList<CostCenterView>();
+        for (CostCenter costCenter : costCenters) {
+            CostCenterView costCenterView = getCostCenterViewFromCostCenter(costCenter);
+            costCenterViews.add(costCenterView);
+        }
+        return costCenterViews;
+    }
 
-	private CostCenterView getCostCenterViewFromCostCenter(CostCenter costCenter) {
+    @Override
+    @Transactional
+    public void saveCostCenter(CostCenterView costCenterView) {
+        CostCenter costCenter = getCostCenterFromCostCenterView(costCenterView);
+        costCenterRepository.save(costCenter);
+    }
 
-		CostCenterView costCenterView = new CostCenterView();
-		costCenterView.setCostCode(costCenter.getCostCode());
-		costCenterView.setName(costCenter.getName());
-		return costCenterView;
-	}
+    @Override
+    @Transactional
+    public CostCenterView getCostCenter(Integer costCenterId) {
+        CostCenter costCenter = costCenterRepository
+                .getCostCenter(costCenterId);
+        return getCostCenterViewFromCostCenter(costCenter);
+    }
 
+    @Override
+    @Transactional
+    public void deleteGroup(CostCenterView costCenterView) {
+        CostCenter costCenter = getCostCenterFromCostCenterView(costCenterView);
+        costCenterRepository.deleteCostCenter(costCenter);
+    }
+
+    private CostCenterView getCostCenterViewFromCostCenter(CostCenter costCenter) {
+
+        CostCenterView costCenterView = new CostCenterView();
+        costCenterView.setId(costCenter.getId());
+        costCenterView.setCostCode(costCenter.getCostCode());
+        costCenterView.setName(costCenter.getName());
+        return costCenterView;
+    }
+
+    private CostCenter getCostCenterFromCostCenterView(
+            CostCenterView costCenterView) {
+
+        CostCenter costCenter = new CostCenter();
+        costCenter.setId(costCenterView.getId());
+        costCenter.setCostCode(costCenterView.getCostCode());
+        costCenter.setName(costCenterView.getName());
+        return costCenter;
+    }
 }

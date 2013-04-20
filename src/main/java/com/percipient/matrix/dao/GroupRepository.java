@@ -11,53 +11,53 @@ import com.percipient.matrix.security.GroupAuthority;
 
 public interface GroupRepository {
 
-	public Group getGroup(Integer groupId);
+    public Group getGroup(Integer groupId);
 
-	public List<Group> getGroups();
+    public List<Group> getGroups();
 
-	public void saveGroup(Group group);
+    public void saveGroup(Group group);
 
-	public void deleteGroup(Group group);
-	
-	public GroupAuthority getGroupAuthority(Integer groupId);
+    public void deleteGroup(Group group);
+
+    public GroupAuthority getGroupAuthority(Integer groupId);
 }
 
 @Repository
 class GroupRepositoryImpl implements GroupRepository {
 
-	@Autowired
-	private SessionFactory sessionFactory;
+    @Autowired
+    private SessionFactory sessionFactory;
 
-	public Group getGroup(Integer groupId) {
-		return (Group) sessionFactory.getCurrentSession().get(Group.class,
-				groupId);
+    public Group getGroup(Integer groupId) {
+        return (Group) sessionFactory.getCurrentSession().get(Group.class,
+                groupId);
 
-	}
+    }
 
-	@SuppressWarnings("unchecked")
-	public List<Group> getGroups() {
-		String query = "from Group";
-		return (List<Group>) sessionFactory.getCurrentSession().createQuery(query)
-				.list();
-	}
+    @SuppressWarnings("unchecked")
+    public List<Group> getGroups() {
+        String query = "from Group";
+        return (List<Group>) sessionFactory.getCurrentSession()
+                .createQuery(query).list();
+    }
 
-	@Override
-	public void saveGroup(Group group) {
-		sessionFactory.getCurrentSession().saveOrUpdate(group);
-	}
+    @Override
+    public void saveGroup(Group group) {
+        sessionFactory.getCurrentSession().saveOrUpdate(group);
+    }
 
-	@Override
-	public void deleteGroup(Group group) {
-		sessionFactory.getCurrentSession().delete(group);
-	}
-	
-	@Override
-	public GroupAuthority getGroupAuthority(Integer groupId) {
-		String query = "from GroupAuthority as groupAuthority "
-				+ "where groupAuthority.groupId = :groupId";
-		Object ob = sessionFactory.getCurrentSession().createQuery(query)
-				.setParameter("groupId", groupId).uniqueResult();
+    @Override
+    public void deleteGroup(Group group) {
+        sessionFactory.getCurrentSession().delete(group);
+    }
 
-		return ob != null ? (GroupAuthority) ob : new GroupAuthority();
-	}
+    @Override
+    public GroupAuthority getGroupAuthority(Integer groupId) {
+        String query = "from GroupAuthority as groupAuthority "
+                + "where groupAuthority.groupId = :groupId";
+        Object ob = sessionFactory.getCurrentSession().createQuery(query)
+                .setParameter("groupId", groupId).uniqueResult();
+
+        return ob != null ? (GroupAuthority) ob : new GroupAuthority();
+    }
 }

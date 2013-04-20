@@ -10,137 +10,145 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.percipient.matrix.dao.EmployeeRepository;
+import com.percipient.matrix.dao.TimesheetRepository;
 import com.percipient.matrix.display.EmployeeView;
 import com.percipient.matrix.domain.Client;
 import com.percipient.matrix.domain.Employee;
+import com.percipient.matrix.domain.Timesheet;
 import com.percipient.matrix.security.GroupMember;
 import com.percipient.matrix.security.User;
 import com.percipient.matrix.session.UserInfo;
 
 public interface EmployeeService {
 
-	public void setUserInfo(UserInfo user);
+    public void setUserInfo(UserInfo user);
 
-	public List<EmployeeView> getEmployees();
+    public List<EmployeeView> getEmployees();
 
-	public EmployeeView getEmployee(Integer employeeId);
+    public EmployeeView getEmployee(Integer employeeId);
 
-	public void saveEmployee(EmployeeView employeeView);
+    public void saveEmployee(EmployeeView employeeView);
 
-	public void deleteEmployee(EmployeeView employeeView);
+    public void deleteEmployee(EmployeeView employeeView);
 
 }
 
 @Service
 class EmployeeServiceImpl implements EmployeeService {
 
-	@Autowired
-	private EmployeeRepository employeeRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
-	@Override
-	@Transactional
-	public void setUserInfo(UserInfo userInfo) {
+    @Autowired
+    private TimesheetRepository timesheetRepository;
 
-		Employee employee = employeeRepository.getEmployeeByUserName(userInfo
-				.getUserName());
-		userInfo.setEmployeeId(employee.getId());
-		userInfo.setFirstName(employee.getFirstName());
-		userInfo.setLastName(employee.getLastName());
-	}
+    @Override
+    @Transactional
+    public void setUserInfo(UserInfo userInfo) {
 
-	@Override
-	@Transactional
-	public List<EmployeeView> getEmployees() {
+        Employee employee = employeeRepository.getEmployeeByUserName(userInfo
+                .getUserName());
+        userInfo.setEmployeeId(employee.getId());
+        userInfo.setFirstName(employee.getFirstName());
+        userInfo.setLastName(employee.getLastName());
+    }
 
-		List<Employee> employees = employeeRepository.getEmployees();
-		List<EmployeeView> employeeViews = new ArrayList<EmployeeView>();
-		for (Employee employee : employees) {
-			EmployeeView employeeView = getEmployeeViewFromEmployee(employee);
-			employeeViews.add(employeeView);
-		}
-		return employeeViews;
-	}
+    @Override
+    @Transactional
+    public List<EmployeeView> getEmployees() {
 
-	@Override
-	@Transactional
-	public EmployeeView getEmployee(Integer employeeId) {
+        List<Employee> employees = employeeRepository.getEmployees();
+        List<EmployeeView> employeeViews = new ArrayList<EmployeeView>();
+        for (Employee employee : employees) {
+            EmployeeView employeeView = getEmployeeViewFromEmployee(employee);
+            employeeViews.add(employeeView);
+        }
+        return employeeViews;
+    }
 
-		Employee employee = employeeRepository.getEmployee(employeeId);
-		EmployeeView employeeView = getEmployeeViewFromEmployee(employee);
+    @Override
+    @Transactional
+    public EmployeeView getEmployee(Integer employeeId) {
 
-		return employeeView;
-	}
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        EmployeeView employeeView = getEmployeeViewFromEmployee(employee);
 
-	@Override
-	@Transactional
-	public void saveEmployee(EmployeeView employeeView) {
+        return employeeView;
+    }
 
-		Employee employee = getEmployeeFromEmployeeView(employeeView);
-		employeeRepository.saveEmployee(employee);
-	}
+    @Override
+    @Transactional
+    public void saveEmployee(EmployeeView employeeView) {
 
-	@Override
-	@Transactional
-	public void deleteEmployee(EmployeeView employeeView) {
+        Employee employee = getEmployeeFromEmployeeView(employeeView);
+        employeeRepository.saveEmployee(employee);
+    }
 
-		Employee employee = getEmployeeFromEmployeeView(employeeView);
-		employeeRepository.deleteEmployee(employee);
-	}
+    @Override
+    @Transactional
+    public void deleteEmployee(EmployeeView employeeView) {
 
-	private Employee getEmployeeFromEmployeeView(EmployeeView employeeView) {
+        Employee employee = getEmployeeFromEmployeeView(employeeView);
+        List<Timesheet> timesheets = timesheetRepository
+                .getTimesheets(employee);
+        timesheetRepository.delete(timesheets);
+        employeeRepository.deleteEmployee(employee);
+    }
 
-		Employee employee = new Employee();
-		employee.setId(employeeView.getId());
-		employee.setFirstName(employeeView.getFirstName());
-		employee.setLastName(employeeView.getLastName());
-		employee.setUserName(employeeView.getUserName());
+    private Employee getEmployeeFromEmployeeView(EmployeeView employeeView) {
 
-		User user = new User();
-		user.setUserName(employeeView.getUserName());
-		user.setPassword(employeeView.getPassword());
-		user.setEnabled(employeeView.isEnabled());
-		employee.setUser(user);
+        Employee employee = new Employee();
+        employee.setId(employeeView.getId());
+        employee.setFirstName(employeeView.getFirstName());
+        employee.setLastName(employeeView.getLastName());
+        employee.setUserName(employeeView.getUserName());
 
-		GroupMember groupMember = getGroupMember(employeeView.getGroupId(),
-				employeeView.getUserName());
-		employee.setGroupMember(groupMember);
+        User user = new User();
+        user.setUserName(employeeView.getUserName());
+        user.setPassword(employeeView.getPassword());
+        user.setEnabled(employeeView.isEnabled());
+        employee.setUser(user);
 
-		return employee;
-	}
+        GroupMember groupMember = getGroupMember(employeeView.getGroupId(),
+                employeeView.getUserName());
+        employee.setGroupMember(groupMember);
 
-	private EmployeeView getEmployeeViewFromEmployee(Employee employee) {
+        return employee;
+    }
 
-		User user = employee.getUser();
-		GroupMember groupMember = employee.getGroupMember();
+    private EmployeeView getEmployeeViewFromEmployee(Employee employee) {
 
-		EmployeeView employeeView = new EmployeeView();
-		employeeView.setId(employee.getId());
-		employeeView.setFirstName(employee.getFirstName());
-		employeeView.setLastName(employee.getLastName());
-		employeeView.setUserName(user.getUserName());
-		employeeView.setPassword(user.getPassword());
-		employeeView.setEnabled(user.isEnabled());
-		employeeView.setGroupId(groupMember.getGroupId());
-		employeeView.setClients(getClients(employee));
-		
-		return employeeView;
-	}
-	
-	private Set<String> getClients(Employee employee) {
-		Set<String> clients = new HashSet<String>();
-		for(Client client : employee.getClients()) {
-			clients.add(client.getName());
-		}
-		return clients;
-	}
+        User user = employee.getUser();
+        GroupMember groupMember = employee.getGroupMember();
 
-	private GroupMember getGroupMember(Integer groupId, String userName) {
+        EmployeeView employeeView = new EmployeeView();
+        employeeView.setId(employee.getId());
+        employeeView.setFirstName(employee.getFirstName());
+        employeeView.setLastName(employee.getLastName());
+        employeeView.setUserName(user.getUserName());
+        employeeView.setPassword(user.getPassword());
+        employeeView.setEnabled(user.isEnabled());
+        employeeView.setGroupId(groupMember.getGroupId());
+        employeeView.setClients(getClients(employee));
 
-		GroupMember groupMember = employeeRepository
-				.getGroupMemberByUserName(userName);
-		groupMember.setGroupId(groupId);
-		groupMember.setUserName(userName);
+        return employeeView;
+    }
 
-		return groupMember;
-	}
+    private Set<String> getClients(Employee employee) {
+        Set<String> clients = new HashSet<String>();
+        for (Client client : employee.getClients()) {
+            clients.add(client.getName());
+        }
+        return clients;
+    }
+
+    private GroupMember getGroupMember(Integer groupId, String userName) {
+
+        GroupMember groupMember = employeeRepository
+                .getGroupMemberByUserName(userName);
+        groupMember.setGroupId(groupId);
+        groupMember.setUserName(userName);
+
+        return groupMember;
+    }
 }

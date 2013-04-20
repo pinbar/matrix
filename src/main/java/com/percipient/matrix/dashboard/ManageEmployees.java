@@ -23,67 +23,63 @@ import com.percipient.matrix.session.UserInfo;
 @RequestMapping(value = "/admin/employee")
 public class ManageEmployees {
 
-	public static final String MODEL_ATTRIBUTE_EMPLOYEE = "employee";
-	public static final String MODEL_ATTRIBUTE_EMPLOYEES = "employees";
+    public static final String MODEL_ATTRIBUTE_EMPLOYEE = "employee";
+    public static final String MODEL_ATTRIBUTE_EMPLOYEES = "employees";
 
-	@Autowired
-	UserInfo userInfo;
+    @Autowired
+    UserInfo userInfo;
 
-	@Autowired
-	EmployeeService employeeService;
+    @Autowired
+    EmployeeService employeeService;
 
-	@RequestMapping(value = "/list")
-	public String getEmployeeList(Model model) {
-		List<EmployeeView> employees = employeeService.getEmployees();
-		model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEES, employees);
-		return "administrationPage";
-	}
+    @RequestMapping(value = "/list")
+    public String getEmployeeList(Model model) {
+        List<EmployeeView> employees = employeeService.getEmployees();
+        model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEES, employees);
+        return "administrationPage";
+    }
 
-	@RequestMapping(value = "/listAsJson")
-	public @ResponseBody List<EmployeeView> getEmployeeListAsJSON(Model model) {
-		List<EmployeeView> employees = employeeService.getEmployees();
-		return employees;
-	}
+    @RequestMapping(value = "/listAsJson")
+    public @ResponseBody
+    List<EmployeeView> getEmployeeListAsJSON(Model model) {
+        List<EmployeeView> employees = employeeService.getEmployees();
+        return employees;
+    }
 
-	@RequestMapping(value = "/new")
-	public String newEmployee(Model model) {
-		model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEE, new EmployeeView());
-		return "administrationPage";
-	}
+    @RequestMapping(value = "/new")
+    public String newEmployee(Model model) {
+        model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEE, new EmployeeView());
+        return "administrationPage";
+    }
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String saveEmployee(
-			@Valid @ModelAttribute(MODEL_ATTRIBUTE_EMPLOYEE) EmployeeView employeeView,
-			BindingResult result, Model model) {
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public String saveEmployee(
+            @Valid @ModelAttribute(MODEL_ATTRIBUTE_EMPLOYEE) EmployeeView employeeView,
+            BindingResult result, Model model) {
 
-		if (result.hasErrors()) {
-			model.addAttribute(ManageGroups.MODEL_ATTRIBUTE_GROUP, new GroupView());
-			model.addAttribute(Administration.MODEL_ATTRIBUTE_DEFAULT_FORM,"employeeEdit");
-			return "administrationPage";
-		}
-		employeeService.saveEmployee(employeeView);
-		//return getEmployeeList(model); dont do it send an empty admin page 
-		model.addAttribute(ManageGroups.MODEL_ATTRIBUTE_GROUP, new GroupView());
-		model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEE,new EmployeeView());
-		model.addAttribute(Administration.MODEL_ATTRIBUTE_DEFAULT_FORM,"employee");
-		return "administrationPage";
-	}
-	
-	@RequestMapping(value = "/update")
-	public @ResponseBody EmployeeView updateEmployee(@RequestParam("id") int employeeId, Model model) {
-		EmployeeView employeeView = employeeService.getEmployee(employeeId);
-		return employeeView;
-	}
-	
-	@RequestMapping(value = "/delete")
-	public @ResponseBody Object deleteEmployee (@RequestParam("id") int employeeId, Model model) {
-		EmployeeView employeeView = employeeService.getEmployee(employeeId);
-		employeeService.deleteEmployee(employeeView);
-		//model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEE,new EmployeeView());
-		//model.addAttribute(ManageGroups.MODEL_ATTRIBUTE_GROUP, new GroupView());
-		//model.addAttribute(Administration.MODEL_ATTRIBUTE_DEFAULT_FORM,"employee");
-		//return "administrationPage";
-		//return getEmployeeList(model);
-		return (new EmployeeView() ); 
-	}
+        if (result.hasErrors()) {
+            model.addAttribute(ManageGroups.MODEL_ATTRIBUTE_GROUP,
+                    new GroupView());
+            model.addAttribute(Administration.MODEL_ATTRIBUTE_DEFAULT_FORM,
+                    "employeeEdit");
+            return "administrationPage";
+        }
+        employeeService.saveEmployee(employeeView);
+        return "redirect:/admin/";
+    }
+
+    @RequestMapping(value = "/update")
+    public @ResponseBody
+    EmployeeView updateEmployee(@RequestParam("id") int employeeId, Model model) {
+        EmployeeView employeeView = employeeService.getEmployee(employeeId);
+        return employeeView;
+    }
+
+    @RequestMapping(value = "/delete")
+    public @ResponseBody
+    Object deleteEmployee(@RequestParam("id") int employeeId, Model model) {
+        EmployeeView employeeView = employeeService.getEmployee(employeeId);
+        employeeService.deleteEmployee(employeeView);
+        return new EmployeeView();
+    }
 }

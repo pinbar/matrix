@@ -12,50 +12,50 @@ import javax.persistence.Table;
 @Table(name = "timesheet_items")
 public class TimesheetItem {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
-	private Integer id;
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private Integer id;
 
-	@Column(name = "item_date")
-	private Date date;
-	
-	@Column(name = "cost_code")
-	private String costCode;
+    @Column(name = "item_date")
+    private Date date;
 
-	@Column(name = "hours")
-	private Double hours;
+    @Column(name = "cost_code")
+    private String costCode;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "hours")
+    private Double hours;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Date getDate() {
-		return date;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public String getCostCode() {
-		return costCode;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public void setCostCode(String costCode) {
-		this.costCode = costCode;
-	}
+    public String getCostCode() {
+        return costCode;
+    }
 
-	public Double getHours() {
-		return hours;
-	}
+    public void setCostCode(String costCode) {
+        this.costCode = costCode;
+    }
 
-	public void setHours(Double hours) {
-		this.hours = hours;
-	}
+    public Double getHours() {
+        return hours;
+    }
+
+    public void setHours(Double hours) {
+        this.hours = hours;
+    }
 
 }

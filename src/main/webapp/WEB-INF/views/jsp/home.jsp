@@ -4,7 +4,7 @@
 <title>Welcome</title>
 </head>
 <body>
-	<h4>Opening dashboard</h4>
- 	<c:redirect url="/"/>
+    <h4>Opening dashboard</h4>
+    <c:redirect url="/" />
 </body>
 </html>

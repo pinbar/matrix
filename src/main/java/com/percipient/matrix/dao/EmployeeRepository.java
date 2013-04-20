@@ -12,98 +12,98 @@ import com.percipient.matrix.security.User;
 
 public interface EmployeeRepository {
 
-	public Employee getEmployeeByUserName(String userName);
+    public Employee getEmployeeByUserName(String userName);
 
-	public Employee getEmployee(Integer employeeId);
+    public Employee getEmployee(Integer employeeId);
 
-	public List<Employee> getEmployees();
+    public List<Employee> getEmployees();
 
-	public void saveEmployee(Employee employee);
+    public void saveEmployee(Employee employee);
 
-	public void deleteEmployee(Employee employee);
+    public void deleteEmployee(Employee employee);
 
-	public User getUser(String userName);
+    public User getUser(String userName);
 
-	public void saveUser(User user);
+    public void saveUser(User user);
 
-	public void deleteUser(User user);
+    public void deleteUser(User user);
 
-	public GroupMember getGroupMemberByUserName(String userName);
+    public GroupMember getGroupMemberByUserName(String userName);
 
-	public void saveGroupMember(GroupMember groupMember);
+    public void saveGroupMember(GroupMember groupMember);
 
-	public void deleteGroupMember(GroupMember groupMember);
+    public void deleteGroupMember(GroupMember groupMember);
 }
 
 @Repository
 class EmployeeRepositoryImpl implements EmployeeRepository {
 
-	@Autowired
-	private SessionFactory sessionFactory;
+    @Autowired
+    private SessionFactory sessionFactory;
 
-	@Override
-	public Employee getEmployeeByUserName(String userName) {
-		String query = "from Employee as employee where employee.userName = :userName";
-		return (Employee) sessionFactory.getCurrentSession().createQuery(query)
-				.setParameter("userName", userName).uniqueResult();
-	}
+    @Override
+    public Employee getEmployeeByUserName(String userName) {
+        String query = "from Employee as employee where employee.userName = :userName";
+        return (Employee) sessionFactory.getCurrentSession().createQuery(query)
+                .setParameter("userName", userName).uniqueResult();
+    }
 
-	@Override
-	public Employee getEmployee(Integer employeeId) {
-		return (Employee) sessionFactory.getCurrentSession().get(
-				Employee.class, employeeId);
-	}
+    @Override
+    public Employee getEmployee(Integer employeeId) {
+        return (Employee) sessionFactory.getCurrentSession().get(
+                Employee.class, employeeId);
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Employee> getEmployees() {
-		String query = "from Employee as employee";
-		return (List<Employee>) sessionFactory.getCurrentSession()
-				.createQuery(query).list();
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Employee> getEmployees() {
+        String query = "from Employee as employee";
+        return (List<Employee>) sessionFactory.getCurrentSession()
+                .createQuery(query).list();
+    }
 
-	@Override
-	public void saveEmployee(Employee employee) {
-		sessionFactory.getCurrentSession().saveOrUpdate(employee);
-	}
+    @Override
+    public void saveEmployee(Employee employee) {
+        sessionFactory.getCurrentSession().saveOrUpdate(employee);
+    }
 
-	@Override
-	public void deleteEmployee(Employee employee) {
-		sessionFactory.getCurrentSession().delete(employee);
-	}
+    @Override
+    public void deleteEmployee(Employee employee) {
+        sessionFactory.getCurrentSession().delete(employee);
+    }
 
-	@Override
-	public User getUser(String userName) {
-		return (User) sessionFactory.getCurrentSession().get(User.class,
-				userName);
-	}
+    @Override
+    public User getUser(String userName) {
+        return (User) sessionFactory.getCurrentSession().get(User.class,
+                userName);
+    }
 
-	@Override
-	public void saveUser(User user) {
-		sessionFactory.getCurrentSession().saveOrUpdate(user);
-	}
+    @Override
+    public void saveUser(User user) {
+        sessionFactory.getCurrentSession().saveOrUpdate(user);
+    }
 
-	@Override
-	public void deleteUser(User user) {
-		sessionFactory.getCurrentSession().delete(user);
-	}
+    @Override
+    public void deleteUser(User user) {
+        sessionFactory.getCurrentSession().delete(user);
+    }
 
-	@Override
-	public GroupMember getGroupMemberByUserName(String userName) {
-		String query = "from GroupMember as group_member where group_member.userName = :userName";
-		Object ob = sessionFactory.getCurrentSession().createQuery(query)
-				.setParameter("userName", userName).uniqueResult();
-		return ob != null ? (GroupMember) ob : new GroupMember();
-	}
+    @Override
+    public GroupMember getGroupMemberByUserName(String userName) {
+        String query = "from GroupMember as group_member where group_member.userName = :userName";
+        Object ob = sessionFactory.getCurrentSession().createQuery(query)
+                .setParameter("userName", userName).uniqueResult();
+        return ob != null ? (GroupMember) ob : new GroupMember();
+    }
 
-	@Override
-	public void saveGroupMember(GroupMember groupMember) {
-		sessionFactory.getCurrentSession().saveOrUpdate(groupMember);
-	}
+    @Override
+    public void saveGroupMember(GroupMember groupMember) {
+        sessionFactory.getCurrentSession().saveOrUpdate(groupMember);
+    }
 
-	@Override
-	public void deleteGroupMember(GroupMember groupMember) {
-		sessionFactory.getCurrentSession().delete(groupMember);
-	}
+    @Override
+    public void deleteGroupMember(GroupMember groupMember) {
+        sessionFactory.getCurrentSession().delete(groupMember);
+    }
 
 }
