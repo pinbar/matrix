@@ -19,19 +19,19 @@ INSERT INTO group_members (username, group_id) VALUES ('ap', 3);
 --end security config
 
 --begin employee tables
-INSERT INTO employees (id, username, first_name, last_name) VALUES (1111, 'pb', 'Pinak', 'Barve');
-INSERT INTO employees (id, username, first_name, last_name) VALUES (2222, 'rp', 'Rohit', 'Panwar');
-INSERT INTO employees (id, username, first_name, last_name) VALUES (3333, 'ap', 'Amit', 'Pant');
+INSERT INTO employees (username, first_name, last_name) VALUES ('pb', 'Pinak', 'Barve');
+INSERT INTO employees (username, first_name, last_name) VALUES ('rp', 'Rohit', 'Panwar');
+INSERT INTO employees (username, first_name, last_name) VALUES ('ap', 'Amit', 'Pant');
 
-INSERT INTO clients (id, name) VALUES (1, 'Limited');
-INSERT INTO clients (id, name) VALUES (2, 'Cardinal');
-INSERT INTO clients (id, name) VALUES (3, 'Nationwide');
-INSERT INTO clients (id, name) VALUES (4, 'Chase');
+INSERT INTO clients (name) VALUES ('Limited');
+INSERT INTO clients (name) VALUES ('Cardinal');
+INSERT INTO clients (name) VALUES ('Nationwide');
+INSERT INTO clients (name) VALUES ('Chase');
 
-INSERT INTO employees_clients (employee_id, client_id) VALUES (1111, 1);
-INSERT INTO employees_clients (employee_id, client_id) VALUES (1111, 2);
-INSERT INTO employees_clients (employee_id, client_id) VALUES (2222, 2);
-INSERT INTO employees_clients (employee_id, client_id) VALUES (3333, 3);
+INSERT INTO employees_clients (employee_id, client_id) VALUES (1, 1);
+INSERT INTO employees_clients (employee_id, client_id) VALUES (1, 2);
+INSERT INTO employees_clients (employee_id, client_id) VALUES (2, 2);
+INSERT INTO employees_clients (employee_id, client_id) VALUES (3, 3);
 
 INSERT INTO cost_center (cost_code, name) VALUES ('', '');
 INSERT INTO cost_center (cost_code, name) VALUES ('ADM', 'Administration');

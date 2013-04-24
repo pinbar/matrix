@@ -67,7 +67,6 @@ class GroupServiceImpl implements GroupService {
 
     private GroupView getGroupViewFromGroup(Group group) {
         GroupAuthority groupAuthority = group.getGroupAuthority();
-
         GroupView groupView = new GroupView();
         groupView.setId(group.getId());
         groupView.setName(group.getName());
@@ -76,21 +75,18 @@ class GroupServiceImpl implements GroupService {
     }
 
     private Group getGroupFromGroupView(GroupView groupView) {
-        Group group = new Group();
-        group.setId(groupView.getId());
+        Group group = null;
+        if (groupView.getId() != null) {
+            group = groupRepository.getGroup(groupView.getId());
+        }
+        if (group == null) {
+            group = new Group();
+            GroupAuthority grpAuthority = new GroupAuthority();
+            group.setGroupAuthority(grpAuthority);
+            grpAuthority.setGroup(group);
+        }
         group.setName(groupView.getName());
-        GroupAuthority groupAuthority = getGroupAuthority(groupView.getId(),
-                groupView.getAuthority());
-        groupAuthority.setGroup(group);
-        group.setGroupAuthority(groupAuthority);
+        group.getGroupAuthority().setAuthority(groupView.getAuthority());
         return group;
-    }
-
-    private GroupAuthority getGroupAuthority(Integer groupId, String authority) {
-        GroupAuthority groupAuthority = groupRepository
-                .getGroupAuthority(groupId);
-        groupAuthority.setGroupId(groupId);
-        groupAuthority.setAuthority(authority);
-        return groupAuthority;
     }
 }

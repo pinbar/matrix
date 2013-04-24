@@ -3,7 +3,6 @@ package com.percipient.matrix.security;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,9 +21,7 @@ public class Group {
     @Column(name = "group_name")
     private String name;
 
-    // @JoinColumn(name = "id", referencedColumnName = "group_id", insertable =
-    // false, updatable = false)
-    @OneToOne(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "group", cascade = CascadeType.ALL)
     private GroupAuthority groupAuthority;
 
     public Integer getId() {

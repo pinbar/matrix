@@ -13,14 +13,14 @@ public class EmployeeView {
     @NotBlank
     private String password;
     private boolean enabled = true;
-    @NotNull
+    
     private Integer id;
     @NotBlank
     private String firstName;
     @NotBlank
     private String lastName;
     @NotNull
-    private Integer groupId;
+    private String groupName;
     private Set<String> clients;
 
     public String getUserName() {
@@ -71,12 +71,12 @@ public class EmployeeView {
         this.lastName = lastName;
     }
 
-    public Integer getGroupId() {
-        return groupId;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
+    public void setGroupName(String groupId) {
+        this.groupName = groupId;
     }
 
     public Set<String> getClients() {

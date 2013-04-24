@@ -61,7 +61,7 @@
                                                     </form:select>
                                                 </c:when>
                                                 <c:otherwise>
-                                                  HEY SET UP YOUR TABLES CORRECTLY      
+                                                  HEY! SET UP COST CENTERS CORRECTLY      
                                               </c:otherwise>
                                             </c:choose></td>
                                         <td><form:input

@@ -11,7 +11,7 @@
                 <th><u>First Name</u></th>
                 <th><u>Last Name</u></th>
                 <th><u>Enabled</u></th>
-                <th><u>Group Id</u></th>
+                <th><u>Group Name</u></th>
                 <th></th>
                 <th></th>
             </tr>

@@ -22,12 +22,6 @@ public interface EmployeeRepository {
 
     public void deleteEmployee(Employee employee);
 
-    public User getUser(String userName);
-
-    public void saveUser(User user);
-
-    public void deleteUser(User user);
-
     public GroupMember getGroupMemberByUserName(String userName);
 
     public void saveGroupMember(GroupMember groupMember);
@@ -70,22 +64,6 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
     @Override
     public void deleteEmployee(Employee employee) {
         sessionFactory.getCurrentSession().delete(employee);
-    }
-
-    @Override
-    public User getUser(String userName) {
-        return (User) sessionFactory.getCurrentSession().get(User.class,
-                userName);
-    }
-
-    @Override
-    public void saveUser(User user) {
-        sessionFactory.getCurrentSession().saveOrUpdate(user);
-    }
-
-    @Override
-    public void deleteUser(User user) {
-        sessionFactory.getCurrentSession().delete(user);
     }
 
     @Override

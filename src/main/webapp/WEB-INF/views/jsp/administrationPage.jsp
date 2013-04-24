@@ -14,12 +14,11 @@
             <div id="sidebar" class="span2">
                 <jsp:include page="adminSideBar.jsp" />
             </div>
-
             <div id="content" class="span10">
                 <div id="adminMsgs"
                     class="${form !='admin' ? 'hide' : ''}">
                     <ul>
-                        <li>Please use the sidebar menu to manage
+                        <li>Use the sidebar menu to manage
                             users and groups.</li>
                         <li>Hover over the headings to see
                             sub-menu.</li>

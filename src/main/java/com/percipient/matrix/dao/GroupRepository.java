@@ -20,6 +20,8 @@ public interface GroupRepository {
     public void deleteGroup(Group group);
 
     public GroupAuthority getGroupAuthority(Integer groupId);
+
+    public Group getGroupByName(String groupName);
 }
 
 @Repository
@@ -32,6 +34,13 @@ class GroupRepositoryImpl implements GroupRepository {
         return (Group) sessionFactory.getCurrentSession().get(Group.class,
                 groupId);
 
+    }
+
+    @Override
+    public Group getGroupByName(String groupName) {
+        String query = "from Group as group where group.name = :groupName";
+        return (Group) sessionFactory.getCurrentSession().createQuery(query)
+                .setParameter("groupName", groupName).uniqueResult();
     }
 
     @SuppressWarnings("unchecked")

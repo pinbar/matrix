@@ -17,13 +17,13 @@ public class Login {
 	@Autowired
 	UserInfo userInfo;
 	@Autowired
-	EmployeeService userService;
+	EmployeeService employeeService;
 
 	@RequestMapping(value = "/start")
 	public String setUser(Principal principal) {
 
 		userInfo.setUserName(principal.getName());
-		userService.setUserInfo(userInfo);
+		employeeService.setUserInfo(userInfo);
 
 		return "home";
 	}

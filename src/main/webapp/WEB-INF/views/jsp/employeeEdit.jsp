@@ -5,13 +5,7 @@
     <form:form id="employeeForm" class="form-horizontal" method="post"
         modelAttribute="employee"
         action="${pageContext.request.contextPath}/admin/employee/save">
-        <div class="control-group">
-            <label class="control-label" for="id">Employee Id</label>
-            <div class="controls">
-                <form:input path="id" />
-                <form:errors class="text-error" path="id"></form:errors>
-            </div>
-        </div>
+        <form:hidden path="id" />        
         <div class="control-group">
             <label class="control-label" for="userName">User
                 Name</label>
@@ -44,10 +38,13 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="groupId">Group Id</label>
+            <label class="control-label" for="groupName">Group</label>
             <div class="controls">
-                <form:input path="groupId" />
-                <form:errors class="errorMsg" path="groupId"></form:errors>
+              <input id ="hiddenGroupName" type="hidden" value ="${employee.groupName}"/>  
+                <form:select
+                            path="groupName"
+                            class="input-medium">
+                         </form:select>
             </div>
         </div>
         <div class="control-group">

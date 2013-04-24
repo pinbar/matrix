@@ -32,9 +32,12 @@ $(document).ready(
                             $("div#empList").addClass('hide');
                             $("div#costCenterUpdate").addClass('hide');
                             $("div#costCenterList").addClass('hide');
+                            populateGroupOptions("", true);
+                            $(".errorMsg").addClass('hide');
                             $("div#empUpdate").removeClass('hide');
                             $("form#employeeForm").find(
                                     "input[type=text], textarea").val("");
+                           
                         }
                     });
             $("a#grouplist").bind({
@@ -57,8 +60,6 @@ $(document).ready(
                             $("div#empUpdate").addClass('hide');
                             $("div#costCenterUpdate").addClass('hide');
                             $("div#costCenterList").addClass('hide');
-                            // $("div#grpSearch input[type='submit']").value =
-                            // "update";
                             $("div#grpUpdate").removeClass('hide');
                             $("form#groupForm").find(
                                     "input[type=text], textarea").val("");
@@ -84,8 +85,6 @@ $(document).ready(
                             $("div#empList").addClass('hide');
                             $("div#empUpdate").addClass('hide');
                             $("div#costCenterList").addClass('hide');
-                            // $("div#costCenterSearch
-                            // input[type='submit']").value = "Save";
                             $("div#costCenterUpdate").removeClass('hide');
                             $("form#costCenterForm").find(
                                     "input[type=text], textarea").val("");
@@ -128,8 +127,8 @@ $(document).ready(
                     mData : 'enabled',
                     sTitle : 'Enabled'
                 }, {
-                    mData : 'groupId',
-                    sTitle : 'Group Id'
+                    mData : 'groupName',
+                    sTitle : 'Group Name'
                 } ]
             }, costCenterTableArgs = {
                 sourceUrl : contextPath + '/admin/costCenter/listAsJson',
@@ -152,7 +151,7 @@ $(document).ready(
             initTable(costCenterTableArgs);
             bindUpdateRows();
             bindDeleteRows();
-
+            populateGroupOptions($("#hiddenGroupName").val(), false);     
         });
 
 function bindUpdateRows() {
@@ -283,7 +282,38 @@ function initTable(args) {
 }
 
 function populate(container, data) {
+    var selectedGroupName = "";
     $.each(data, function(key, value) {
         $('[id=' + key + ']', container).val(value);
+        if (key === "groupName") {
+            selectedGroupName = value;
+        }
     });
+    if(container.attr("id") == "empUpdate") {
+        populateGroupOptions(selectedGroupName, true);
+    }
+}
+
+function populateGroupOptions(selectedGroupName, alwaysShow) {
+    var isEmpUpdateForm = alwaysShow || !($("div#empUpdate").hasClass("hide"));
+    if(isEmpUpdateForm){
+        $.ajax({
+            url : contextPath + "/admin/group/listAsJson",
+            type : "GET",
+            dataType : "json",
+            success : function(response, textStatus, jqXHR) {
+                var html = "";
+                $.each(response, function(key, value) {
+                    var grpName = value.name;
+                    html = html + "<option value=\"" + grpName + "\""
+                            + (selectedGroupName && grpName === selectedGroupName ? " selected " : "")
+                            + " >" + grpName + "</option>";
+                });
+                $("#groupName").empty().append(html);
+            },
+            error : function(response, textStatus, jqXHR) {
+                alert("error");
+            }
+        });
+    }
 }

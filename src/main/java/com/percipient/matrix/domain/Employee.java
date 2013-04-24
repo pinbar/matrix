@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -22,6 +24,7 @@ import com.percipient.matrix.security.User;
 public class Employee {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -35,7 +38,7 @@ public class Employee {
     private String userName;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "username", insertable = false, updatable = false)
+    @JoinColumn(name = "username", referencedColumnName = "username", insertable = false, updatable = false)
     private User user;
 
     public User getUser() {
@@ -70,19 +73,6 @@ public class Employee {
         this.clients = clients;
     }
 
-    /*
-     * @OneToMany(cascade = {CascadeType.ALL})
-     * 
-     * @JoinTable(name="employees_timesheets",
-     * joinColumns={@JoinColumn(name="employee_id")},
-     * inverseJoinColumns={@JoinColumn(name="timesheet_id")}) private
-     * Set<Timesheet> timesheets = new HashSet<Timesheet>();
-     * 
-     * public Set<Timesheet> getTimesheets() { return timesheets; }
-     * 
-     * public void setTimesheets(Set<Timesheet> timesheets) { this.timesheets =
-     * timesheets; }
-     */
     public Integer getId() {
         return id;
     }

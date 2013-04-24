@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.percipient.matrix.display.CostCenterView;
+import com.percipient.matrix.display.EmployeeView;
+import com.percipient.matrix.display.GroupView;
 import com.percipient.matrix.service.CostCenterService;
 
 @Controller
@@ -41,10 +43,10 @@ public class CostCenterController {
             BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            return "forward:/admin/costCenterEdit";
+            return gotoCostCenterEdit(model);
         }
         costCenterService.saveCostCenter(costCenterView);
-        return "redirect:/admin/costCenterList";
+        return gotoCostCenterList(model);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.GET, produces = "application/json")
@@ -63,5 +65,23 @@ public class CostCenterController {
                 .getCostCenter(costCenterId);
         costCenterService.deleteGroup(costCenterView);
         return new CostCenterView();
+    }
+    
+    private String gotoCostCenterEdit(Model model) {
+        model.addAttribute(ManageGroups.MODEL_ATTRIBUTE_GROUP, new GroupView());
+        model.addAttribute(ManageEmployees.MODEL_ATTRIBUTE_EMPLOYEE,
+                new EmployeeView());
+        model.addAttribute(Administration.MODEL_ATTRIBUTE_DEFAULT_FORM, "costCenterEdit");
+        return "administrationPage";
+    }
+
+    private String gotoCostCenterList(Model model) {
+        model.addAttribute(ManageGroups.MODEL_ATTRIBUTE_GROUP, new GroupView());
+        model.addAttribute(ManageEmployees.MODEL_ATTRIBUTE_EMPLOYEE,
+                new EmployeeView());
+        model.addAttribute(CostCenterController.MODEL_ATTRIBUTE_COST_CENTER,
+                new CostCenterView());
+        model.addAttribute(Administration.MODEL_ATTRIBUTE_DEFAULT_FORM, "costCenterList");
+        return "administrationPage";
     }
 }

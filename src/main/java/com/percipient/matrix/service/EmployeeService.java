@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.percipient.matrix.dao.EmployeeRepository;
+import com.percipient.matrix.dao.GroupRepository;
 import com.percipient.matrix.dao.TimesheetRepository;
 import com.percipient.matrix.display.EmployeeView;
 import com.percipient.matrix.domain.Client;
 import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.domain.Timesheet;
+import com.percipient.matrix.security.Group;
 import com.percipient.matrix.security.GroupMember;
 import com.percipient.matrix.security.User;
 import com.percipient.matrix.session.UserInfo;
@@ -38,6 +40,9 @@ class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
 
     @Autowired
     private TimesheetRepository timesheetRepository;
@@ -97,21 +102,28 @@ class EmployeeServiceImpl implements EmployeeService {
 
     private Employee getEmployeeFromEmployeeView(EmployeeView employeeView) {
 
-        Employee employee = new Employee();
+        Employee employee = null;
+        if (employeeView.getId() != null) {
+            employee = employeeRepository.getEmployee(employeeView.getId());
+        }
+        if (employee == null) {
+            employee = new Employee();
+            employee.setUser(new User());
+            employee.setGroupMember(new GroupMember());
+        }
         employee.setId(employeeView.getId());
         employee.setFirstName(employeeView.getFirstName());
         employee.setLastName(employeeView.getLastName());
         employee.setUserName(employeeView.getUserName());
 
-        User user = new User();
-        user.setUserName(employeeView.getUserName());
-        user.setPassword(employeeView.getPassword());
-        user.setEnabled(employeeView.isEnabled());
-        employee.setUser(user);
+        employee.getUser().setUserName(employeeView.getUserName());
+        employee.getUser().setPassword(employeeView.getPassword());
+        employee.getUser().setEnabled(employeeView.isEnabled());
 
-        GroupMember groupMember = getGroupMember(employeeView.getGroupId(),
-                employeeView.getUserName());
-        employee.setGroupMember(groupMember);
+        Group group = groupRepository.getGroupByName(employeeView
+                .getGroupName());
+        employee.getGroupMember().setGroupId(group.getId());
+        employee.getGroupMember().setUserName(employeeView.getUserName());
 
         return employee;
     }
@@ -120,6 +132,7 @@ class EmployeeServiceImpl implements EmployeeService {
 
         User user = employee.getUser();
         GroupMember groupMember = employee.getGroupMember();
+        Group group = groupRepository.getGroup(groupMember.getGroupId());
 
         EmployeeView employeeView = new EmployeeView();
         employeeView.setId(employee.getId());
@@ -128,7 +141,7 @@ class EmployeeServiceImpl implements EmployeeService {
         employeeView.setUserName(user.getUserName());
         employeeView.setPassword(user.getPassword());
         employeeView.setEnabled(user.isEnabled());
-        employeeView.setGroupId(groupMember.getGroupId());
+        employeeView.setGroupName(group.getName());
         employeeView.setClients(getClients(employee));
 
         return employeeView;
@@ -142,11 +155,12 @@ class EmployeeServiceImpl implements EmployeeService {
         return clients;
     }
 
-    private GroupMember getGroupMember(Integer groupId, String userName) {
+    private GroupMember getGroupMember(String groupName, String userName) {
 
+        Group group = groupRepository.getGroupByName(groupName);
         GroupMember groupMember = employeeRepository
                 .getGroupMemberByUserName(userName);
-        groupMember.setGroupId(groupId);
+        groupMember.setGroupId(group.getId());
         groupMember.setUserName(userName);
 
         return groupMember;
