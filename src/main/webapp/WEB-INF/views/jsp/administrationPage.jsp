@@ -57,6 +57,8 @@
             </div>
         </div>
     </div>
+      <script
+        src="${pageContext.request.contextPath}/resources/js/adminSidebarController.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
     <script

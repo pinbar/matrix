@@ -1,95 +1,6 @@
 $(document).ready(
         function() {
-            // binding the page elements adminHome
-            $("a#adminHome").bind({
-                "click" : function(e) {
-                    $("div#grpUpdate").addClass('hide');
-                    $("div#grpList").addClass('hide');
-                    $("div#empUpdate").addClass('hide');
-                    $("div#empList").addClass('hide');
-                    $("div#costCenterUpdate").addClass('hide');
-                    $("div#costCenterList").addClass('hide');
-                    $("div#adminMsgs").removeClass('hide');
-                }
-            });
-            $("a#emplist").bind({
-                "click" : function(e) {
-                    $("div#adminMsgs").addClass('hide');
-                    $("div#grpUpdate").addClass('hide');
-                    $("div#grpList").addClass('hide');
-                    $("div#empUpdate").addClass('hide');
-                    $("div#costCenterUpdate").addClass('hide');
-                    $("div#costCenterList").addClass('hide');
-                    $("div#empList").removeClass('hide');
-                }
-            });
-            $("a#empadd").bind(
-                    {
-                        "click" : function(e) {
-                            $("div#adminMsgs").addClass('hide');
-                            $("div#grpUpdate").addClass('hide');
-                            $("div#grpList").addClass('hide');
-                            $("div#empList").addClass('hide');
-                            $("div#costCenterUpdate").addClass('hide');
-                            $("div#costCenterList").addClass('hide');
-                            populateGroupOptions("", true);
-                            $(".errorMsg").addClass('hide');
-                            $("div#empUpdate").removeClass('hide');
-                            $("form#employeeForm").find(
-                                    "input[type=text], textarea").val("");
-                           
-                        }
-                    });
-            $("a#grouplist").bind({
-                "click" : function(e) {
-                    $("div#adminMsgs").addClass('hide');
-                    $("div#grpUpdate").addClass('hide');
-                    $("div#empList").addClass('hide');
-                    $("div#empUpdate").addClass('hide');
-                    $("div#costCenterUpdate").addClass('hide');
-                    $("div#costCenterList").addClass('hide');
-                    $("div#grpList").removeClass('hide');
-                }
-            });
-            $("a#groupadd").bind(
-                    {
-                        "click" : function(e) {
-                            $("div#empList").addClass('hide');
-                            $("div#adminMsgs").addClass('hide');
-                            $("div#grpList").addClass('hide');
-                            $("div#empUpdate").addClass('hide');
-                            $("div#costCenterUpdate").addClass('hide');
-                            $("div#costCenterList").addClass('hide');
-                            $("div#grpUpdate").removeClass('hide');
-                            $("form#groupForm").find(
-                                    "input[type=text], textarea").val("");
-                        }
-                    });
-            $("a#costcenterlist").bind({
-                "click" : function(e) {
-                    $("div#adminMsgs").addClass('hide');
-                    $("div#grpList").addClass('hide');
-                    $("div#grpUpdate").addClass('hide');
-                    $("div#empList").addClass('hide');
-                    $("div#empUpdate").addClass('hide');
-                    $("div#costCenterUpdate").addClass('hide');
-                    $("div#costCenterList").removeClass('hide');
-                }
-            });
-            $("a#costcenteradd").bind(
-                    {
-                        "click" : function(e) {
-                            $("div#adminMsgs").addClass('hide');
-                            $("div#grpList").addClass('hide');
-                            $("div#grpUpdate").addClass('hide');
-                            $("div#empList").addClass('hide');
-                            $("div#empUpdate").addClass('hide');
-                            $("div#costCenterList").addClass('hide');
-                            $("div#costCenterUpdate").removeClass('hide');
-                            $("form#costCenterForm").find(
-                                    "input[type=text], textarea").val("");
-                        }
-                    });
+
             var grpTableArgs = {
                 sourceUrl : contextPath + '/admin/group/listAsJson',
                 tableId : 'grpListTable',
@@ -151,7 +62,8 @@ $(document).ready(
             initTable(costCenterTableArgs);
             bindUpdateRows();
             bindDeleteRows();
-            populateGroupOptions($("#hiddenGroupName").val(), false);     
+            adminSidebarController.populateGroupOptions($("#hiddenGroupName")
+                    .val(), false);
         });
 
 function bindUpdateRows() {
@@ -197,7 +109,7 @@ function bindDeleteRows() {
                     ".deleteRow",
                     function(e) {
                         var table = $.fn.dataTable.fnTables(true), bindingData = getFormData(
-                                e, table, "delete"), divToShow = bindingData.div, url = bindingData.url;
+                                e, table, "delete"), url = bindingData.url;
                         $.ajax({
                             url : url,
                             type : "POST",
@@ -289,31 +201,7 @@ function populate(container, data) {
             selectedGroupName = value;
         }
     });
-    if(container.attr("id") == "empUpdate") {
-        populateGroupOptions(selectedGroupName, true);
-    }
-}
-
-function populateGroupOptions(selectedGroupName, alwaysShow) {
-    var isEmpUpdateForm = alwaysShow || !($("div#empUpdate").hasClass("hide"));
-    if(isEmpUpdateForm){
-        $.ajax({
-            url : contextPath + "/admin/group/listAsJson",
-            type : "GET",
-            dataType : "json",
-            success : function(response, textStatus, jqXHR) {
-                var html = "";
-                $.each(response, function(key, value) {
-                    var grpName = value.name;
-                    html = html + "<option value=\"" + grpName + "\""
-                            + (selectedGroupName && grpName === selectedGroupName ? " selected " : "")
-                            + " >" + grpName + "</option>";
-                });
-                $("#groupName").empty().append(html);
-            },
-            error : function(response, textStatus, jqXHR) {
-                alert("error");
-            }
-        });
+    if (container.attr("id") == "empUpdate") {
+        adminSidebarController.populateGroupOptions(selectedGroupName, true);
     }
 }

@@ -7,7 +7,7 @@ To Do:
 5. styling of the table in timesheet page 
 6. remove deleting entire timesheet 
 7. call getListAsJSON only for the relevant section
-8. refactor js. 
+8. refactor js.  ist phase DONE
 
 Features:
 =========
