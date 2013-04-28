@@ -2,12 +2,15 @@ package com.percipient.matrix.display;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 public class TimesheetView {
 
     private Integer id;
     private String weekEnding;
     private String status;
 
+    @Valid
     private List<TSCostCenterView> tsCostCenters;
 
     public Integer getId() {

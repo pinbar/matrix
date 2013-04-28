@@ -3,10 +3,14 @@ package com.percipient.matrix.dashboard;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,12 +55,7 @@ public class TimesheetController {
         TimesheetView timesheet = timesheetService.getTimesheet(dateUtil
                 .getAsDate(weekEnding));
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheet);
-        List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
-        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
-        List<CostCenterView> costCenters = costCenterService.getCostCenters();
-        model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
-
-        return "timesheetPage";
+        return gotoTimesheetPage(model);
     }
 
     @RequestMapping(value = "/new/{weekEnding}", method = RequestMethod.GET)
@@ -69,12 +68,7 @@ public class TimesheetController {
         TimesheetView timesheetView = timesheetService
                 .createTimesheet(weekEndingDate);
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
-        List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
-        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
-        List<CostCenterView> costCenters = costCenterService.getCostCenters();
-        model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
-
-        return "timesheetPage";
+        return gotoTimesheetPage(model);
     }
 
     @RequestMapping(value = "/addCostCodeRow", method = RequestMethod.GET)
@@ -84,18 +78,23 @@ public class TimesheetController {
         TimesheetView timesheetView = timesheetService
                 .addCostCodeRow(timesheetId);
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
-        List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
-        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
-        List<CostCenterView> costCenters = costCenterService.getCostCenters();
-        model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
-
-        return "timesheetPage";
+        return gotoTimesheetPage(model);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveTimesheet(TimesheetView timesheetView, Model model) {
+    public String saveTimesheet(
+            @Valid @ModelAttribute(MODEL_ATTRIBUTE_TIMESHEET) TimesheetView timesheetView,
+            BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            return gotoTimesheetPage(model);
+        }
         timesheetView = timesheetService.saveTimesheet(timesheetView);
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
+        return gotoTimesheetPage(model);
+    }
+
+    private String gotoTimesheetPage(Model model) {
         List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
         List<CostCenterView> costCenters = costCenterService.getCostCenters();

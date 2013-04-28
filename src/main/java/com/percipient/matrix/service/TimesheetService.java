@@ -103,17 +103,14 @@ class TimesheetServiceImpl implements TimesheetService {
 
         Employee employee = employeeRepository.getEmployeeByUserName(userInfo
                 .getUserName());
-        /*
-         * List<Timesheet> timesheetList = timesheetRepository
-         * .getTimesheets(employee); TimesheetView timesheetView = null;
-         * 
-         * for (Timesheet timesheet : timesheetList) { if
-         * (weekEnding.compareTo(timesheet.getWeekEnding()) != 0) { continue; }
-         * return getTimeSheetView(timesheet); }
-         */
         Timesheet timesheet = timesheetRepository.getTimesheet(employee,
                 weekEnding);
-        TimesheetView timesheetView = getTimeSheetView(timesheet);
+        TimesheetView timesheetView = null;
+        if (timesheet != null) {
+            timesheetView = getTimeSheetView(timesheet);
+        } else {
+            timesheetView = createTimesheet(weekEnding);
+        }
         return timesheetView;
     }
 
@@ -157,18 +154,18 @@ class TimesheetServiceImpl implements TimesheetService {
 
     @Override
     @Transactional
-    public TimesheetView createTimesheet(Date date) {
+    public TimesheetView createTimesheet(Date weekEndingDate) {
         TimesheetView timesheetView = new TimesheetView();
-        timesheetView.setWeekEnding(dateUtil.getAsString(date));
+        timesheetView.setWeekEnding(dateUtil.getAsString(weekEndingDate));
         timesheetView.setStatus("PENDING");
 
         List<TSCostCenterView> tsCCViews = new ArrayList<TSCostCenterView>();
-        TSCostCenterView blankTSCCView = addTSCostCenterView(date);
+        TSCostCenterView blankTSCCView = addTSCostCenterView(weekEndingDate);
         tsCCViews.add(blankTSCCView);
         timesheetView.setTsCostCenters(tsCCViews);
 
         // save the newly created timesheet for later retrieval
-        timesheetView = saveTimesheet(timesheetView);
+        // timesheetView = saveTimesheet(timesheetView);
 
         return timesheetView;
     }
@@ -176,16 +173,18 @@ class TimesheetServiceImpl implements TimesheetService {
     @Override
     @Transactional
     public TimesheetView addCostCodeRow(Integer timesheetId) {
-        Timesheet timesheet;
+        TimesheetView timesheetView;
+        Date weekEnding;
         if (null == timesheetId) {
-            timesheet = getTimesheetFromView(createTimesheet(dateUtil
-                    .getCurrentWeekEndingDate()));
+            timesheetView = new TimesheetView();
+            timesheetView.setTsCostCenters(new ArrayList<TSCostCenterView>());
+            weekEnding = dateUtil.getCurrentWeekEndingDate();
         } else {
-            timesheet = timesheetRepository.getTimesheet(timesheetId);
+            Timesheet timesheet = timesheetRepository.getTimesheet(timesheetId);
+            timesheetView = getTimeSheetView(timesheet);
+            weekEnding = timesheet.getWeekEnding();
         }
-        TimesheetView timesheetView = getTimeSheetView(timesheet);
-        TSCostCenterView blankTSCCView = addTSCostCenterView(timesheet
-                .getWeekEnding());
+        TSCostCenterView blankTSCCView = addTSCostCenterView(weekEnding);
         timesheetView.getTsCostCenters().add(blankTSCCView);
         return timesheetView;
     }

@@ -54,6 +54,10 @@
                                                     <form:select
                                                         path="tsCostCenters[${status.index}].costCode"
                                                         class="input-medium">
+                                                        <form:option
+                                                            value=""
+                                                            label="Please select.."
+                                                            disabled="true"></form:option>
                                                         <form:options
                                                             items="${costCenters}"
                                                             itemValue="costCode"
@@ -63,7 +67,12 @@
                                                 <c:otherwise>
                                                   HEY! SET UP COST CENTERS CORRECTLY      
                                               </c:otherwise>
-                                            </c:choose></td>
+                                            </c:choose>
+                                            <div>
+                                                <form:errors
+                                                    class="errorMsg"
+                                                    path="tsCostCenters[${status.index}].costCode"></form:errors>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].monday.hours"
                                                 type="text"
@@ -71,7 +80,12 @@
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].monday.date" />
                                             <form:hidden
-                                                path="tsCostCenters[${status.index}].monday.id" /></td>
+                                                path="tsCostCenters[${status.index}].monday.id" />
+                                            <div>
+                                                <form:errors
+                                                    class="errorMsg"
+                                                    path="tsCostCenters[${status.index}].monday.hours"></form:errors>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].tuesday.hours"
                                                 type="text"
@@ -79,7 +93,12 @@
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].tuesday.date" />
                                             <form:hidden
-                                                path="tsCostCenters[${status.index}].tuesday.id" /></td>
+                                                path="tsCostCenters[${status.index}].tuesday.id" />
+                                            <div>
+                                                <form:errors
+                                                    class="errorMsg"
+                                                    path="tsCostCenters[${status.index}].tuesday.hours"></form:errors>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].wednesday.hours"
                                                 type="text"
@@ -87,7 +106,12 @@
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].wednesday.date" />
                                             <form:hidden
-                                                path="tsCostCenters[${status.index}].wednesday.id" /></td>
+                                                path="tsCostCenters[${status.index}].wednesday.id" />
+                                            <div>
+                                                <form:errors
+                                                    class="errorMsg"
+                                                    path="tsCostCenters[${status.index}].wednesday.hours"></form:errors>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].thursday.hours"
                                                 type="text"
@@ -95,7 +119,12 @@
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].thursday.date" />
                                             <form:hidden
-                                                path="tsCostCenters[${status.index}].thursday.id" /></td>
+                                                path="tsCostCenters[${status.index}].thursday.id" />
+                                            <div>
+                                                <form:errors
+                                                    class="errorMsg"
+                                                    path="tsCostCenters[${status.index}].thursday.hours"></form:errors>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].friday.hours"
                                                 type="text"
@@ -103,7 +132,12 @@
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].friday.date" />
                                             <form:hidden
-                                                path="tsCostCenters[${status.index}].friday.id" /></td>
+                                                path="tsCostCenters[${status.index}].friday.id" />
+                                            <div>
+                                                <form:errors
+                                                    class="errorMsg"
+                                                    path="tsCostCenters[${status.index}].friday.hours"></form:errors>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].saturday.hours"
                                                 type="text"
@@ -111,7 +145,12 @@
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].saturday.date" />
                                             <form:hidden
-                                                path="tsCostCenters[${status.index}].saturday.id" /></td>
+                                                path="tsCostCenters[${status.index}].saturday.id" />
+                                            <div>
+                                                <form:errors
+                                                    class="errorMsg"
+                                                    path="tsCostCenters[${status.index}].saturday.hours"></form:errors>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].sunday.hours"
                                                 type="text"
@@ -119,7 +158,12 @@
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].sunday.date" />
                                             <form:hidden
-                                                path="tsCostCenters[${status.index}].sunday.id" /></td>
+                                                path="tsCostCenters[${status.index}].sunday.id" />
+                                            <div>
+                                                <form:errors
+                                                    class="errorMsg"
+                                                    path="tsCostCenters[${status.index}].sunday.hours"></form:errors>
+                                            </div></td>
                                         <td><a
                                             href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}"><span
                                                 class="icon-trash"></span></a></td>

@@ -33,7 +33,6 @@ INSERT INTO employees_clients (employee_id, client_id) VALUES (1, 2);
 INSERT INTO employees_clients (employee_id, client_id) VALUES (2, 2);
 INSERT INTO employees_clients (employee_id, client_id) VALUES (3, 3);
 
-INSERT INTO cost_center (cost_code, name) VALUES ('', '');
 INSERT INTO cost_center (cost_code, name) VALUES ('ADM', 'Administration');
 INSERT INTO cost_center (cost_code, name) VALUES ('HOL', 'Holiday');
 INSERT INTO cost_center (cost_code, name) VALUES ('PTO', 'Paid Time Off');
