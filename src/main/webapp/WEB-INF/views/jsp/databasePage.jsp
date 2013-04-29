@@ -149,6 +149,8 @@
                                 <th><u>id</u></th>
                                 <th><u>week_ending</u></th>
                                 <th><u>status</u></th>
+                                <th><u>attachment name</u></th>
+                                <th><u>attachment content</u></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -157,6 +159,8 @@
                                     <td>${ts.id}</td>
                                     <td>${ts.weekEnding}</td>
                                     <td>${ts.status}</td>
+                                    <td>${ts.attachmentName}</td>
+                                    <td>${ts.attachmentContent}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>

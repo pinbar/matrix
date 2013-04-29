@@ -1,5 +1,6 @@
 package com.percipient.matrix.domain;
 
+import java.sql.Blob;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -7,10 +8,13 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,7 +23,7 @@ import javax.persistence.Table;
 public class Timesheet {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -32,7 +36,17 @@ public class Timesheet {
     @Column(name = "employee_id")
     private Integer employeeId;
 
-    @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @Column(name = "attachment_name")
+    private String attachmentName;
+
+    @Column(name = "attachment_content")
+    @Lob
+    private Blob attachmentContent;
+
+    @Column(name = "attachment_content_type")
+    private String attachmentContentType;
+
+    @OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(name = "timesheets_timesheet_items", joinColumns = { @JoinColumn(name = "timesheet_id") }, inverseJoinColumns = { @JoinColumn(name = "timesheet_item_id") })
     private Set<TimesheetItem> timesheetItems = new HashSet<TimesheetItem>();
 
@@ -74,6 +88,30 @@ public class Timesheet {
 
     public void setEmployeeId(Integer employeeId) {
         this.employeeId = employeeId;
+    }
+
+    public String getAttachmentName() {
+        return attachmentName;
+    }
+
+    public void setAttachmentName(String attachmentName) {
+        this.attachmentName = attachmentName;
+    }
+
+    public Blob getAttachmentContent() {
+        return attachmentContent;
+    }
+
+    public void setAttachmentContent(Blob attachmentContent) {
+        this.attachmentContent = attachmentContent;
+    }
+
+    public String getAttachmentContentType() {
+        return attachmentContentType;
+    }
+
+    public void setAttachmentContentType(String attachmentContentType) {
+        this.attachmentContentType = attachmentContentType;
     }
 
 }

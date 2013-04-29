@@ -1,6 +1,8 @@
 package com.percipient.matrix.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,10 +20,12 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.percipient.matrix.dao.EmployeeRepository;
 import com.percipient.matrix.dao.TimesheetRepository;
 import com.percipient.matrix.display.TSCostCenterView;
+import com.percipient.matrix.display.TimesheetAttachmentView;
 import com.percipient.matrix.display.TimesheetItemView;
 import com.percipient.matrix.display.TimesheetView;
 import com.percipient.matrix.domain.Employee;
@@ -29,6 +33,7 @@ import com.percipient.matrix.domain.Timesheet;
 import com.percipient.matrix.domain.TimesheetItem;
 import com.percipient.matrix.session.UserInfo;
 import com.percipient.matrix.util.DateUtil;
+import com.percipient.matrix.util.HibernateUtil;
 
 public interface TimesheetService {
 
@@ -53,6 +58,10 @@ public interface TimesheetService {
 @Service
 class TimesheetServiceImpl implements TimesheetService {
 
+    private static final String[] ACCEPTED_CONTENT_TYPES = new String[] {
+            "application/pdf", "application/doc", "application/msword",
+            "application/rtf" };
+
     @Autowired
     private EmployeeRepository employeeRepository;
 
@@ -64,6 +73,9 @@ class TimesheetServiceImpl implements TimesheetService {
 
     @Autowired
     DateUtil dateUtil;
+
+    @Autowired
+    HibernateUtil hibernateUtil;
 
     @Transactional
     public List<TimesheetView> getTimesheetPreview() {
@@ -203,27 +215,65 @@ class TimesheetServiceImpl implements TimesheetService {
                 tmpItemSet.add(tsItem);
             }
         }
+        // removes relationship
         timesheet.getTimesheetItems().removeAll(tmpItemSet);
+        // removes the child entities
+        timesheetRepository.deleteTimesheetItems(tmpItemSet);
     }
 
     private Timesheet getTimesheetFromView(TimesheetView timesheetView) {
-        Timesheet timesheet = new Timesheet();
-        timesheet.setId(timesheetView.getId());
-        Employee employee = employeeRepository.getEmployeeByUserName(userInfo
-                .getUserName());
-        timesheet.setEmployeeId(employee.getId());
-        timesheet.setStatus("PENDING");
-        timesheet.setWeekEnding(dateUtil.getAsDate(timesheetView
-                .getWeekEnding()));
+
+        Timesheet timesheet;
+        if (timesheetView.getId() != null) {
+            timesheet = timesheetRepository.getTimesheet(timesheetView.getId());
+        } else {
+            timesheet = new Timesheet();
+            Employee employee = employeeRepository
+                    .getEmployeeByUserName(userInfo.getUserName());
+            timesheet.setEmployeeId(employee.getId());
+            timesheet.setStatus("PENDING");
+            timesheet.setWeekEnding(dateUtil.getAsDate(timesheetView
+                    .getWeekEnding()));
+        }
         timesheet.setTimesheetItems(getTimesheetItems(timesheetView));
+        setUpTimesheetAttachment(timesheetView, timesheet);
         return timesheet;
+    }
+
+    private void setUpTimesheetAttachment(TimesheetView timesheetView,
+            Timesheet timesheet) {
+        if (timesheetView.getAttachmentInfo().isDelete()) {
+            timesheet.setAttachmentContent(null);
+            timesheet.setAttachmentName(null);
+            timesheet.setAttachmentContentType(null);
+        } else if (timesheetView.getAttachment() != null) {
+            MultipartFile file = timesheetView.getAttachment();
+            if (Arrays.asList(ACCEPTED_CONTENT_TYPES).contains(
+                    file.getContentType())) {
+                timesheet.setAttachmentContentType(file.getContentType());
+                timesheet.setAttachmentName(file.getOriginalFilename());
+                try {
+                    timesheet.setAttachmentContent(hibernateUtil
+                            .getBlobFromByteArray(file.getBytes()));
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     private Set<TimesheetItem> getTimesheetItems(TimesheetView timesheetView) {
         Set<TimesheetItem> tsItems = new HashSet<TimesheetItem>();
         for (TSCostCenterView tsCCview : timesheetView.getTsCostCenters()) {
             for (TimesheetItemView tsItemview : tsCCview.getTimesheetItems()) {
-                TimesheetItem item = new TimesheetItem();
+                TimesheetItem item;
+                if (tsItemview.getId() != null) {
+                    item = timesheetRepository.getTimesheetItem(tsItemview
+                            .getId());
+                } else {
+                    item = new TimesheetItem();
+                }
                 item.setId(tsItemview.getId());
                 item.setCostCode(tsCCview.getCostCode());
                 item.setHours(tsItemview.getHours());
@@ -253,6 +303,13 @@ class TimesheetServiceImpl implements TimesheetService {
         // sort rows by cost code ascending
         Collections.sort(tsCCViewList, TSItemCostCodeComparator);
         timesheetView.setTsCostCenters(tsCCViewList);
+
+        if (timesheet.getAttachmentContent() != null) {
+            TimesheetAttachmentView attachmentInfo = new TimesheetAttachmentView();
+            attachmentInfo.setFileName(timesheet.getAttachmentName());
+            attachmentInfo.setContentType(timesheet.getAttachmentContentType());
+            timesheetView.setAttachmentInfo(attachmentInfo);
+        }
 
         return timesheetView;
     }

@@ -21,7 +21,8 @@
             <div class="span10">
                 <form:form id="timeSheet" class="form-horizontal"
                     method="post" modelAttribute="timesheet"
-                    action="${pageContext.request.contextPath}/timesheet/save">
+                    action="${pageContext.request.contextPath}/timesheet/save"
+                    enctype="multipart/form-data">
                     <table class="table table-bordered table-condensed">
                         <thead>
                             <tr>
@@ -178,6 +179,18 @@
                             value="Save"> <input type="reset"
                             id="cancel" name="cancel"
                             class="btn btn-warning" value="Cancel">
+                    </div>
+                    <div class="control-group">
+                        Attachment:
+                        <form:input path="attachmentInfo.fileName"
+                            disabled="true"/>
+                        <form:checkbox path="attachmentInfo.delete"
+                            value="true" />
+                        <span style="vertical-align:bottom"> Delete?</span>
+                    </div>
+                    <div class="control-group">
+                        Add/Update attachment: <input type="file"
+                            name="attachment" class="fileInput" />
                     </div>
                     <div class="control-group">
                         <a

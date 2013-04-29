@@ -2,6 +2,7 @@ package com.percipient.matrix.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.domain.Timesheet;
+import com.percipient.matrix.domain.TimesheetItem;
 
 public interface TimesheetRepository {
 
@@ -24,6 +26,9 @@ public interface TimesheetRepository {
 
     public void delete(List<Timesheet> timesheetList);
 
+    public TimesheetItem getTimesheetItem(Integer id);
+
+    public void deleteTimesheetItems(Set<TimesheetItem> tmpItemSet);
 }
 
 @Repository
@@ -74,4 +79,16 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
         }
     }
 
+    @Override
+    public TimesheetItem getTimesheetItem(Integer id) {
+        return (TimesheetItem) sessionFactory.getCurrentSession().get(
+                TimesheetItem.class, id);
+    }
+
+    @Override
+    public void deleteTimesheetItems(Set<TimesheetItem> timesheetItemList) {
+        for (TimesheetItem tsItem : timesheetItemList) {
+            sessionFactory.getCurrentSession().delete(tsItem);
+        }
+    }
 }
