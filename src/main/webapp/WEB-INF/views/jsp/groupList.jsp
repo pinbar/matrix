@@ -5,9 +5,9 @@
         class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
-                <th><u>Group Id</u></th>
-                <th><u>Group Name</u></th>
-                <th><u>Group Authority</u></th>
+                <th>Group Id</th>
+                <th>Group Name</th>
+                <th>Group Authority</th>
                 <th></th>
                 <th></th>
             </tr>

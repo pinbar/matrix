@@ -6,6 +6,9 @@
 <head>
 <title>Dashboard</title>
 <jsp:include page="commonIncludes.jsp" />
+<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.ui.widget.js"></script>
+<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.iframe-transport.js"></script>
+<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.fileupload.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/js/timesheet.js"></script>
 </head>
@@ -21,19 +24,18 @@
             <div class="span10">
                 <form:form id="timeSheet" class="form-horizontal"
                     method="post" modelAttribute="timesheet"
-                    action="${pageContext.request.contextPath}/timesheet/save"
-                    enctype="multipart/form-data">
+                    action="${pageContext.request.contextPath}/timesheet/save">
                     <table class="table table-bordered table-condensed">
                         <thead>
                             <tr>
-                                <th><u>Cost Center</u></th>
-                                <th><u>Monday</u></th>
-                                <th><u>Tuesday</u></th>
-                                <th><u>Wednesday</u></th>
-                                <th><u>Thursday</u></th>
-                                <th><u>Friday</u></th>
-                                <th><u>Saturday</u></th>
-                                <th><u>Sunday</u></th>
+                                <th>Cost Center</th>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                                <th>Saturday</th>
+                                <th>Sunday</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -193,11 +195,14 @@
                             href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}"><input
                             id="addCostCodeBtn" type="button"
                             class="btn btn-primary" value="Add Row"></a>
-                        <a
+                        <%-- <a
                             href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}"><input
                             id="addCostCodeBtn" type="button"
                             class="btn btn-info"
-                            value="Show Attachments"></a>
+                            value="Show Attachments"></a> --%>
+                        <a href="#attachmentsDialog" role="button"
+                            class="btn btn-primary" data-toggle="modal">Show
+                            Attachments</a>
                     </div>
                     <div class="control-group">
                         <input type="submit" class="btn btn-success"
@@ -208,7 +213,8 @@
                         <input type="button" class="btn btn-danger"
                             value="Submit Timesheet">
                     </div>
-                    <div class="control-group">
+                </form:form>
+                <%--  <div class="control-group">
                         Attachment:
                         <c:if test="1=2">
                             <a target="blank"
@@ -217,13 +223,51 @@
                                 class="btn btn-info" value="Download"></a>
                         </c:if>
                     </div>
-                    <div class="control-group">
-                        Add/Replace attachment: <input type="file"
-                            name="attachment" class="fileInput" /> <input
-                            type="submit" class="btn btn-success"
-                            value="Upload">
+                    --%>
+                <!-- Modal dialog -->
+                <div id="attachmentsDialog" class="modal hide fade"
+                    tabindex="-1" role="dialog"
+                    aria-labelledby="attachmentsDialog"
+                    aria-hidden="true">
+                    <div class="modal-header">
+                        <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">x</button>
+                        <h3 id="attachmentsDialog">Attachments</h3>
                     </div>
-                </form:form>
+                    <div class="modal-body">
+                        <table id="attachmentListTable"
+                            class="table table-striped table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal"
+                            aria-hidden="true">Close</button>
+
+                        <div class="control-group">
+                            <form:form id="attachment"
+                                class="form-horizontal" method="post"
+                                modelAttribute="timesheet"
+                                action="${pageContext.request.contextPath}/attachment/timesheet"
+                                enctype="multipart/form-data">
+                                <input type="hidden" name="timesheetId" value="${timesheet.id}" />
+                            Add/Replace attachment:
+                                    <input id="fileupload" type="file" name="file">
+                                <input type="button" id="upload"
+                                    class="btn btn-success"
+                                    value="Upload">
+                            </form:form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

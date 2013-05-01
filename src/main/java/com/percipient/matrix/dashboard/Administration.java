@@ -1,7 +1,5 @@
 package com.percipient.matrix.dashboard;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +19,7 @@ public class Administration {
 
     @Autowired
     GroupService groupService;
-    
+
     @RequestMapping(value = "/")
     public String home(Model model) {
         model.addAttribute(ManageGroups.MODEL_ATTRIBUTE_GROUP, new GroupView());

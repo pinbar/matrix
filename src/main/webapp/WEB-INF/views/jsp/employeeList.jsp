@@ -5,21 +5,18 @@
         class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
-                <th><u>Id</u></th>
-                <th><u>User Name</u></th>
-                <th><u>Password</u></th>
-                <th><u>First Name</u></th>
-                <th><u>Last Name</u></th>
-                <th><u>Enabled</u></th>
-                <th><u>Group Name</u></th>
+                <th>Id</th>
+                <th>User Name</th>
+                <th>Password</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Enabled</th>
+                <th>Group Name</th>
                 <th></th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            <!-- 
-			
-			 -->
         </tbody>
     </table>
 </div>

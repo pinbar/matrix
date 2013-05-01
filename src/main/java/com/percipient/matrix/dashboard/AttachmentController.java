@@ -30,7 +30,7 @@ public class AttachmentController {
         attachmentService.downloadAttachment(attachmentId, response);
     }
 
-    @RequestMapping(value = "/timesheet", method = RequestMethod.POST)
+    @RequestMapping(value = "/timesheet", method = RequestMethod.POST, produces = "application/json")
     public void uploadAttachment(
             @RequestParam(value = "timesheetId", required = true) Integer timesheetId,
             @RequestParam(value = "file", required = true) MultipartFile file) {
