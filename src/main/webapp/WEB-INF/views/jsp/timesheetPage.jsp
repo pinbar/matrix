@@ -82,6 +82,8 @@
                                                 path="tsCostCenters[${status.index}].monday.date" />
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].monday.id" />
+                                            <form:hidden
+                                                path="tsCostCenters[${status.index}].monday.costCode" />
                                             <div>
                                                 <form:errors
                                                     class="errorMsg"
@@ -95,6 +97,8 @@
                                                 path="tsCostCenters[${status.index}].tuesday.date" />
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].tuesday.id" />
+                                            <form:hidden
+                                                path="tsCostCenters[${status.index}].tuesday.costCode" />
                                             <div>
                                                 <form:errors
                                                     class="errorMsg"
@@ -108,6 +112,8 @@
                                                 path="tsCostCenters[${status.index}].wednesday.date" />
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].wednesday.id" />
+                                            <form:hidden
+                                                path="tsCostCenters[${status.index}].wednesday.costCode" />
                                             <div>
                                                 <form:errors
                                                     class="errorMsg"
@@ -121,6 +127,8 @@
                                                 path="tsCostCenters[${status.index}].thursday.date" />
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].thursday.id" />
+                                            <form:hidden
+                                                path="tsCostCenters[${status.index}].thursday.costCode" />
                                             <div>
                                                 <form:errors
                                                     class="errorMsg"
@@ -134,6 +142,8 @@
                                                 path="tsCostCenters[${status.index}].friday.date" />
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].friday.id" />
+                                            <form:hidden
+                                                path="tsCostCenters[${status.index}].friday.costCode" />
                                             <div>
                                                 <form:errors
                                                     class="errorMsg"
@@ -147,6 +157,8 @@
                                                 path="tsCostCenters[${status.index}].saturday.date" />
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].saturday.id" />
+                                            <form:hidden
+                                                path="tsCostCenters[${status.index}].saturday.costCode" />
                                             <div>
                                                 <form:errors
                                                     class="errorMsg"
@@ -160,6 +172,8 @@
                                                 path="tsCostCenters[${status.index}].sunday.date" />
                                             <form:hidden
                                                 path="tsCostCenters[${status.index}].sunday.id" />
+                                            <form:hidden
+                                                path="tsCostCenters[${status.index}].sunday.costCode" />
                                             <div>
                                                 <form:errors
                                                     class="errorMsg"
@@ -175,30 +189,39 @@
 
                     </table>
                     <div class="control-group">
-                        <input type="submit" class="btn btn-success"
-                            value="Save"> <input type="reset"
-                            id="cancel" name="cancel"
-                            class="btn btn-warning" value="Cancel">
-                    </div>
-                    <div class="control-group">
-                        Attachment:
-                        <form:input path="attachmentInfo.fileName"
-                            disabled="true"/>
-                        <form:checkbox path="attachmentInfo.delete"
-                            value="true" />
-                        <span style="vertical-align:bottom"> Delete?</span>
-                    </div>
-                    <div class="control-group">
-                        Add/Update attachment: <input type="file"
-                            name="attachment" class="fileInput" />
-                    </div>
-                    <div class="control-group">
                         <a
                             href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}"><input
                             id="addCostCodeBtn" type="button"
                             class="btn btn-primary" value="Add Row"></a>
+                        <a
+                            href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}"><input
+                            id="addCostCodeBtn" type="button"
+                            class="btn btn-info"
+                            value="Show Attachments"></a>
+                    </div>
+                    <div class="control-group">
+                        <input type="submit" class="btn btn-success"
+                            value="Save"> <input type="reset"
+                            id="cancel" name="cancel"
+                            class="btn btn-warning" value="Cancel">
+
                         <input type="button" class="btn btn-danger"
                             value="Submit Timesheet">
+                    </div>
+                    <div class="control-group">
+                        Attachment:
+                        <c:if test="1=2">
+                            <a target="blank"
+                                href="${pageContext.request.contextPath}/attachment/timesheet?attachmentId=${timesheet.id}"><input
+                                id="downloadAttachment" type="button"
+                                class="btn btn-info" value="Download"></a>
+                        </c:if>
+                    </div>
+                    <div class="control-group">
+                        Add/Replace attachment: <input type="file"
+                            name="attachment" class="fileInput" /> <input
+                            type="submit" class="btn btn-success"
+                            value="Upload">
                     </div>
                 </form:form>
             </div>

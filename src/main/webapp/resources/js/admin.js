@@ -31,7 +31,7 @@ $(document).ready(
                 }, {
                     mData : 'firstName',
                     sTitle : 'First Name'
-                }, {
+                }, { 
                     mData : 'lastName',
                     sTitle : 'Last Name'
                 }, {
@@ -67,15 +67,15 @@ $(document).ready(
         });
 
 function bindUpdateRows() {
-    $("table")
-            .on(
-                    "click",
+    $("table").on("click",
                     ".updateRow",
                     function(e) {
-                        var table = $.fn.dataTable.fnTables(true), bindingData = getFormData(
-                                e, table, "update"), divToShow = bindingData.div, url = bindingData.url;
-                        $
-                                .ajax({
+                        var table = $.fn.dataTable.fnTables(true),
+                        bindingData = getFormData(e, table, "update"), 
+                        divToShow = bindingData.div, 
+                        url = bindingData.url;
+
+                        $.ajax({
                                     url : url,
                                     type : "get",
                                     dataType : "json",
@@ -103,13 +103,13 @@ function bindUpdateRows() {
 }
 
 function bindDeleteRows() {
-    $("table")
-            .on(
-                    "click",
+    $("table").on("click",
                     ".deleteRow",
                     function(e) {
-                        var table = $.fn.dataTable.fnTables(true), bindingData = getFormData(
-                                e, table, "delete"), url = bindingData.url;
+                        var table = $.fn.dataTable.fnTables(true), 
+                        bindingData = getFormData(e, table, "delete"), 
+                        url = bindingData.url;
+                        
                         $.ajax({
                             url : url,
                             type : "POST",

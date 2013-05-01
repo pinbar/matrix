@@ -89,7 +89,9 @@ public class TimesheetController {
         if (result.hasErrors()) {
             return gotoTimesheetPage(model);
         }
-        timesheetView = timesheetService.saveTimesheet(timesheetView);
+        timesheetService.saveTimesheet(timesheetView);
+        timesheetView = timesheetService.getTimesheet(dateUtil
+                .getAsDate(timesheetView.getWeekEnding()));
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
         return gotoTimesheetPage(model);
     }

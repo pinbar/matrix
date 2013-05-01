@@ -4,9 +4,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -26,6 +29,10 @@ public class TimesheetItem {
 
     @Column(name = "hours")
     private Double hours;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "timesheet_id", nullable = false)
+    private Timesheet timesheet;
 
     public Integer getId() {
         return id;
@@ -57,6 +64,14 @@ public class TimesheetItem {
 
     public void setHours(Double hours) {
         this.hours = hours;
+    }
+
+    public Timesheet getTimesheet() {
+        return timesheet;
+    }
+
+    public void setTimesheet(Timesheet timesheet) {
+        this.timesheet = timesheet;
     }
 
 }

@@ -1,6 +1,8 @@
 package com.percipient.matrix.service;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -15,6 +17,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +35,7 @@ import com.percipient.matrix.display.TimesheetItemView;
 import com.percipient.matrix.display.TimesheetView;
 import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.domain.Timesheet;
+import com.percipient.matrix.domain.TimesheetAttachment;
 import com.percipient.matrix.domain.TimesheetItem;
 import com.percipient.matrix.session.UserInfo;
 import com.percipient.matrix.util.DateUtil;
@@ -45,7 +51,7 @@ public interface TimesheetService {
 
     public TimesheetView createTimesheet(Date asDate);
 
-    public TimesheetView saveTimesheet(TimesheetView timesheetView);
+    public void saveTimesheet(TimesheetView timesheetView);
 
     public void deleteTimesheet(Integer timesheetId);
 
@@ -57,10 +63,6 @@ public interface TimesheetService {
 
 @Service
 class TimesheetServiceImpl implements TimesheetService {
-
-    private static final String[] ACCEPTED_CONTENT_TYPES = new String[] {
-            "application/pdf", "application/doc", "application/msword",
-            "application/rtf" };
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -151,16 +153,17 @@ class TimesheetServiceImpl implements TimesheetService {
 
     @Override
     @Transactional
-    public TimesheetView saveTimesheet(TimesheetView timesheetView) {
+    public void saveTimesheet(TimesheetView timesheetView) {
         Timesheet ts = getTimesheetFromView(timesheetView);
         timesheetRepository.save(ts);
-        return getTimeSheetView(ts);
     }
 
     @Override
     @Transactional
     public void deleteTimesheet(Integer timesheetId) {
         Timesheet timesheet = timesheetRepository.getTimesheet(timesheetId);
+
+        // TODO delete any attachments for this timesheet
         timesheetRepository.delete(timesheet);
     }
 
@@ -175,9 +178,6 @@ class TimesheetServiceImpl implements TimesheetService {
         TSCostCenterView blankTSCCView = addTSCostCenterView(weekEndingDate);
         tsCCViews.add(blankTSCCView);
         timesheetView.setTsCostCenters(tsCCViews);
-
-        // save the newly created timesheet for later retrieval
-        // timesheetView = saveTimesheet(timesheetView);
 
         return timesheetView;
     }
@@ -235,35 +235,14 @@ class TimesheetServiceImpl implements TimesheetService {
             timesheet.setWeekEnding(dateUtil.getAsDate(timesheetView
                     .getWeekEnding()));
         }
-        timesheet.setTimesheetItems(getTimesheetItems(timesheetView));
-        setUpTimesheetAttachment(timesheetView, timesheet);
+        timesheet
+                .setTimesheetItems(getTimesheetItems(timesheetView, timesheet));
+
         return timesheet;
     }
 
-    private void setUpTimesheetAttachment(TimesheetView timesheetView,
+    private Set<TimesheetItem> getTimesheetItems(TimesheetView timesheetView,
             Timesheet timesheet) {
-        if (timesheetView.getAttachmentInfo().isDelete()) {
-            timesheet.setAttachmentContent(null);
-            timesheet.setAttachmentName(null);
-            timesheet.setAttachmentContentType(null);
-        } else if (timesheetView.getAttachment() != null) {
-            MultipartFile file = timesheetView.getAttachment();
-            if (Arrays.asList(ACCEPTED_CONTENT_TYPES).contains(
-                    file.getContentType())) {
-                timesheet.setAttachmentContentType(file.getContentType());
-                timesheet.setAttachmentName(file.getOriginalFilename());
-                try {
-                    timesheet.setAttachmentContent(hibernateUtil
-                            .getBlobFromByteArray(file.getBytes()));
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private Set<TimesheetItem> getTimesheetItems(TimesheetView timesheetView) {
         Set<TimesheetItem> tsItems = new HashSet<TimesheetItem>();
         for (TSCostCenterView tsCCview : timesheetView.getTsCostCenters()) {
             for (TimesheetItemView tsItemview : tsCCview.getTimesheetItems()) {
@@ -278,6 +257,7 @@ class TimesheetServiceImpl implements TimesheetService {
                 item.setCostCode(tsCCview.getCostCode());
                 item.setHours(tsItemview.getHours());
                 item.setDate(dateUtil.getAsDate(tsItemview.getDate()));
+                item.setTimesheet(timesheet);
                 tsItems.add(item);
             }
         }
@@ -303,13 +283,6 @@ class TimesheetServiceImpl implements TimesheetService {
         // sort rows by cost code ascending
         Collections.sort(tsCCViewList, TSItemCostCodeComparator);
         timesheetView.setTsCostCenters(tsCCViewList);
-
-        if (timesheet.getAttachmentContent() != null) {
-            TimesheetAttachmentView attachmentInfo = new TimesheetAttachmentView();
-            attachmentInfo.setFileName(timesheet.getAttachmentName());
-            attachmentInfo.setContentType(timesheet.getAttachmentContentType());
-            timesheetView.setAttachmentInfo(attachmentInfo);
-        }
 
         return timesheetView;
     }
@@ -349,6 +322,7 @@ class TimesheetServiceImpl implements TimesheetService {
         tsItemView.setId(tsItem.getId());
         tsItemView.setHours(tsItem.getHours());
         tsItemView.setDate(dateUtil.getAsString(tsItem.getDate()));
+        tsItemView.setCostCode(tsItem.getCostCode());
         return tsItemView;
     }
 
@@ -390,10 +364,7 @@ class TimesheetServiceImpl implements TimesheetService {
     }
 
     public static Comparator<Timesheet> DateComparator = new Comparator<Timesheet>() {
-
-        /*
-         * reverse chronological
-         */
+        // reverse chronological
         @Override
         public int compare(Timesheet o1, Timesheet o2) {
             return o2.getWeekEnding().compareTo(o1.getWeekEnding());
@@ -402,10 +373,7 @@ class TimesheetServiceImpl implements TimesheetService {
     };
 
     public static Comparator<TSCostCenterView> TSItemCostCodeComparator = new Comparator<TSCostCenterView>() {
-
-        /*
-         * ascending order
-         */
+        // ascending order
         @Override
         public int compare(TSCostCenterView o1, TSCostCenterView o2) {
             return o1.getCostCode().compareTo(o2.getCostCode());

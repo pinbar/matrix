@@ -12,7 +12,6 @@ public class TimesheetView {
     private String weekEnding;
     private String status;
     private MultipartFile attachment;
-    private TimesheetAttachmentView attachmentInfo;
 
     @Valid
     private List<TSCostCenterView> tsCostCenters;
@@ -47,14 +46,6 @@ public class TimesheetView {
 
     public void setAttachment(MultipartFile attachment) {
         this.attachment = attachment;
-    }
-
-    public TimesheetAttachmentView getAttachmentInfo() {
-        return attachmentInfo;
-    }
-
-    public void setAttachmentInfo(TimesheetAttachmentView attachmentInfo) {
-        this.attachmentInfo = attachmentInfo;
     }
 
     public List<TSCostCenterView> getTsCostCenters() {

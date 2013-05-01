@@ -1,11 +1,21 @@
 package com.percipient.matrix.display;
 
+import java.io.InputStream;
+
 public class TimesheetAttachmentView {
 
+    private Integer id;
     private String fileName;
     private String contentType;
-    private byte[] content;
-    private boolean isDelete;
+    private InputStream content;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getFileName() {
         return fileName;
@@ -23,20 +33,12 @@ public class TimesheetAttachmentView {
         this.contentType = contentType;
     }
 
-    public byte[] getContent() {
+    public InputStream getContent() {
         return content;
     }
 
-    public void setContent(byte[] content) {
+    public void setContent(InputStream content) {
         this.content = content;
     }
 
-    public boolean isDelete() {
-        return isDelete;
-    }
-
-    public void setDelete(boolean isDelete) {
-        this.isDelete = isDelete;
-    }
-    
 }

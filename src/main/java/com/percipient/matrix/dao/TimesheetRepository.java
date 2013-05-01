@@ -8,8 +8,10 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.percipient.matrix.display.TimesheetAttachmentView;
 import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.domain.Timesheet;
+import com.percipient.matrix.domain.TimesheetAttachment;
 import com.percipient.matrix.domain.TimesheetItem;
 
 public interface TimesheetRepository {
@@ -29,6 +31,10 @@ public interface TimesheetRepository {
     public TimesheetItem getTimesheetItem(Integer id);
 
     public void deleteTimesheetItems(Set<TimesheetItem> tmpItemSet);
+
+    public TimesheetAttachmentView getTimesheetAttachment(Integer attachmentId);
+
+    public void saveAttachment(TimesheetAttachment attachment);
 }
 
 @Repository
@@ -90,5 +96,16 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
         for (TimesheetItem tsItem : timesheetItemList) {
             sessionFactory.getCurrentSession().delete(tsItem);
         }
+    }
+
+    @Override
+    public TimesheetAttachmentView getTimesheetAttachment(Integer attachmentId) {
+        return (TimesheetAttachmentView) sessionFactory.getCurrentSession()
+                .get(TimesheetAttachmentView.class, attachmentId);
+    }
+
+    @Override
+    public void saveAttachment(TimesheetAttachment attachment) {
+        sessionFactory.getCurrentSession().saveOrUpdate(attachment);        
     }
 }

@@ -1,63 +1,64 @@
 var adminSidebarController = function() {
+    "use strict";
 
     var actiontoSelectorMap = {
-        costcenterAddLinkClicked : "a#adminHome",
+        adminHomeLinkClicked : "a#adminHome",
         grpListLinkClicked : "a#grouplist",
         grpAddLinkClicked : "a#groupadd",
         empListLinkClicked : "a#emplist",
         empAddLinkClicked : "a#empadd",
         costcenterListLinkClicked : "a#costcenterlist",
         costcenterAddLinkClicked : "a#costcenteradd"
-    };
+    },
 
-    var divSelectors = [ "div#adminMsgs", "div#grpList", "div#grpUpdate",
+        _divSelectors = [ "div#adminMsgs", "div#grpList", "div#grpUpdate",
             "div#empList", "div#empUpdate", "div#costCenterList",
-            "div#costCenterUpdate" ];
+            "div#costCenterUpdate" ],
 
-    var _showHideForms = function(formToShow) {
-        $.each(divSelectors, function(index, data) {
-            if (data !== formToShow) {
-                $(data).addClass('hide');
-            } else {
-                $(data).removeClass('hide');
-            }
-        });
-    };
+        _showHideForms = function(formToShow) {
+            $.each(_divSelectors, function(index, data) {
+                if (data !== formToShow) {
+                    $(data).addClass('hide');
+                } else {
+                    $(data).removeClass('hide');
+                }
+            });
+        },
 
-    var _onCostcenterAdd = function(e) {
+        _onCostcenterAdd = function(e) {
         _showHideForms("div#costCenterUpdate");
         $("form#costCenterForm").find("input[type=text], textarea").val("");
-    };
+    },
 
-    var _onCostcenterList = function(e) {
+        _onCostcenterList = function(e) {
         _showHideForms("div#costCenterList");
-    };
+    },
 
-    var _onEmpAdd = function(e) {
+        _onEmpAdd = function(e) {
         populateGroupOptions("", true);
         $(".errorMsg").addClass('hide');
         _showHideForms("div#empUpdate");
         $("form#employeeForm").find("input[type=text], textarea").val("");
-    };
+    },
 
-    var _onEmpList = function(e) {
+        _onEmpList = function(e) {
         _showHideForms("div#empList");
-    };
+    },
 
-    var _onGrpAdd = function(e) {
+        _onGrpAdd = function(e) {
         _showHideForms("div#grpUpdate");
         $("form#groupForm").find("input[type=text], textarea").val("");
-    };
+    },
 
-    var _onGrpList = function(e) {
+        _onGrpList = function(e) {
         _showHideForms("div#grpList");
-    };
+    },
 
-    var _onAdminHome = function(e) {
+        _onAdminHome = function(e) {
         _showHideForms("div#adminMsgs");
-    };
+    },
 
-    var populateGroupOptions = function(selectedGroupName, alwaysShow) {
+        populateGroupOptions = function(selectedGroupName, alwaysShow) {
         var isEmpUpdateForm = alwaysShow
                 || !($("div#empUpdate").hasClass("hide"));
         if (isEmpUpdateForm) {
@@ -90,6 +91,7 @@ var adminSidebarController = function() {
                     });
         }
     };
+
     return ({
         costcenterAddLinkClicked : _onCostcenterAdd,
         costcenterListLinkClicked : _onCostcenterList,
