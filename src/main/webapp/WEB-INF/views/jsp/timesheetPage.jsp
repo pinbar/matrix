@@ -191,7 +191,7 @@
                     </table>
                     <div class="control-group">
                         <a
-                            href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}"><input
+                            href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&weekEnding=${timesheet.weekEnding}"><input
                             id="addCostCodeBtn" type="button"
                             class="btn btn-info" value="Add Row"></a>
                         <input type="submit" class="btn btn-success"
@@ -200,8 +200,8 @@
                             class="btn btn-warning" value="Cancel">
                         <input type="button" class="btn btn-danger"
                             value="Submit Timesheet">
-                        <div> <br>
-                            <input type="button"
+                        <div>
+                            <br> <input type="button"
                                 value="Show/Hide Attachments"
                                 class="btn btn-default"
                                 id="toggleAttachments" />

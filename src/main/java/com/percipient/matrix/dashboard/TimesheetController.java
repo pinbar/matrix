@@ -77,12 +77,16 @@ public class TimesheetController {
     @RequestMapping(value = "/addCostCodeRow", method = RequestMethod.GET)
     public String addCostCodeRow(
             @RequestParam(value = "timesheetId", required = false) Integer timesheetId,
+            @RequestParam(value = "weekEnding", required = false) String weekEnding,
             Model model) {
 
         if (timesheetId == null) {
             model.addAttribute("error",
                     "You must save the timesheet before adding rows.");
-            gotoTimesheetPage(model);
+            TimesheetView timesheetView = timesheetService.getTimesheet(dateUtil
+                    .getAsDate(weekEnding));
+            model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
+            return gotoTimesheetPage(model);
         }
         TimesheetView timesheetView = timesheetService
                 .addCostCodeRow(timesheetId);
