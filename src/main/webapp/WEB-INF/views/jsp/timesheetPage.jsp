@@ -224,11 +224,12 @@
                                     <span>Add files...</span> <input
                                     type="file" name="file" multiple>
                                 </span>
-                                <button type="submit"
+                                <!-- Auto upload enabled -->
+                                <!-- <button type="submit"
                                     class="btn btn-primary start">
                                     <i class="icon-upload icon-white"></i>
                                     <span>Start upload</span>
-                                </button>
+                                </button> -->
                                 <button type="reset"
                                     class="btn btn-warning cancel">
                                     <i

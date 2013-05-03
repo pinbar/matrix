@@ -17,7 +17,7 @@
         <div class="control-group">
             <label class="control-label" for="password">Password</label>
             <div class="controls">
-                <form:input path="password" />
+                <form:password path="password" />
                 <form:errors class="errorMsg" path="password"></form:errors>
             </div>
         </div>

@@ -12,7 +12,8 @@
         <intercept-url pattern="/dashboard/**" access="isAuthenticated()" />
         <intercept-url pattern="/**" access="isAuthenticated()" />
         <form-login login-processing-url="/login" login-page="/login.jsp"
-            default-target-url="/start.jsp" always-use-default-target="true" />
+            default-target-url="/start.jsp" always-use-default-target="true"
+            authentication-failure-url="/login.jsp?error=true" />
         <logout logout-url="/logout" logout-success-url="/login.jsp" />
         <remember-me key="thereIsNoSpoon"
             authentication-success-handler-ref="myAuthenticationSuccessHandler" />

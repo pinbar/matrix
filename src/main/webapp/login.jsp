@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +16,12 @@
         <div class="row">
             <div class="span4 offset4 well">
                 <legend>Please Sign In</legend>
+                <c:if test="${not empty param.error}">
+                    <div class="errorMsg">
+                        Login failed, try again.<br /> Reason:
+                        ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+                    </div>
+                </c:if>
                 <form action="login" method="POST">
                     <input type="text" id="j_username" class="span4"
                         name="j_username" placeholder="Username">
