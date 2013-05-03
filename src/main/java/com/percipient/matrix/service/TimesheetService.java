@@ -1,10 +1,6 @@
 package com.percipient.matrix.service;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,25 +13,19 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.percipient.matrix.dao.EmployeeRepository;
 import com.percipient.matrix.dao.TimesheetRepository;
 import com.percipient.matrix.display.TSCostCenterView;
-import com.percipient.matrix.display.TimesheetAttachmentView;
 import com.percipient.matrix.display.TimesheetItemView;
 import com.percipient.matrix.display.TimesheetView;
 import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.domain.Timesheet;
-import com.percipient.matrix.domain.TimesheetAttachment;
 import com.percipient.matrix.domain.TimesheetItem;
 import com.percipient.matrix.session.UserInfo;
 import com.percipient.matrix.util.DateUtil;
@@ -58,6 +48,8 @@ public interface TimesheetService {
     public TimesheetView addCostCodeRow(Integer timesheetId);
 
     public void deleteCostCodeRow(Integer timesheetId, String costCode);
+
+    public TimesheetView getTimesheet(Integer timesheetId);
 
 }
 
@@ -112,6 +104,20 @@ class TimesheetServiceImpl implements TimesheetService {
         return false;
     }
 
+    @Override
+    @Transactional
+    public TimesheetView getTimesheet(Integer timesheetId) {
+        Timesheet timesheet = timesheetRepository.getTimesheet(timesheetId);
+        TimesheetView timesheetView = null;
+        if (timesheet != null) {
+            timesheetView = getTimeSheetView(timesheet);
+        } else {
+            timesheetView = createTimesheet(dateUtil.getCurrentWeekEndingDate());
+        }
+        return timesheetView;
+    }
+
+    @Override
     @Transactional
     public TimesheetView getTimesheet(Date weekEnding) {
 
@@ -196,6 +202,7 @@ class TimesheetServiceImpl implements TimesheetService {
             timesheetView = getTimeSheetView(timesheet);
             weekEnding = timesheet.getWeekEnding();
         }
+        timesheetView.setWeekEnding(dateUtil.getAsString(weekEnding));
         TSCostCenterView blankTSCCView = addTSCostCenterView(weekEnding);
         timesheetView.getTsCostCenters().add(blankTSCCView);
         return timesheetView;

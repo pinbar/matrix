@@ -22,6 +22,9 @@ public class TimesheetAttachment {
     @Column(name = "file_name")
     private String fileName;
 
+    @Column(name = "size")
+    private Long size;
+
     @Column(name = "content")
     @Lob
     private Blob content;
@@ -46,6 +49,14 @@ public class TimesheetAttachment {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
     }
 
     public Blob getContent() {

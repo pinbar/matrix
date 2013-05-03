@@ -6,11 +6,9 @@
 <head>
 <title>Dashboard</title>
 <jsp:include page="commonIncludes.jsp" />
-<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.ui.widget.js"></script>
-<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.iframe-transport.js"></script>
-<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.fileupload.js"></script>
-<script
-    src="${pageContext.request.contextPath}/resources/js/timesheet.js"></script>
+<link rel="stylesheet"
+    href="${pageContext.request.contextPath}/resources/jQuery-File-Upload/css/jquery.fileupload-ui.css">
+
 </head>
 
 <body>
@@ -22,6 +20,7 @@
             </div>
 
             <div class="span10">
+                <div id="errorMessages" class="errorMsg">${error}</div>
                 <form:form id="timeSheet" class="form-horizontal"
                     method="post" modelAttribute="timesheet"
                     action="${pageContext.request.contextPath}/timesheet/save">
@@ -182,7 +181,7 @@
                                                     path="tsCostCenters[${status.index}].sunday.hours"></form:errors>
                                             </div></td>
                                         <td><a
-                                            href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}"><span
+                                            href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}&weekEnding=${timesheet.weekEnding}"><span
                                                 class="icon-trash"></span></a></td>
                                     </tr>
                                 </c:forEach>
@@ -194,82 +193,101 @@
                         <a
                             href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}"><input
                             id="addCostCodeBtn" type="button"
-                            class="btn btn-primary" value="Add Row"></a>
-                        <%-- <a
-                            href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}"><input
-                            id="addCostCodeBtn" type="button"
-                            class="btn btn-info"
-                            value="Show Attachments"></a> --%>
-                        <a href="#attachmentsDialog" role="button"
-                            class="btn btn-primary" data-toggle="modal">Show
-                            Attachments</a>
-                    </div>
-                    <div class="control-group">
+                            class="btn btn-info" value="Add Row"></a>
                         <input type="submit" class="btn btn-success"
                             value="Save"> <input type="reset"
                             id="cancel" name="cancel"
                             class="btn btn-warning" value="Cancel">
-
                         <input type="button" class="btn btn-danger"
                             value="Submit Timesheet">
-                    </div>
-                </form:form>
-                <%--  <div class="control-group">
-                        Attachment:
-                        <c:if test="1=2">
-                            <a target="blank"
-                                href="${pageContext.request.contextPath}/attachment/timesheet?attachmentId=${timesheet.id}"><input
-                                id="downloadAttachment" type="button"
-                                class="btn btn-info" value="Download"></a>
-                        </c:if>
-                    </div>
-                    --%>
-                <!-- Modal dialog -->
-                <div id="attachmentsDialog" class="modal hide fade"
-                    tabindex="-1" role="dialog"
-                    aria-labelledby="attachmentsDialog"
-                    aria-hidden="true">
-                    <div class="modal-header">
-                        <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">x</button>
-                        <h3 id="attachmentsDialog">Attachments</h3>
-                    </div>
-                    <div class="modal-body">
-                        <table id="attachmentListTable"
-                            class="table table-striped table-bordered table-condensed">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn" data-dismiss="modal"
-                            aria-hidden="true">Close</button>
-
-                        <div class="control-group">
-                            <form:form id="attachment"
-                                class="form-horizontal" method="post"
-                                modelAttribute="timesheet"
-                                action="${pageContext.request.contextPath}/attachment/timesheet"
-                                enctype="multipart/form-data">
-                                <input type="hidden" name="timesheetId" value="${timesheet.id}" />
-                            Add/Replace attachment:
-                                    <input id="fileupload" type="file" name="file">
-                                <input type="button" id="upload"
-                                    class="btn btn-success"
-                                    value="Upload">
-                            </form:form>
+                        <div> <br>
+                            <input type="button"
+                                value="Show/Hide Attachments"
+                                class="btn btn-default"
+                                id="toggleAttachments" />
                         </div>
                     </div>
+                </form:form>
+                <div id="attachments" class="control-group collapse">
+                    <form:form id="fileupload" class="form-horizontal"
+                        method="post" modelAttribute="timesheet"
+                        action="${pageContext.request.contextPath}/attachment/timesheet"
+                        enctype="multipart/form-data">
+                        <input type="hidden" name="timesheetId"
+                            id="timesheetId" value="${timesheet.id}" />
+                        <div class="fileupload-buttonbar">
+                            <div class="span10">
+                                <!-- The fileinput-button span is used to style the file input field as button -->
+                                <span
+                                    class="btn btn-success fileinput-button">
+                                    <i class="icon-plus icon-white"></i>
+                                    <span>Add files...</span> <input
+                                    type="file" name="file" multiple>
+                                </span>
+                                <button type="submit"
+                                    class="btn btn-primary start">
+                                    <i class="icon-upload icon-white"></i>
+                                    <span>Start upload</span>
+                                </button>
+                                <button type="reset"
+                                    class="btn btn-warning cancel">
+                                    <i
+                                        class="icon-ban-circle icon-white"></i>
+                                    <span>Cancel upload</span>
+                                </button>
+                                <button type="button"
+                                    class="btn btn-danger delete">
+                                    <i class="icon-trash icon-white"></i>
+                                    <span>Delete</span>
+                                </button>
+                                <input type="checkbox" class="toggle">
+                                <!-- The loading indicator is shown during file processing -->
+                                <span class="fileupload-loading"></span>
+                            </div>
+                            <!-- The global progress information -->
+                            <div class="span5 fileupload-progress fade">
+                                <!-- The global progress bar -->
+                                <div
+                                    class="progress progress-success progress-striped active"
+                                    role="progressbar" aria-valuemin="0"
+                                    aria-valuemax="100">
+                                    <div class="bar" style="width: 0%;"></div>
+                                </div>
+                                <!-- The extended global progress information -->
+                                <div class="progress-extended"></div>
+                            </div>
+                        </div>
+                        <!-- The table listing the files available for upload/download -->
+                        <table id="filePresentation" role="presentation"
+                            class="table table-striped">
+                            <tbody class="files"
+                                data-toggle="modal-gallery"
+                                data-target="#modal-gallery"></tbody>
+                        </table>
+
+                    </form:form>
                 </div>
+
             </div>
         </div>
     </div>
+
+    <!-- The template to display files available for upload -->
+    <script
+        src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload-process.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload-resize.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload-validate.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload-ui.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/js/timesheet.js"></script>
 </body>
 </html>

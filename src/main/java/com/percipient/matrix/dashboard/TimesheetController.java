@@ -40,6 +40,7 @@ public class TimesheetController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String getTimesheetPreview(Model model) {
+
         List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, tsPreviews.get(0));
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
@@ -52,6 +53,7 @@ public class TimesheetController {
     @RequestMapping(value = "/{weekEnding}", method = RequestMethod.GET)
     public String getTimesheetByWeekEnding(@PathVariable String weekEnding,
             Model model) {
+
         TimesheetView timesheet = timesheetService.getTimesheet(dateUtil
                 .getAsDate(weekEnding));
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheet);
@@ -61,6 +63,7 @@ public class TimesheetController {
     @RequestMapping(value = "/new/{weekEnding}", method = RequestMethod.GET)
     public String createNewTimesheet(@PathVariable String weekEnding,
             Model model) {
+
         Date weekEndingDate = StringUtils.isBlank(weekEnding) ? dateUtil
                 .getCurrentWeekEndingDate() : dateUtil
                 .getWeekEndingDate(dateUtil.getAsDate(weekEnding));
@@ -75,6 +78,12 @@ public class TimesheetController {
     public String addCostCodeRow(
             @RequestParam(value = "timesheetId", required = false) Integer timesheetId,
             Model model) {
+
+        if (timesheetId == null) {
+            model.addAttribute("error",
+                    "You must save the timesheet before adding rows.");
+            gotoTimesheetPage(model);
+        }
         TimesheetView timesheetView = timesheetService
                 .addCostCodeRow(timesheetId);
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
@@ -97,6 +106,7 @@ public class TimesheetController {
     }
 
     private String gotoTimesheetPage(Model model) {
+
         List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
         List<CostCenterView> costCenters = costCenterService.getCostCenters();
@@ -109,14 +119,26 @@ public class TimesheetController {
     public String deleteTimesheetCostCodeRow(
             Model model,
             @RequestParam(value = "timesheetId", required = false) Integer timesheetId,
+            @RequestParam(value = "weekEnding", required = false) String weekEnding,
             @RequestParam(value = "costCode", required = false) String costCode) {
+
+        if (timesheetId == null) {
+            model.addAttribute("error",
+                    "You must save the timesheet before deleting rows.");
+            gotoTimesheetPage(model);
+        }
+
         timesheetService.deleteCostCodeRow(timesheetId, costCode);
-        return getTimesheetPreview(model);
+        TimesheetView timesheetView = timesheetService.getTimesheet(dateUtil
+                .getAsDate(weekEnding));
+        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
+        return gotoTimesheetPage(model);
 
     }
 
     @RequestMapping(value = "/delete/{timesheetId}", method = RequestMethod.GET)
     public String deleteTimesheet(Model model, @PathVariable Integer timesheetId) {
+
         timesheetService.deleteTimesheet(timesheetId);
         return getTimesheetPreview(model);
     }

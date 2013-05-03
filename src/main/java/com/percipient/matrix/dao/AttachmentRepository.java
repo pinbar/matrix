@@ -18,6 +18,8 @@ public interface AttachmentRepository {
             Integer timesheetId);
 
     public void deleteAllAttachmentsForTimesheet(Integer timesheetId);
+
+    public Boolean deleteTimesheetAttachment(Integer attachmentId);
 }
 
 @Repository
@@ -51,5 +53,13 @@ class AttachmentRepositoryImpl implements AttachmentRepository {
         String query = "delete from TimesheetAttachment as tsa where tsa.timesheetId = :timesheetId";
         sessionFactory.getCurrentSession().createQuery(query)
                 .setParameter("timesheetId", timesheetId).list();
+    }
+
+    @Override
+    public Boolean deleteTimesheetAttachment(Integer attachmentId) {
+        String query = "delete from TimesheetAttachment as tsa where tsa.id = :id";
+        int deleted = sessionFactory.getCurrentSession().createQuery(query)
+                .setParameter("id", attachmentId).executeUpdate();
+        return deleted > 0 ? true : false;
     }
 }

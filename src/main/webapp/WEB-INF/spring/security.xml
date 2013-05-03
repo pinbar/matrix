@@ -14,6 +14,8 @@
         <form-login login-processing-url="/login" login-page="/login.jsp"
             default-target-url="/start.jsp" always-use-default-target="true" />
         <logout logout-url="/logout" logout-success-url="/login.jsp" />
+        <remember-me key="thereIsNoSpoon"
+            authentication-success-handler-ref="myAuthenticationSuccessHandler" />
     </http>
 
     <authentication-manager>
@@ -26,6 +28,10 @@
         <beans:property name="dataSource" ref="dataSource" />
         <beans:property name="enableGroups" value="true" />
         <beans:property name="enableAuthorities" value="false" />
+    </beans:bean>
+
+    <beans:bean id="myAuthenticationSuccessHandler"
+        class="com.percipient.matrix.security.CustomAuthenticationSuccessHandler">
     </beans:bean>
 
 </beans:beans>

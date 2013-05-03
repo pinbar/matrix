@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.security.GroupMember;
-import com.percipient.matrix.security.User;
 
 public interface EmployeeRepository {
 

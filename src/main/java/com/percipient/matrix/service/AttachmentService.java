@@ -28,6 +28,11 @@ public interface AttachmentService {
 
     public void uploadAttachment(Integer timesheetId, MultipartFile file);
 
+    public List<TimesheetAttachmentView> getTimesheetAttachmentViewList(
+            Integer timesheetId);
+
+    public void deleteAttachment(Integer attachmentId);
+
 }
 
 @Service
@@ -89,11 +94,15 @@ class AttachmentServiceImpl implements AttachmentService {
             attachment.setContentType(file.getContentType());
             attachment.setFileName(file.getOriginalFilename());
             attachment.setTimesheetId(timesheetId);
+            attachment.setSize(file.getSize());
+            
 
             attachmentRepository.saveAttachment(attachment);
         }
     }
 
+    @Override
+    @Transactional
     public List<TimesheetAttachmentView> getTimesheetAttachmentViewList(
             Integer timesheetId) {
         List<TimesheetAttachmentView> attachmentViewList = new ArrayList<TimesheetAttachmentView>();
@@ -110,17 +119,23 @@ class AttachmentServiceImpl implements AttachmentService {
     private TimesheetAttachmentView getTSAttachmentViewFromTSAttachment(
             TimesheetAttachment attachment) {
         TimesheetAttachmentView attachmentView = new TimesheetAttachmentView();
-        try {
-            attachmentView
-                    .setContent(attachment.getContent().getBinaryStream());
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        attachmentView.setSize(attachment.getSize());
         attachmentView.setId(attachment.getId());
         attachmentView.setFileName(attachment.getFileName());
         attachmentView.setContentType(attachment.getContentType());
-        return null;
+        return attachmentView;
+    }
+
+    @Override
+    @Transactional
+    public void deleteAttachment(Integer attachmentId) {
+
+        Boolean success = attachmentRepository
+                .deleteTimesheetAttachment(attachmentId);
+        if (!success) {
+            // TODO
+            throw new RuntimeException("couldn't delete ");
+        }
     }
 
 }

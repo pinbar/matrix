@@ -8,6 +8,7 @@ public class TimesheetAttachmentView {
     private String fileName;
     private String contentType;
     private InputStream content;
+    private Long size;
 
     public Integer getId() {
         return id;
@@ -27,6 +28,14 @@ public class TimesheetAttachmentView {
 
     public String getContentType() {
         return contentType;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
     }
 
     public void setContentType(String contentType) {
