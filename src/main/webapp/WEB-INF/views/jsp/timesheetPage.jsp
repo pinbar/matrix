@@ -255,7 +255,7 @@
                                     <div class="bar" style="width: 0%;"></div>
                                 </div>
                                 <!-- The extended global progress information -->
-                                <div class="progress-extended"></div>
+                                <!-- <div class="progress-extended"></div>  -->
                             </div>
                         </div>
                         <!-- The table listing the files available for upload/download -->
@@ -280,6 +280,8 @@
         src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload.js"></script>
+        <script
+        src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/load-image.min.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload-process.js"></script>
     <script

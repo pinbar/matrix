@@ -59,10 +59,11 @@ var timeSheetFileUpload = function() {
                                                     var row = $('<tr class="template-download fade">'
                                                             + (file.error ? '<td></td><td class="name"></td>'
                                                                     + '<td class="size"></td><td class="error" colspan="2"></td>'
+                                                                    + '<td class="delete"><button type="button" class="btn delete btn-danger" onclick="timeSheetFileUpload.removeFileErrorRow($(this));"><i class="icon-trash icon-white"></i><span> Delete </span></button>'
                                                                     : '<td class="preview"></td>'
                                                                             + '<td class="name"><a target="_blank"></a></td>'
-                                                                            + '<td class="size"></td><td colspan="2"></td>')
-                                                            + '<td class="delete"><button type="button" class="btn delete btn-danger"><i class="icon-trash icon-white"></i><span> Delete </span></button>'
+                                                                            + '<td class="size"></td><td colspan="2"></td>'
+                                                                            + '<td class="delete"><button type="button" class="btn delete btn-danger"><i class="icon-trash icon-white"></i><span> Delete </span></button>')
                                                             + '</td><td><input type="checkbox" name="delete" value="1" class="toggle" style="margin-left: 4px;"></td></tr>');
                                                     row
                                                             .find('.size')
@@ -111,9 +112,14 @@ var timeSheetFileUpload = function() {
                                 return rows;
                             }
                         });
+    },
+    removeFileErrorRow = function (node){
+        node.closest("tr").remove();
     };
+    
     return ({
         init : init,
+        removeFileErrorRow: removeFileErrorRow
     });
 }();
 
