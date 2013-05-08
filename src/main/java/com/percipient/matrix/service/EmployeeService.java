@@ -111,14 +111,15 @@ class EmployeeServiceImpl implements EmployeeService {
             employee.setUser(new User());
             employee.setGroupMember(new GroupMember());
         }
-        employee.setId(employeeView.getId());
         employee.setFirstName(employeeView.getFirstName());
         employee.setLastName(employeeView.getLastName());
+        employee.setPhone(employeeView.getPhone());
+        employee.setEmail(employeeView.getEmail());
+        employee.setAddress(employeeView.getAddress());
         employee.setUserName(employeeView.getUserName());
 
         employee.getUser().setUserName(employeeView.getUserName());
         employee.getUser().setPassword(employeeView.getPassword());
-        employee.getUser().setEnabled(employeeView.isEnabled());
 
         Group group = groupRepository.getGroupByName(employeeView
                 .getGroupName());
@@ -138,9 +139,11 @@ class EmployeeServiceImpl implements EmployeeService {
         employeeView.setId(employee.getId());
         employeeView.setFirstName(employee.getFirstName());
         employeeView.setLastName(employee.getLastName());
+        employeeView.setPhone(employee.getPhone());
+        employeeView.setEmail(employee.getEmail());
+        employeeView.setAddress(employee.getAddress());
         employeeView.setUserName(user.getUserName());
         employeeView.setPassword(user.getPassword());
-        employeeView.setEnabled(user.isEnabled());
         employeeView.setGroupName(group.getName());
         employeeView.setClients(getClients(employee));
 

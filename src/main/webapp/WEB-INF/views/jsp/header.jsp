@@ -16,11 +16,11 @@
                     <li class="divider-vertical"></li>
                     <li><a
                         href="${pageContext.request.contextPath}/timesheet/"><i
-                            class="icon-file"></i> Timesheets</a></li>
+                            class="icon-time"></i> Timesheets</a></li>
                     <li class="divider-vertical"></li>
                     <li><a
                         href="${pageContext.request.contextPath}/database/"><i
-                            class="icon-download"></i> DB Tables</a></li>
+                            class="icon-hdd"></i> DB Tables</a></li>
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                         <li class="divider-vertical"></li>
                         <li><a
@@ -43,6 +43,9 @@
                     <ul class="dropdown-menu">
                         <li><a href="#"><i class="icon-wrench"></i>
                                 Preferences</a></li>
+                        <li><a
+                            href="${pageContext.request.contextPath}/usercp/password"><i
+                                class="icon-pencil"></i> Change Password</a></li>
                         <li class="divider"></li>
                         <li><a
                             href="${pageContext.request.contextPath}/logout"><i

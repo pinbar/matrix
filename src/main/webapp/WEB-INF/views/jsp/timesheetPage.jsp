@@ -20,7 +20,7 @@
             </div>
 
             <div class="span10">
-                <div id="errorMessages" class="errorMsg">${error}</div>
+                <div id="errorMessages" class="text-error">${error}</div>
                 <form:form id="timeSheet" class="form-horizontal"
                     method="post" modelAttribute="timesheet"
                     action="${pageContext.request.contextPath}/timesheet/save">

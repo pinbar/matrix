@@ -35,10 +35,10 @@ var adminSidebarController = function() {
     },
 
         _onEmpAdd = function(e) {
-        populateGroupOptions("", true);
+        populateGroupOptions("Employees", true);//set 'employees' by default
         $(".errorMsg").addClass('hide');
         _showHideForms("div#empUpdate");
-        $("form#employeeForm").find("input[type=text], textarea").val("");
+        $("form#employeeForm").find("input, textarea").not(':button, :submit, :reset').val("");
     },
 
         _onEmpList = function(e) {

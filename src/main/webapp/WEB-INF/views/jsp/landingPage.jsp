@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Administration</title>
+<title>Web Matrix</title>
 <jsp:include page="commonIncludes.jsp" />
 </head>
 <body>

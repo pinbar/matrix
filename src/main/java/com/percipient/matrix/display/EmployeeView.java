@@ -3,7 +3,9 @@ package com.percipient.matrix.display;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class EmployeeView {
@@ -13,12 +15,17 @@ public class EmployeeView {
     @NotBlank
     private String password;
     private boolean enabled = true;
-    
+
     private Integer id;
     @NotBlank
     private String firstName;
     @NotBlank
     private String lastName;
+    @Pattern(message = "must be a 10 digit number", regexp = "(^$|[0-9]{9})")
+    private String phone;
+    @Email
+    private String email;
+    private String address;
     @NotNull
     private String groupName;
     private Set<String> clients;
@@ -69,6 +76,30 @@ public class EmployeeView {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getGroupName() {

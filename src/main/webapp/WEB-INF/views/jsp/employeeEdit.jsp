@@ -5,7 +5,7 @@
     <form:form id="employeeForm" class="form-horizontal" method="post"
         modelAttribute="employee"
         action="${pageContext.request.contextPath}/admin/employee/save">
-        <form:hidden path="id" />        
+        <form:hidden path="id" />
         <div class="control-group">
             <label class="control-label" for="userName">User
                 Name</label>
@@ -38,13 +38,33 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label" for="phone">Phone</label>
+            <div class="controls">
+                <form:input path="phone" />
+                <form:errors class="errorMsg" path="phone"></form:errors>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="email">Email</label>
+            <div class="controls">
+                <form:input path="email" />
+                <form:errors class="errorMsg" path="email"></form:errors>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="address">Address</label>
+            <div class="controls">
+                <form:textarea path="address" />
+                <form:errors class="errorMsg" path="address"></form:errors>
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label" for="groupName">Group</label>
             <div class="controls">
-              <input id ="hiddenGroupName" type="hidden" value ="${employee.groupName}"/>  
-                <form:select
-                            path="groupName"
-                            class="input-medium">
-                         </form:select>
+                <input id="hiddenGroupName" type="hidden"
+                    value="${employee.groupName}" />
+                <form:select path="groupName" class="input-medium">
+                </form:select>
             </div>
         </div>
         <div class="control-group">
