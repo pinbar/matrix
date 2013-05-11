@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.percipient.matrix.display.TimesheetView;
+import com.percipient.matrix.view.TimesheetView;
 
 @Component
 public class TimesheetValidator implements Validator {

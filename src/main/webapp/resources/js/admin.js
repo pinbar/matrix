@@ -21,22 +21,16 @@ $(document).ready(
                 filterInputId : 'empListTable_filter',
                 columnConfig : [ {
                     mData : 'id',
-                    sTitle : 'Id'
+                    sTitle : 'Employee Id'
                 }, {
                     mData : 'userName',
                     sTitle : 'User Name'
-                }, {
-                    mData : 'password',
-                    sTitle : 'Password'
                 }, {
                     mData : 'firstName',
                     sTitle : 'First Name'
                 }, {
                     mData : 'lastName',
                     sTitle : 'Last Name'
-                }, {
-                    mData : 'enabled',
-                    sTitle : 'Enabled'
                 }, {
                     mData : 'groupName',
                     sTitle : 'Group Name'

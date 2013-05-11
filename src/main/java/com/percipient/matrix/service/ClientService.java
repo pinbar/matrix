@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.percipient.matrix.dao.ClientRepository;
-import com.percipient.matrix.display.ClientView;
 import com.percipient.matrix.domain.Client;
 import com.percipient.matrix.domain.Employee;
+import com.percipient.matrix.view.ClientView;
 
 public interface ClientService {
 

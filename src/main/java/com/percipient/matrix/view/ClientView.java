@@ -1,4 +1,4 @@
-package com.percipient.matrix.display;
+package com.percipient.matrix.view;
 
 import java.util.Set;
 

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.percipient.matrix.dao.GroupRepository;
-import com.percipient.matrix.display.GroupView;
 import com.percipient.matrix.security.Group;
 import com.percipient.matrix.security.GroupAuthority;
+import com.percipient.matrix.view.GroupView;
 
 public interface GroupService {
 

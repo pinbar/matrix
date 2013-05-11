@@ -1,4 +1,4 @@
-package com.percipient.matrix.dashboard;
+package com.percipient.matrix.controller;
 
 import java.util.Date;
 import java.util.List;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.percipient.matrix.display.CostCenterView;
-import com.percipient.matrix.display.TimesheetView;
 import com.percipient.matrix.service.CostCenterService;
 import com.percipient.matrix.service.TimesheetService;
 import com.percipient.matrix.util.DateUtil;
+import com.percipient.matrix.view.CostCenterView;
+import com.percipient.matrix.view.TimesheetView;
 
 @Controller
 @RequestMapping(value = "/timesheet")
@@ -83,8 +83,8 @@ public class TimesheetController {
         if (timesheetId == null) {
             model.addAttribute("error",
                     "You must save the timesheet before adding rows.");
-            TimesheetView timesheetView = timesheetService.getTimesheet(dateUtil
-                    .getAsDate(weekEnding));
+            TimesheetView timesheetView = timesheetService
+                    .getTimesheet(dateUtil.getAsDate(weekEnding));
             model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
             return gotoTimesheetPage(model);
         }

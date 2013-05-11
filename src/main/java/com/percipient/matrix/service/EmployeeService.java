@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.percipient.matrix.dao.EmployeeRepository;
 import com.percipient.matrix.dao.GroupRepository;
 import com.percipient.matrix.dao.TimesheetRepository;
-import com.percipient.matrix.display.EmployeeView;
 import com.percipient.matrix.domain.Client;
 import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.domain.Timesheet;
@@ -20,6 +19,7 @@ import com.percipient.matrix.security.Group;
 import com.percipient.matrix.security.GroupMember;
 import com.percipient.matrix.security.User;
 import com.percipient.matrix.session.UserInfo;
+import com.percipient.matrix.view.EmployeeView;
 
 public interface EmployeeService {
 
@@ -108,7 +108,10 @@ class EmployeeServiceImpl implements EmployeeService {
         }
         if (employee == null) {
             employee = new Employee();
-            employee.setUser(new User());
+            User user = new User();
+            user.setEnabled(true);
+            user.setPassword(employeeView.getUserName() + "01");
+            employee.setUser(user);
             employee.setGroupMember(new GroupMember());
         }
         employee.setFirstName(employeeView.getFirstName());
@@ -119,7 +122,6 @@ class EmployeeServiceImpl implements EmployeeService {
         employee.setUserName(employeeView.getUserName());
 
         employee.getUser().setUserName(employeeView.getUserName());
-        employee.getUser().setPassword(employeeView.getPassword());
 
         Group group = groupRepository.getGroupByName(employeeView
                 .getGroupName());
@@ -143,7 +145,6 @@ class EmployeeServiceImpl implements EmployeeService {
         employeeView.setEmail(employee.getEmail());
         employeeView.setAddress(employee.getAddress());
         employeeView.setUserName(user.getUserName());
-        employeeView.setPassword(user.getPassword());
         employeeView.setGroupName(group.getName());
         employeeView.setClients(getClients(employee));
 

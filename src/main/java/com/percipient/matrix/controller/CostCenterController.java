@@ -1,4 +1,4 @@
-package com.percipient.matrix.dashboard;
+package com.percipient.matrix.controller;
 
 import java.util.List;
 
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.percipient.matrix.display.CostCenterView;
-import com.percipient.matrix.display.EmployeeView;
-import com.percipient.matrix.display.GroupView;
 import com.percipient.matrix.service.CostCenterService;
+import com.percipient.matrix.view.CostCenterView;
+import com.percipient.matrix.view.EmployeeView;
+import com.percipient.matrix.view.GroupView;
 
 @Controller
 @RequestMapping(value = "/admin/costCenter")
@@ -66,22 +66,26 @@ public class CostCenterController {
         costCenterService.deleteGroup(costCenterView);
         return new CostCenterView();
     }
-    
+
     private String gotoCostCenterEdit(Model model) {
-        model.addAttribute(ManageGroups.MODEL_ATTRIBUTE_GROUP, new GroupView());
-        model.addAttribute(ManageEmployees.MODEL_ATTRIBUTE_EMPLOYEE,
+        model.addAttribute(GroupController.MODEL_ATTRIBUTE_GROUP, new GroupView());
+        model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_EMPLOYEE,
                 new EmployeeView());
-        model.addAttribute(Administration.MODEL_ATTRIBUTE_DEFAULT_FORM, "costCenterEdit");
+        model.addAttribute(
+                AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
+                "costCenterEdit");
         return "administrationPage";
     }
 
     private String gotoCostCenterList(Model model) {
-        model.addAttribute(ManageGroups.MODEL_ATTRIBUTE_GROUP, new GroupView());
-        model.addAttribute(ManageEmployees.MODEL_ATTRIBUTE_EMPLOYEE,
+        model.addAttribute(GroupController.MODEL_ATTRIBUTE_GROUP, new GroupView());
+        model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_EMPLOYEE,
                 new EmployeeView());
         model.addAttribute(CostCenterController.MODEL_ATTRIBUTE_COST_CENTER,
                 new CostCenterView());
-        model.addAttribute(Administration.MODEL_ATTRIBUTE_DEFAULT_FORM, "costCenterList");
+        model.addAttribute(
+                AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
+                "costCenterList");
         return "administrationPage";
     }
 }

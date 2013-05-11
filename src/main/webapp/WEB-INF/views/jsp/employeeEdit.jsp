@@ -15,13 +15,6 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="password">Password</label>
-            <div class="controls">
-                <form:password path="password" />
-                <form:errors class="text-error" path="password"></form:errors>
-            </div>
-        </div>
-        <div class="control-group">
             <label class="control-label" for="firstName">First
                 Name</label>
             <div class="controls">

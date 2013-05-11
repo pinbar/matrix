@@ -1,14 +1,16 @@
-package com.percipient.matrix.display;
+package com.percipient.matrix.view;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-public class GroupView {
+public class CostCenterView {
 
     private Integer id;
+
+    @NotBlank
+    private String costCode;
+
     @NotBlank
     private String name;
-    @NotBlank
-    private String authority;
 
     public Integer getId() {
         return id;
@@ -16,6 +18,14 @@ public class GroupView {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCostCode() {
+        return costCode;
+    }
+
+    public void setCostCode(String costCode) {
+        this.costCode = costCode;
     }
 
     public String getName() {
@@ -26,11 +36,4 @@ public class GroupView {
         this.name = name;
     }
 
-    public String getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
 }

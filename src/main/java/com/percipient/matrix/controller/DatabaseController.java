@@ -1,4 +1,4 @@
-package com.percipient.matrix.dashboard;
+package com.percipient.matrix.controller;
 
 import java.util.List;
 

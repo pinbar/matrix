@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.percipient.matrix.dao.CostCenterRepository;
-import com.percipient.matrix.display.CostCenterView;
 import com.percipient.matrix.domain.CostCenter;
+import com.percipient.matrix.view.CostCenterView;
 
 public interface CostCenterService {
 

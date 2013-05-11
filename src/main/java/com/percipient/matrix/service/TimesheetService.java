@@ -21,15 +21,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.percipient.matrix.dao.EmployeeRepository;
 import com.percipient.matrix.dao.TimesheetRepository;
-import com.percipient.matrix.display.TSCostCenterView;
-import com.percipient.matrix.display.TimesheetItemView;
-import com.percipient.matrix.display.TimesheetView;
 import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.domain.Timesheet;
 import com.percipient.matrix.domain.TimesheetItem;
 import com.percipient.matrix.session.UserInfo;
 import com.percipient.matrix.util.DateUtil;
 import com.percipient.matrix.util.HibernateUtil;
+import com.percipient.matrix.view.TSCostCenterView;
+import com.percipient.matrix.view.TimesheetItemView;
+import com.percipient.matrix.view.TimesheetView;
 
 public interface TimesheetService {
 

@@ -1,4 +1,4 @@
-package com.percipient.matrix.dashboard;
+package com.percipient.matrix.controller;
 
 import java.util.List;
 
@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.percipient.matrix.display.CostCenterView;
-import com.percipient.matrix.display.EmployeeView;
-import com.percipient.matrix.display.GroupView;
 import com.percipient.matrix.service.GroupService;
+import com.percipient.matrix.view.CostCenterView;
+import com.percipient.matrix.view.EmployeeView;
+import com.percipient.matrix.view.GroupView;
 
 @Controller
 @RequestMapping(value = "/admin/group")
-public class ManageGroups {
+public class GroupController {
 
     public static final String MODEL_ATTRIBUTE_GROUP = "group";
     public static final String MODEL_ATTRIBUTE_GROUPS = "groups";
@@ -49,7 +49,7 @@ public class ManageGroups {
             @Valid @ModelAttribute(MODEL_ATTRIBUTE_GROUP) GroupView groupView,
             BindingResult result, Model model) {
 
-        if (result.hasErrors()) {            
+        if (result.hasErrors()) {
             return gotoGroupEdit(model);
         }
         groupService.saveGroup(groupView);
@@ -74,19 +74,23 @@ public class ManageGroups {
     public String gotoGroupEdit(Model model) {
         model.addAttribute(CostCenterController.MODEL_ATTRIBUTE_COST_CENTER,
                 new CostCenterView());
-        model.addAttribute(ManageEmployees.MODEL_ATTRIBUTE_EMPLOYEE,
+        model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_EMPLOYEE,
                 new EmployeeView());
-        model.addAttribute(Administration.MODEL_ATTRIBUTE_DEFAULT_FORM, "groupEdit");
+        model.addAttribute(
+                AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
+                "groupEdit");
         return "administrationPage";
     }
 
     public String gotoGroupList(Model model) {
-        model.addAttribute(ManageGroups.MODEL_ATTRIBUTE_GROUP, new GroupView());
+        model.addAttribute(GroupController.MODEL_ATTRIBUTE_GROUP, new GroupView());
         model.addAttribute(CostCenterController.MODEL_ATTRIBUTE_COST_CENTER,
                 new CostCenterView());
-        model.addAttribute(ManageEmployees.MODEL_ATTRIBUTE_EMPLOYEE,
+        model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_EMPLOYEE,
                 new EmployeeView());
-        model.addAttribute(Administration.MODEL_ATTRIBUTE_DEFAULT_FORM, "groupList");
+        model.addAttribute(
+                AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
+                "groupList");
         return "administrationPage";
     }
 }

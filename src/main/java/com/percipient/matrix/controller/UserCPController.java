@@ -1,4 +1,4 @@
-package com.percipient.matrix.dashboard;
+package com.percipient.matrix.controller;
 
 import javax.validation.Valid;
 

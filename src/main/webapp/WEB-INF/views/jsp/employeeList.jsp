@@ -5,12 +5,10 @@
         class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Employee Id</th>
                 <th>User Name</th>
-                <th>Password</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Enabled</th>
                 <th>Group Name</th>
                 <th></th>
                 <th></th>

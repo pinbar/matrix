@@ -8,29 +8,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.percipient.matrix.service.EmployeeService;
-import com.percipient.matrix.session.UserInfo;
 
 @Controller
 @Scope("session")
 public class Login {
 
-	@Autowired
-	UserInfo userInfo;
-	@Autowired
-	EmployeeService employeeService;
+    @Autowired
+    UserInfo userInfo;
+    @Autowired
+    EmployeeService employeeService;
 
-	@RequestMapping(value = "/start")
-	public String setUser(Principal principal) {
+    @RequestMapping(value = "/start")
+    public String setUser(Principal principal) {
 
-		userInfo.setUserName(principal.getName());
-		employeeService.setUserInfo(userInfo);
+        userInfo.setUserName(principal.getName());
+        employeeService.setUserInfo(userInfo);
 
-		return "home";
-	}
+        return "home";
+    }
 
-	@RequestMapping(value = "/")
-	public String home() {
+    @RequestMapping(value = "/")
+    public String home() {
 
-		return "landingPage";
-	}
+        return "landingPage";
+    }
 }

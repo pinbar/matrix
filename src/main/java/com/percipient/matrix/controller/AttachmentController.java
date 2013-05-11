@@ -1,4 +1,4 @@
-package com.percipient.matrix.dashboard;
+package com.percipient.matrix.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.percipient.matrix.display.TimesheetAttachmentView;
 import com.percipient.matrix.service.AttachmentService;
 import com.percipient.matrix.util.DateUtil;
+import com.percipient.matrix.view.TimesheetAttachmentView;
 
 @Controller
 @RequestMapping(value = "/attachment")

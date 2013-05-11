@@ -1,4 +1,4 @@
-package com.percipient.matrix.display;
+package com.percipient.matrix.view;
 
 import java.util.Set;
 
@@ -12,10 +12,6 @@ public class EmployeeView {
 
     @NotBlank
     private String userName;
-    @NotBlank
-    private String password;
-    private boolean enabled = true;
-
     private Integer id;
     @NotBlank
     private String firstName;
@@ -36,22 +32,6 @@ public class EmployeeView {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public Integer getId() {

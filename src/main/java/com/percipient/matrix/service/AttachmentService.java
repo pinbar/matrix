@@ -2,7 +2,6 @@ package com.percipient.matrix.service;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.percipient.matrix.dao.AttachmentRepository;
-import com.percipient.matrix.display.TimesheetAttachmentView;
 import com.percipient.matrix.domain.TimesheetAttachment;
 import com.percipient.matrix.util.DateUtil;
 import com.percipient.matrix.util.HibernateUtil;
+import com.percipient.matrix.view.TimesheetAttachmentView;
 
 public interface AttachmentService {
 
@@ -95,7 +94,6 @@ class AttachmentServiceImpl implements AttachmentService {
             attachment.setFileName(file.getOriginalFilename());
             attachment.setTimesheetId(timesheetId);
             attachment.setSize(file.getSize());
-            
 
             attachmentRepository.saveAttachment(attachment);
         }
