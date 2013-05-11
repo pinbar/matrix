@@ -17,7 +17,7 @@
             <div class="span4 offset4 well">
                 <legend>Please Sign In</legend>
                 <c:if test="${not empty param.error}">
-                    <div class="errorMsg">
+                    <div class="text-error">
                         Login failed, try again.<br /> Reason:
                         ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
                     </div>

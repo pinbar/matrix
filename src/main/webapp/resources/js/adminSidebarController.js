@@ -26,6 +26,7 @@ var adminSidebarController = function() {
         },
 
         _onCostcenterAdd = function(e) {
+        $(".text-error").addClass('hide');
         _showHideForms("div#costCenterUpdate");
         $("form#costCenterForm").find("input[type=text], textarea").val("");
     },
@@ -36,7 +37,7 @@ var adminSidebarController = function() {
 
         _onEmpAdd = function(e) {
         populateGroupOptions("Employees", true);//set 'employees' by default
-        $(".errorMsg").addClass('hide');
+        $(".text-error").addClass('hide');
         _showHideForms("div#empUpdate");
         $("form#employeeForm").find("input, textarea").not(':button, :submit, :reset').val("");
     },
@@ -46,6 +47,7 @@ var adminSidebarController = function() {
     },
 
         _onGrpAdd = function(e) {
+        $(".text-error").addClass('hide');
         _showHideForms("div#grpUpdate");
         $("form#groupForm").find("input[type=text], textarea").val("");
     },

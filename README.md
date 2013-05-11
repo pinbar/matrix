@@ -1,8 +1,10 @@
 To Do:
 ======
--Attachment correct error message from server side.
--Encrypt password for DB storage. 
--Change password by self and reset password by admin.
+1. Reset password by admin.<br>
+2. Remove password field from forms/lists and view bean.<br>
+3. Cost center / client relationship.<br>
+4. Encrypt password for DB storage.<br>
+5. Attachment errors handling and messages.<br>
 
 Features:
 =========

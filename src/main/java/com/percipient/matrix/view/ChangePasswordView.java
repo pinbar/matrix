@@ -4,10 +4,10 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-public class UserView {
+public class ChangePasswordView {
 
     @NotNull
-    private Integer id;
+    private Integer userId;
 
     @NotBlank
     private String userName;
@@ -21,12 +21,12 @@ public class UserView {
     @NotBlank
     private String newPassword2;
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

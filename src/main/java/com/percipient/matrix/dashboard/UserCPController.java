@@ -12,13 +12,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.percipient.matrix.service.UserCPService;
 import com.percipient.matrix.session.UserInfo;
-import com.percipient.matrix.view.UserView;
+import com.percipient.matrix.view.ChangePasswordView;
+import com.percipient.matrix.view.EmployeeContactInfoView;
 
 @Controller
 @RequestMapping(value = "/usercp")
 public class UserCPController {
 
-    public static final String MODEL_ATTRIBUTE_USER = "user";
+    private static final String PAGE_USER_CP = "userCPPage";
+    private static final String MODEL_ATTRIBUTE_CHANGE_PASS = "changePass";
+    private static final String MODEL_ATTRIBUTE_EMP_CONTACT_INFO = "empContactInfo";
 
     @Autowired
     UserCPService userCPService;
@@ -26,58 +29,92 @@ public class UserCPController {
     @Autowired
     UserInfo userInfo;
 
-    @RequestMapping(value = "/password", method = RequestMethod.GET)
-    public String gotoChangePassword(Model model) {
+    @RequestMapping(value = "/empcontactinfo", method = RequestMethod.GET)
+    public String gotoEmpContactInfo(Model model) {
 
-        UserView user = userCPService.getUser(userInfo.getUserName());
-        gotoChangePassword(user, model);
-        return "changePassword";
+        EmployeeContactInfoView empContactInfoView = userCPService
+                .employeeContactInfoView(userInfo.getUserName());
+        model.addAttribute(MODEL_ATTRIBUTE_EMP_CONTACT_INFO, empContactInfoView);
+        return PAGE_USER_CP;
     }
 
-    @RequestMapping(value = "/password", method = RequestMethod.POST)
-    public String setPassword(
-            @Valid @ModelAttribute(MODEL_ATTRIBUTE_USER) UserView user,
+    @RequestMapping(value = "/empcontactinfo", method = RequestMethod.POST)
+    public String saveEmployeeContactInfo(
+            @Valid @ModelAttribute(MODEL_ATTRIBUTE_EMP_CONTACT_INFO) EmployeeContactInfoView empContactInfoView,
             BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            return "changePassword";
+            return PAGE_USER_CP;
+        }
+        userCPService.saveEmployee(empContactInfoView);
+        model.addAttribute("info", "Information changed successfully!");
+        model.addAttribute(MODEL_ATTRIBUTE_EMP_CONTACT_INFO, empContactInfoView);
+        return PAGE_USER_CP;
+    }
+
+    @RequestMapping(value = "/changepassword", method = RequestMethod.GET)
+    public String gotoChangePassword(Model model) {
+
+        ChangePasswordView changePassView = userCPService
+                .getChangePasswordView(userInfo.getUserName());
+        setupChangePassword(changePassView, model);
+        return PAGE_USER_CP;
+    }
+
+    @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
+    public String changePassword(
+            @Valid @ModelAttribute(MODEL_ATTRIBUTE_CHANGE_PASS) ChangePasswordView changePassView,
+            BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            return PAGE_USER_CP;
         }
 
-        if (!user.getNewPassword1().equalsIgnoreCase(user.getNewPassword2())) {
+        if (isChangePasswordInvalid(changePassView, model)) {
+            return PAGE_USER_CP;
+        }
+
+        userCPService.saveUser(changePassView);
+
+        setupChangePassword(changePassView, model);
+        model.addAttribute("info", "Password changed successfully!");
+        return PAGE_USER_CP;
+    }
+
+    private void setupChangePassword(ChangePasswordView changePass, Model model) {
+        ChangePasswordView changePassView = new ChangePasswordView();
+        changePassView.setUserId(changePass.getUserId());
+        changePassView.setUserName(changePass.getUserName());
+        model.addAttribute(MODEL_ATTRIBUTE_CHANGE_PASS, changePassView);
+    }
+
+    private boolean isChangePasswordInvalid(ChangePasswordView changePassView,
+            Model model) {
+        if (!changePassView.getNewPassword1().equalsIgnoreCase(
+                changePassView.getNewPassword2())) {
             model.addAttribute("error",
                     "New password must match in both fields.");
-            return "changePassword";
+            return true;
         }
 
-        UserView existingUserView = userCPService.getUser(userInfo
-                .getUserName());
+        ChangePasswordView existingUserView = userCPService
+                .getChangePasswordView(userInfo.getUserName());
 
-        if (!existingUserView.getPassword()
-                .equalsIgnoreCase(user.getPassword())) {
+        if (!existingUserView.getPassword().equalsIgnoreCase(
+                changePassView.getPassword())) {
             model.addAttribute("error",
                     "Old password must match the existing password.");
-            return "changePassword";
+            return true;
         }
 
         if (existingUserView.getPassword().equalsIgnoreCase(
-                user.getNewPassword1())) {
+                changePassView.getNewPassword1())) {
             model.addAttribute("error",
                     "New password cannot be the same as the existing password.");
-            return "changePassword";
+            return true;
         }
 
-        userCPService.saveUser(user);
-
-        gotoChangePassword(user, model);
-        model.addAttribute("info", "Password changed successfully!");
-        return "changePassword";
-    }
-
-    private void gotoChangePassword(UserView user, Model model) {
-        UserView userView = new UserView();
-        userView.setId(user.getId());
-        userView.setUserName(user.getUserName());
-        model.addAttribute(MODEL_ATTRIBUTE_USER, userView);
+        return false;
     }
 
 }

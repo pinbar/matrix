@@ -11,14 +11,14 @@
                 Name</label>
             <div class="controls">
                 <form:input path="userName" />
-                <form:errors class="errorMsg" path="userName"></form:errors>
+                <form:errors class="text-error" path="userName"></form:errors>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="password">Password</label>
             <div class="controls">
                 <form:password path="password" />
-                <form:errors class="errorMsg" path="password"></form:errors>
+                <form:errors class="text-error" path="password"></form:errors>
             </div>
         </div>
         <div class="control-group">
@@ -26,7 +26,7 @@
                 Name</label>
             <div class="controls">
                 <form:input path="firstName" />
-                <form:errors class="errorMsg" path="firstName"></form:errors>
+                <form:errors class="text-error" path="firstName"></form:errors>
             </div>
         </div>
         <div class="control-group">
@@ -34,28 +34,28 @@
                 Name</label>
             <div class="controls">
                 <form:input path="lastName" />
-                <form:errors class="errorMsg" path="lastName"></form:errors>
+                <form:errors class="text-error" path="lastName"></form:errors>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="phone">Phone</label>
             <div class="controls">
                 <form:input path="phone" />
-                <form:errors class="errorMsg" path="phone"></form:errors>
+                <form:errors class="text-error" path="phone"></form:errors>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="email">Email</label>
             <div class="controls">
                 <form:input path="email" />
-                <form:errors class="errorMsg" path="email"></form:errors>
+                <form:errors class="text-error" path="email"></form:errors>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="address">Address</label>
             <div class="controls">
                 <form:textarea path="address" />
-                <form:errors class="errorMsg" path="address"></form:errors>
+                <form:errors class="text-error" path="address"></form:errors>
             </div>
         </div>
         <div class="control-group">

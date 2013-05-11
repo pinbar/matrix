@@ -10,14 +10,14 @@
             <label class="control-label" for="name">Group Name</label>
             <div class="controls">
                 <form:input path="name" />
-                <form:errors class="errorMsg" path="name"></form:errors>
+                <form:errors class="text-error" path="name"></form:errors>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="authority">Authority</label>
             <div class="controls">
                 <form:input path="authority" />
-                <form:errors class="errorMsg" path="authority"></form:errors>
+                <form:errors class="text-error" path="authority"></form:errors>
             </div>
         </div>
         <div class="control-group">

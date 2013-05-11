@@ -1,25 +1,25 @@
 package com.percipient.matrix.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.percipient.matrix.dao.EmployeeRepository;
 import com.percipient.matrix.dao.UserRepository;
+import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.security.User;
-import com.percipient.matrix.view.UserView;
+import com.percipient.matrix.view.ChangePasswordView;
+import com.percipient.matrix.view.EmployeeContactInfoView;
 
 public interface UserCPService {
 
-    public UserView getUser(String userName);
+    public ChangePasswordView getChangePasswordView(String userName);
 
-    public List<UserView> getUsers();
+    public void saveUser(ChangePasswordView changePassView);
 
-    public void saveUser(UserView userView);
+    public EmployeeContactInfoView employeeContactInfoView(String userName);
 
-    public void deleteGroup(UserView userView);
+    public void saveEmployee(EmployeeContactInfoView employeeContactInfoView);
 
 }
 
@@ -29,47 +29,54 @@ class UserCPServiceImpl implements UserCPService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EmployeeRepository employeeResporitory;
+
     @Override
     @Transactional
-    public List<UserView> getUsers() {
+    public ChangePasswordView getChangePasswordView(String userName) {
 
-        List<User> users = userRepository.getUsers();
-        List<UserView> userViews = new ArrayList<UserView>();
-        for (User user : users) {
-            UserView userView = getUserViewFromUser(user);
-            userViews.add(userView);
-        }
-        return userViews;
+        User user = userRepository.getUserByUserName(userName);
+        ChangePasswordView changePassView = new ChangePasswordView();
+        changePassView.setUserId(user.getId());
+        changePassView.setUserName(user.getUserName());
+        changePassView.setPassword(user.getPassword());
+        return changePassView;
     }
 
     @Override
     @Transactional
-    public void saveUser(UserView userView) {
-        User user = userRepository.getUserByUserName(userView.getUserName());
-        user.setPassword(userView.getNewPassword1());
+    public void saveUser(ChangePasswordView changePassView) {
+
+        User user = userRepository.getUserByUserName(changePassView
+                .getUserName());
+        user.setPassword(changePassView.getNewPassword1());
         userRepository.save(user);
     }
 
     @Override
     @Transactional
-    public UserView getUser(String userName) {
-        User user = userRepository.getUserByUserName(userName);
-        return getUserViewFromUser(user);
+    public EmployeeContactInfoView employeeContactInfoView(String userName) {
+
+        Employee employee = employeeResporitory.getEmployeeByUserName(userName);
+        EmployeeContactInfoView empContactInfoView = new EmployeeContactInfoView();
+        empContactInfoView.setEmployeeId(employee.getId());
+        empContactInfoView.setPhone(employee.getPhone());
+        empContactInfoView.setEmail(employee.getEmail());
+        empContactInfoView.setAddress(employee.getAddress());
+
+        return empContactInfoView;
     }
 
     @Override
     @Transactional
-    public void deleteGroup(UserView userView) {
-        User user = userRepository.getUserByUserName(userView.getUserName());
-        userRepository.delete(user);
+    public void saveEmployee(EmployeeContactInfoView employeeContactInfoView) {
+
+        Employee employee = employeeResporitory
+                .getEmployee(employeeContactInfoView.getEmployeeId());
+        employee.setPhone(employeeContactInfoView.getPhone());
+        employee.setEmail(employeeContactInfoView.getEmail());
+        employee.setAddress(employeeContactInfoView.getAddress());
     }
 
-    private UserView getUserViewFromUser(User user) {
-
-        UserView userView = new UserView();
-        userView.setId(user.getId());
-        userView.setUserName(user.getUserName());
-        userView.setPassword(user.getPassword());
-        return userView;
-    }
 }

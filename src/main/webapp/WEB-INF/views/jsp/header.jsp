@@ -44,8 +44,12 @@
                         <li><a href="#"><i class="icon-wrench"></i>
                                 Preferences</a></li>
                         <li><a
-                            href="${pageContext.request.contextPath}/usercp/password"><i
+                            href="${pageContext.request.contextPath}/usercp/changepassword"><i
                                 class="icon-pencil"></i> Change Password</a></li>
+                        <li><a
+                            href="${pageContext.request.contextPath}/usercp/empcontactinfo"><i
+                                class="icon-envelope"></i> Contact
+                                Information</a></li>
                         <li class="divider"></li>
                         <li><a
                             href="${pageContext.request.contextPath}/logout"><i

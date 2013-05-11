@@ -72,7 +72,7 @@
                                             </c:choose>
                                             <div>
                                                 <form:errors
-                                                    class="errorMsg"
+                                                    class="text-error"
                                                     path="tsCostCenters[${status.index}].costCode"></form:errors>
                                             </div></td>
                                         <td><form:input
@@ -87,7 +87,7 @@
                                                 path="tsCostCenters[${status.index}].monday.costCode" />
                                             <div>
                                                 <form:errors
-                                                    class="errorMsg"
+                                                    class="text-error"
                                                     path="tsCostCenters[${status.index}].monday.hours"></form:errors>
                                             </div></td>
                                         <td><form:input
@@ -102,7 +102,7 @@
                                                 path="tsCostCenters[${status.index}].tuesday.costCode" />
                                             <div>
                                                 <form:errors
-                                                    class="errorMsg"
+                                                    class="text-error"
                                                     path="tsCostCenters[${status.index}].tuesday.hours"></form:errors>
                                             </div></td>
                                         <td><form:input
@@ -117,7 +117,7 @@
                                                 path="tsCostCenters[${status.index}].wednesday.costCode" />
                                             <div>
                                                 <form:errors
-                                                    class="errorMsg"
+                                                    class="text-error"
                                                     path="tsCostCenters[${status.index}].wednesday.hours"></form:errors>
                                             </div></td>
                                         <td><form:input
@@ -132,7 +132,7 @@
                                                 path="tsCostCenters[${status.index}].thursday.costCode" />
                                             <div>
                                                 <form:errors
-                                                    class="errorMsg"
+                                                    class="text-error"
                                                     path="tsCostCenters[${status.index}].thursday.hours"></form:errors>
                                             </div></td>
                                         <td><form:input
@@ -147,7 +147,7 @@
                                                 path="tsCostCenters[${status.index}].friday.costCode" />
                                             <div>
                                                 <form:errors
-                                                    class="errorMsg"
+                                                    class="text-error"
                                                     path="tsCostCenters[${status.index}].friday.hours"></form:errors>
                                             </div></td>
                                         <td><form:input
@@ -162,7 +162,7 @@
                                                 path="tsCostCenters[${status.index}].saturday.costCode" />
                                             <div>
                                                 <form:errors
-                                                    class="errorMsg"
+                                                    class="text-error"
                                                     path="tsCostCenters[${status.index}].saturday.hours"></form:errors>
                                             </div></td>
                                         <td><form:input
@@ -177,7 +177,7 @@
                                                 path="tsCostCenters[${status.index}].sunday.costCode" />
                                             <div>
                                                 <form:errors
-                                                    class="errorMsg"
+                                                    class="text-error"
                                                     path="tsCostCenters[${status.index}].sunday.hours"></form:errors>
                                             </div></td>
                                         <td><a
