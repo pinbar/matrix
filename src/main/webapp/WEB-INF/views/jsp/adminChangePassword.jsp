@@ -2,48 +2,27 @@
 
 <div class="well">
     <form:form id="changePasswordForm" class="form-horizontal"
-        method="post" modelAttribute="changePass">
+        method="post" modelAttribute="changePass"
         action="${pageContext.request.contextPath}/admin/employee/resetpassword">
-
         <legend> Change Password </legend>
-
-        <form:hidden path="userId" />
-        <form:hidden path="userName" />
         <div class="control-group">
             <label class="control-label" for="userName">Username</label>
             <div class="controls">
+                <form:hidden path="userName"/>
                 <form:input path="userName" disabled="true" />
                 <form:errors class="text-error" path="userName"></form:errors>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="password">Old
-                Password </label>
+            <label class="control-label" for="password">Password </label>
             <div class="controls">
                 <form:password path="password" />
                 <form:errors class="text-error" path="password"></form:errors>
             </div>
         </div>
-        <div class="control-group">
-            <label class="control-label" for="newPassword1">New
-                Password </label>
+            <div class="control-group">
             <div class="controls">
-                <form:password path="newPassword1" />
-                <form:errors class="text-error" path="newPassword1"></form:errors>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="newPassword2">New
-                Password </label>
-            <div class="controls">
-                <form:password path="newPassword2" />
-                <form:errors class="text-error" path="newPassword2"></form:errors>
-            </div>
-        </div>
-        <div class="control-group">
-            <div class="controls">
-                <input type="submit" class="btn" value="Save" /> <input
-                    type="reset" class="btn" value="Reset" />
+                <input type="submit" class="btn" value="Save" /> 
             </div>
         </div>
         <div class="control-group">

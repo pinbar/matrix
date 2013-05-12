@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.percipient.matrix.service.GroupService;
+import com.percipient.matrix.view.AdminEmpPasswordView;
 import com.percipient.matrix.view.CostCenterView;
 import com.percipient.matrix.view.EmployeeView;
 import com.percipient.matrix.view.GroupView;
@@ -28,6 +29,7 @@ public class AdministrationController {
         model.addAttribute(CostCenterController.MODEL_ATTRIBUTE_COST_CENTER,
                 new CostCenterView());
         model.addAttribute(MODEL_ATTRIBUTE_DEFAULT_FORM, "admin");
+        model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_CHANGE_PASS, new AdminEmpPasswordView());
         return "administrationPage";
     }
 }
