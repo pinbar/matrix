@@ -2,8 +2,8 @@
 
 <div class="well">
     <form:form id="changePasswordForm" class="form-horizontal"
-        method="post" modelAttribute="changePass">
-        action="${pageContext.request.contextPath}/admin/employee/resetpassword">
+        method="post" modelAttribute="changePass"
+        action="${pageContext.request.contextPath}/usercp/changepassword">
 
         <legend> Change Password </legend>
 
@@ -25,11 +25,11 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="newPassword1">New
+            <label class="control-label" for="newPassword">New
                 Password </label>
             <div class="controls">
-                <form:password path="newPassword1" />
-                <form:errors class="text-error" path="newPassword1"></form:errors>
+                <form:password path="newPassword" />
+                <form:errors class="text-error" path="newPassword"></form:errors>
             </div>
         </div>
         <div class="control-group">
@@ -52,10 +52,3 @@
         </div>
     </form:form>
 </div>
-
-
-
-
-
-
-

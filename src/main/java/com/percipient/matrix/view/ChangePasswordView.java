@@ -16,7 +16,7 @@ public class ChangePasswordView {
     private String password;
 
     @NotBlank
-    private String newPassword1;
+    private String newPassword;
 
     @NotBlank
     private String newPassword2;
@@ -45,12 +45,12 @@ public class ChangePasswordView {
         this.password = password;
     }
 
-    public String getNewPassword1() {
-        return newPassword1;
+    public String getNewPassword() {
+        return newPassword;
     }
 
-    public void setNewPassword1(String newPassword1) {
-        this.newPassword1 = newPassword1;
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     public String getNewPassword2() {

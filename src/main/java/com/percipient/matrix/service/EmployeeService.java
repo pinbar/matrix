@@ -1,9 +1,7 @@
 package com.percipient.matrix.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.percipient.matrix.dao.EmployeeRepository;
 import com.percipient.matrix.dao.GroupRepository;
 import com.percipient.matrix.dao.TimesheetRepository;
-import com.percipient.matrix.domain.Client;
 import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.domain.Timesheet;
 import com.percipient.matrix.security.Group;
@@ -145,28 +142,9 @@ class EmployeeServiceImpl implements EmployeeService {
         employeeView.setEmail(employee.getEmail());
         employeeView.setAddress(employee.getAddress());
         employeeView.setUserName(user.getUserName());
+        employeeView.setActive(user.getEnabled());
         employeeView.setGroupName(group.getName());
-        employeeView.setClients(getClients(employee));
 
         return employeeView;
-    }
-
-    private Set<String> getClients(Employee employee) {
-        Set<String> clients = new HashSet<String>();
-        for (Client client : employee.getClients()) {
-            clients.add(client.getName());
-        }
-        return clients;
-    }
-
-    private GroupMember getGroupMember(String groupName, String userName) {
-
-        Group group = groupRepository.getGroupByName(groupName);
-        GroupMember groupMember = employeeRepository
-                .getGroupMemberByUserName(userName);
-        groupMember.setGroupId(group.getId());
-        groupMember.setUserName(userName);
-
-        return groupMember;
     }
 }

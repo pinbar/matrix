@@ -25,7 +25,7 @@ public class User implements Serializable {
     private String password;
 
     @Column(name = "enabled")
-    private boolean enabled;
+    private Boolean enabled;
 
     public Integer getId() {
         return id;
@@ -51,12 +51,13 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public boolean isEnabled() {
+    public Boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
+
 
 }

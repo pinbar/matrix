@@ -1,7 +1,5 @@
 package com.percipient.matrix.view;
 
-import java.util.Set;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -12,6 +10,7 @@ public class EmployeeView {
 
     @NotBlank
     private String userName;
+    private Boolean active;
     private Integer id;
     @NotBlank
     private String firstName;
@@ -24,7 +23,6 @@ public class EmployeeView {
     private String address;
     @NotNull
     private String groupName;
-    private Set<String> clients;
 
     public String getUserName() {
         return userName;
@@ -32,6 +30,14 @@ public class EmployeeView {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Integer getId() {
@@ -88,14 +94,6 @@ public class EmployeeView {
 
     public void setGroupName(String groupId) {
         this.groupName = groupId;
-    }
-
-    public Set<String> getClients() {
-        return clients;
-    }
-
-    public void setClients(Set<String> clients) {
-        this.clients = clients;
     }
 
 }

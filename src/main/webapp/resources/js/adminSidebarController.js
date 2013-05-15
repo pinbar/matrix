@@ -8,12 +8,14 @@ var adminSidebarController = function() {
         empListLinkClicked : "a#emplist",
         empAddLinkClicked : "a#empadd",
         costcenterListLinkClicked : "a#costcenterlist",
-        costcenterAddLinkClicked : "a#costcenteradd"
+        costcenterAddLinkClicked : "a#costcenteradd",
+        clientListLinkClicked : "a#clientlist",
+        clientAddLinkClicked : "a#clientadd"
     },
 
         _divSelectors = [ "div#adminMsgs", "div#grpList", "div#grpUpdate",
             "div#empList", "div#empUpdate", "div#costCenterList",
-            "div#costCenterUpdate" ],
+            "div#costCenterUpdate", "div#empResetPassword", "div#clientUpdate", "div#clientList"  ],
 
         _showHideForms = function(formToShow) {
             $.each(_divSelectors, function(index, data) {
@@ -59,7 +61,16 @@ var adminSidebarController = function() {
         _onAdminHome = function(e) {
         _showHideForms("div#adminMsgs");
     },
+    
+        _onClientAdd = function(e) {
+        $(".text-error").addClass('hide');
+        _showHideForms("div#clientUpdate");
+        $("form#clientForm").find("input, textarea").not(':button, :submit, :reset').val("");
+    },
 
+        _onClientList = function(e) {
+        _showHideForms("div#clientList");
+    },
         populateGroupOptions = function(selectedGroupName, alwaysShow) {
         var isEmpUpdateForm = alwaysShow
                 || !($("div#empUpdate").hasClass("hide"));
@@ -97,6 +108,8 @@ var adminSidebarController = function() {
     return ({
         costcenterAddLinkClicked : _onCostcenterAdd,
         costcenterListLinkClicked : _onCostcenterList,
+        clientAddLinkClicked : _onClientAdd,
+        clientListLinkClicked : _onClientList,
         empAddLinkClicked : _onEmpAdd,
         empListLinkClicked : _onEmpList,
         grpAddLinkClicked : _onGrpAdd,

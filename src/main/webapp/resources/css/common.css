@@ -32,7 +32,7 @@ th.sorting_desc {
     background-image: url(../img/small_asc.gif);
 }
 
-div#grpListTable_paginate a,div#empListTable_paginate a,div#costCenterListTable_paginate a
+div#grpListTable_paginate a,div#empListTable_paginate a,div#costCenterListTable_paginate a,div#clientListTable_paginate a
     {
     border: 1px solid #aaa;
     -webkit-border-radius: 5px;

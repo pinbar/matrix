@@ -90,7 +90,7 @@ public class UserCPController {
 
     private boolean isChangePasswordInvalid(ChangePasswordView changePassView,
             Model model) {
-        if (!changePassView.getNewPassword1().equalsIgnoreCase(
+        if (!changePassView.getNewPassword().equalsIgnoreCase(
                 changePassView.getNewPassword2())) {
             model.addAttribute("error",
                     "New password must match in both fields.");
@@ -108,7 +108,7 @@ public class UserCPController {
         }
 
         if (existingUserView.getPassword().equalsIgnoreCase(
-                changePassView.getNewPassword1())) {
+                changePassView.getNewPassword())) {
             model.addAttribute("error",
                     "New password cannot be the same as the existing password.");
             return true;

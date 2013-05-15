@@ -76,8 +76,14 @@ class CostCenterServiceImpl implements CostCenterService {
     private CostCenter getCostCenterFromCostCenterView(
             CostCenterView costCenterView) {
 
-        CostCenter costCenter = new CostCenter();
-        costCenter.setId(costCenterView.getId());
+        CostCenter costCenter = null;
+        if (costCenterView.getId() != null) {
+            costCenter = costCenterRepository.getCostCenter(costCenterView
+                    .getId());
+        }
+        if (costCenter == null) {
+            costCenter = new CostCenter();
+        }
         costCenter.setCostCode(costCenterView.getCostCode());
         costCenter.setName(costCenterView.getName());
         return costCenter;

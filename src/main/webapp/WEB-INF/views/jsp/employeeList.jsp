@@ -10,6 +10,8 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Group Name</th>
+                <th>Active</th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
