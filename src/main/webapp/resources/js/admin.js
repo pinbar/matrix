@@ -50,6 +50,9 @@ $(document).ready(
                 }, {
                     mData : 'name',
                     sTitle : 'Name'
+                }, {
+                    mData : 'clientName',
+                    sTitle : 'Client'
                 } ]
             }, clientTableArgs = {
                 sourceUrl : contextPath + '/admin/client/listAsJson',
@@ -72,6 +75,8 @@ $(document).ready(
             bindUpdateRows();
             bindDeleteRows();
             adminSidebarController.populateGroupOptions($("#hiddenGroupName")
+                    .val(), false);
+            adminSidebarController.populateClientOptions($("#hiddenClientName")
                     .val(), false);
         });
 function bindUpdateRows() {
@@ -260,6 +265,7 @@ function initTable(args) {
 
 function populate(container, data) {
     var selectedGroupName = "";
+    var selectedClientName = "";
     $.each(data,
             function(key, value) {
                 $('[id=' + key + ']', container).val(value);
@@ -271,8 +277,14 @@ function populate(container, data) {
                 if (key === "groupName") {
                     selectedGroupName = value;
                 }
+                if (key === "clientName") {
+                    selectedClientName = value;
+                }
             });
     if (container.attr("id") == "empUpdate") {
         adminSidebarController.populateGroupOptions(selectedGroupName, true);
+    }
+    if (container.attr("id") == "costCenterUpdate") {
+        adminSidebarController.populateClientOptions(selectedClientName, true);
     }
 }

@@ -24,11 +24,10 @@ public class CostCenter {
 
     @Column(name = "name")
     private String name;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
-
 
     public Integer getId() {
         return id;
@@ -52,6 +51,14 @@ public class CostCenter {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
 }

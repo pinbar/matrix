@@ -1,6 +1,5 @@
 package com.percipient.matrix.view;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
@@ -8,7 +7,6 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class ClientView {
 
-    @NotNull
     private Integer id;
     @NotBlank
     private String name;

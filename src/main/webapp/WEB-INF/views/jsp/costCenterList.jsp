@@ -6,6 +6,7 @@
                 <th><u>Id</u></th>
                 <th><u>Cost Code</u></th>
                 <th><u>Cost Center</u></th>
+                <th><u>Client</u></th>
                 <th></th>
                 <th></th>
             </tr>

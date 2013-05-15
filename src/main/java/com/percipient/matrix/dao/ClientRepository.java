@@ -12,6 +12,8 @@ public interface ClientRepository {
 
     public List<Client> getClients();
 
+    public Client getClientByName(String clientName);
+
     public void deleteClient(Client client);
 
     public Client getClient(Integer clientId);
@@ -36,6 +38,13 @@ class ClientRepositoryImpl implements ClientRepository {
     @Override
     public void save(Client client) {
         sessionFactory.getCurrentSession().saveOrUpdate(client);
+    }
+
+    @Override
+    public Client getClientByName(String clientName) {
+        String query = "from Client as client where client.name = :clientName";
+        return (Client) sessionFactory.getCurrentSession().createQuery(query)
+                .setParameter("clientName", clientName).uniqueResult();
     }
 
     @Override

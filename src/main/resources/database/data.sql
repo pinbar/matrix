@@ -23,7 +23,7 @@ INSERT INTO employees (username, first_name, last_name) VALUES ('pb', 'Pinak', '
 INSERT INTO employees (username, first_name, last_name) VALUES ('rp', 'Rohit', 'Panwar');
 INSERT INTO employees (username, first_name, last_name) VALUES ('ap', 'Amit', 'Pant');
 
-INSERT INTO clients (name) VALUES ('INTERNAL');
+INSERT INTO clients (name) VALUES ('Internal');
 INSERT INTO clients (name) VALUES ('Nationwide');
 INSERT INTO clients (name) VALUES ('Chase');
 INSERT INTO clients (name) VALUES ('Limited');
