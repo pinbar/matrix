@@ -28,7 +28,11 @@ var adminSidebarController = function() {
         },
 
         _onCostcenterAdd = function(e) {
+<<<<<<< HEAD
             populateOptions({selectedName:"Internal",alwaysShow:true,url:"/admin/client/listAsJson",optionsContainer:"#clientName"});//set 'Internal' by default
+=======
+        populateClientOptions("Internal", true);//set 'Internal' by default
+>>>>>>> 1c548b39c197b805945a3c084a461b3b592fd40c
         $(".text-error").addClass('hide');
         _showHideForms("div#costCenterUpdate");
         $("form#costCenterForm").find("input[type=text], textarea").val("");
@@ -39,8 +43,12 @@ var adminSidebarController = function() {
     },
 
         _onEmpAdd = function(e) {
+<<<<<<< HEAD
         populateOptions({selectedName:"Employees", alwaysShow:true,url:"/admin/group/listAsJson",optionsContainer:"#groupName"});//set 'Employees' by default
         populateOptions({selectedName:"Holiday", alwaysShow:true, url:"/admin/costCenter/listAsJson",optionsContainer:".costCode"});//set 'Employees' by default
+=======
+        populateGroupOptions("Employees", true);//set 'Employees' by default
+>>>>>>> 1c548b39c197b805945a3c084a461b3b592fd40c
         $(".text-error").addClass('hide');
         _showHideForms("div#empUpdate");
         $("form#employeeForm").find("input, textarea").not(':button, :submit, :reset').val("");
@@ -73,6 +81,7 @@ var adminSidebarController = function() {
         _onClientList = function(e) {
         _showHideForms("div#clientList");
     },
+<<<<<<< HEAD
     
     populateOptions= function(args){
         var show = args.alwaysShow
@@ -103,6 +112,72 @@ var adminSidebarController = function() {
                     alert("error");
                 }
             });  
+=======
+        populateGroupOptions = function(selectedGroupName, alwaysShow) {
+        var isEmpUpdateForm = alwaysShow
+                || !($("div#empUpdate").hasClass("hide"));
+        if (isEmpUpdateForm) {
+            $
+                    .ajax({
+                        url : contextPath + "/admin/group/listAsJson",
+                        type : "GET",
+                        dataType : "json",
+                        success : function(response, textStatus, jqXHR) {
+                            var html = "";
+                            $
+                                    .each(
+                                            response,
+                                            function(key, value) {
+                                                var grpName = value.name;
+                                                html = html
+                                                        + "<option value=\""
+                                                        + grpName
+                                                        + "\""
+                                                        + (selectedGroupName
+                                                                && grpName === selectedGroupName ? " selected "
+                                                                : "") + " >"
+                                                        + grpName + "</option>";
+                                            });
+                            $("#groupName").empty().append(html);
+                        },
+                        error : function(response, textStatus, jqXHR) {
+                            alert("error");
+                        }
+                    });
+>>>>>>> 1c548b39c197b805945a3c084a461b3b592fd40c
+        }
+    },
+        populateClientOptions = function(selectedClientName, alwaysShow) {
+        var isEmpUpdateForm = alwaysShow
+                || !($("div#clientUpdate").hasClass("hide"));
+        if (isEmpUpdateForm) {
+            $
+                    .ajax({
+                        url : contextPath + "/admin/client/listAsJson",
+                        type : "GET",
+                        dataType : "json",
+                        success : function(response, textStatus, jqXHR) {
+                            var html = "";
+                            $
+                                    .each(
+                                            response,
+                                            function(key, value) {
+                                                var clientName = value.name;
+                                                html = html
+                                                        + "<option value=\""
+                                                        + clientName
+                                                        + "\""
+                                                        + (selectedClientName
+                                                                && clientName === selectedClientName ? " selected "
+                                                                : "") + " >"
+                                                        + clientName + "</option>";
+                                            });
+                            $("#clientName").empty().append(html);
+                        },
+                        error : function(response, textStatus, jqXHR) {
+                            alert("error");
+                        }
+                    });
         }
     };
 
@@ -117,7 +192,12 @@ var adminSidebarController = function() {
         grpListLinkClicked : _onGrpList,
         adminHomeLinkClicked : _onAdminHome,
         actiontoSelectorMap : actiontoSelectorMap,
+<<<<<<< HEAD
         populateOptions : populateOptions
+=======
+        populateGroupOptions : populateGroupOptions,
+        populateClientOptions : populateClientOptions
+>>>>>>> 1c548b39c197b805945a3c084a461b3b592fd40c
     });
 }();
 

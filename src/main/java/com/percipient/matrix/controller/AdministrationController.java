@@ -36,6 +36,6 @@ public class AdministrationController {
         model.addAttribute(MODEL_ATTRIBUTE_DEFAULT_FORM, "admin");
         model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_CHANGE_PASS,
                 new AdminEmpPasswordView());
-        return "admin/administrationPage";
+       return  AdministrationController.ADMIN_PAGE;
     }
 }

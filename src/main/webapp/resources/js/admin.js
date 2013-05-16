@@ -74,6 +74,13 @@ $(document).ready(
             bindEmpResetPassword();
             bindUpdateRows();
             bindDeleteRows();
+<<<<<<< HEAD
+=======
+            adminSidebarController.populateGroupOptions($("#hiddenGroupName")
+                    .val(), false);
+            adminSidebarController.populateClientOptions($("#hiddenClientName")
+                    .val(), false);
+>>>>>>> 1c548b39c197b805945a3c084a461b3b592fd40c
         });
 function bindUpdateRows() {
     $("table")
@@ -278,9 +285,16 @@ function populate(container, data) {
                 }
             });
     if (container.attr("id") == "empUpdate") {
+<<<<<<< HEAD
         adminSidebarController.populateOptions({selectedName:selectedGroupName, alwaysShow:true,url:"/admin/group/listAsJson",optionsContainer:"#groupName"});
     }
     if (container.attr("id") == "costCenterUpdate") {
         adminSidebarController.populateOptions({selectedName:"Internal",alwaysShow:true,url:"/admin/client/listAsJson",optionsContainer:"#clientName"});;
+=======
+        adminSidebarController.populateGroupOptions(selectedGroupName, true);
+    }
+    if (container.attr("id") == "costCenterUpdate") {
+        adminSidebarController.populateClientOptions(selectedClientName, true);
+>>>>>>> 1c548b39c197b805945a3c084a461b3b592fd40c
     }
 }

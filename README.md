@@ -1,10 +1,9 @@
 To Do:
 ======
-1. Reset password by admin.<br>
-2. Remove password field from forms/lists and view bean.<br>
-3. Cost center / client relationship.<br>
-4. Encrypt password for DB storage.<br>
-5. Attachment errors handling and messages.<br>
+1. Cost center / client. Set inactive instead of delete (due to dependency on timesheet)<br>
+2. Employee Client relationship.<br>
+3. Encrypt password for DB storage.<br>
+4. Attachment errors handling and messages.<br>
 
 Features:
 =========

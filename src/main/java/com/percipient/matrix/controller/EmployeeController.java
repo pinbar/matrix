@@ -55,6 +55,7 @@ public class EmployeeController {
     @RequestMapping(value = "/new")
     public String newEmployee(Model model) {
         model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEE, new EmployeeView());
+
         return AdministrationController.ADMIN_PAGE;
     }
 
@@ -142,7 +143,6 @@ public class EmployeeController {
         model.addAttribute(
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "empPassReset");
-
         return AdministrationController.ADMIN_PAGE;
     }
 }
