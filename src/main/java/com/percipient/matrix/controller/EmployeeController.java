@@ -55,7 +55,6 @@ public class EmployeeController {
     @RequestMapping(value = "/new")
     public String newEmployee(Model model) {
         model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEE, new EmployeeView());
-
         return AdministrationController.ADMIN_PAGE;
     }
 

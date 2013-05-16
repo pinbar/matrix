@@ -11,10 +11,6 @@
                 <th>Last Name</th>
                 <th>Group Name</th>
                 <th>Active</th>
-<<<<<<< HEAD:src/main/webapp/WEB-INF/views/jsp/employee/employeeList.jsp
-=======
-                <th></th>
->>>>>>> 1c548b39c197b805945a3c084a461b3b592fd40c:src/main/webapp/WEB-INF/views/jsp/employeeList.jsp
                 <th></th>
                 <th></th>
                 <th></th>
