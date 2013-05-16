@@ -21,8 +21,16 @@
                 <li><a id="groupadd" href="#"><i
                         class="icon-plus"></i> Add Group</a></li>
             </ul></li>
+        <li><a href="#" data-target="#client-inner"><i
+                class="icon-briefcase"></i> Clients</a>
+            <ul id="client-inner" class="collapse">
+                <li><a id="clientlist" href="#"><i
+                        class="icon-list-alt"></i> Client List</a></li>
+                <li><a id="clientadd" href="#"><i
+                        class="icon-plus"></i> Add Client</a></li>
+            </ul></li>
         <li><a href="#" data-target="#costcenter-inner"><i
-                class="icon-briefcase"></i> Cost Centers</a>
+                class="icon-tags"></i> Cost Centers</a>
             <ul id="costcenter-inner" class="collapse">
                 <li><a id="costcenterlist" href="#"><i
                         class="icon-list-alt"></i> Cost Center List</a></li>

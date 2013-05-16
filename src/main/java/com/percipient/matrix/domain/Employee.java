@@ -1,8 +1,5 @@
 package com.percipient.matrix.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -68,18 +63,6 @@ public class Employee {
 
     public void setGroupMember(GroupMember groupMember) {
         this.groupMember = groupMember;
-    }
-
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(name = "employees_clients", joinColumns = { @JoinColumn(name = "employee_id") }, inverseJoinColumns = { @JoinColumn(name = "client_id") })
-    private Set<Client> clients = new HashSet<Client>();
-
-    public Set<Client> getClients() {
-        return clients;
-    }
-
-    public void setClients(Set<Client> clients) {
-        this.clients = clients;
     }
 
     public Integer getId() {

@@ -23,21 +23,22 @@ INSERT INTO employees (username, first_name, last_name) VALUES ('pb', 'Pinak', '
 INSERT INTO employees (username, first_name, last_name) VALUES ('rp', 'Rohit', 'Panwar');
 INSERT INTO employees (username, first_name, last_name) VALUES ('ap', 'Amit', 'Pant');
 
-INSERT INTO clients (name) VALUES ('Limited');
-INSERT INTO clients (name) VALUES ('Cardinal');
+INSERT INTO clients (name) VALUES ('Internal');
 INSERT INTO clients (name) VALUES ('Nationwide');
 INSERT INTO clients (name) VALUES ('Chase');
+INSERT INTO clients (name) VALUES ('Limited');
+INSERT INTO clients (name) VALUES ('Cardinal');
 
-INSERT INTO employees_clients (employee_id, client_id) VALUES (1, 1);
-INSERT INTO employees_clients (employee_id, client_id) VALUES (1, 2);
-INSERT INTO employees_clients (employee_id, client_id) VALUES (2, 2);
-INSERT INTO employees_clients (employee_id, client_id) VALUES (3, 3);
+--INSERT INTO employees_clients (employee_id, client_id) VALUES (1, 2);
+--INSERT INTO employees_clients (employee_id, client_id) VALUES (1, 3);
+--INSERT INTO employees_clients (employee_id, client_id) VALUES (2, 3);
+--INSERT INTO employees_clients (employee_id, client_id) VALUES (3, 4);
 
-INSERT INTO cost_center (cost_code, name) VALUES ('ADM', 'Administration');
-INSERT INTO cost_center (cost_code, name) VALUES ('HOL', 'Holiday');
-INSERT INTO cost_center (cost_code, name) VALUES ('PTO', 'Paid Time Off');
-INSERT INTO cost_center (cost_code, name) VALUES ('NAW', 'Nationwide');
-INSERT INTO cost_center (cost_code, name) VALUES ('CCL', 'Chase Through Collabera');
+INSERT INTO cost_center (cost_code, name, client_id) VALUES ('ADM', 'Administration', 1);
+INSERT INTO cost_center (cost_code, name, client_id) VALUES ('HOL', 'Holiday', 1);
+INSERT INTO cost_center (cost_code, name, client_id) VALUES ('PTO', 'Paid Time Off', 1);
+INSERT INTO cost_center (cost_code, name, client_id) VALUES ('NAW', 'Nationwide', 2);
+INSERT INTO cost_center (cost_code, name, client_id) VALUES ('CCL', 'Chase Through Collabera', 3);
 
 --INSERT INTO timesheets (id, week_ending, status, employee_id) VALUES (1, '2012-12-30', 'PENDING', 1111);
 --INSERT INTO timesheets (id, week_ending, status, employee_id) VALUES (2, '2012-12-23', 'APPROVED', 1111);

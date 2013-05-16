@@ -23,6 +23,15 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label" for="clientName">Client</label>
+            <div class="controls">
+                <input id="hiddenClientName" type="hidden"
+                    value="${costCenter.clientName}" />
+                <form:select path="clientName" class="input-medium">
+                </form:select>
+            </div>
+        </div>
+        <div class="control-group">
             <div class="controls">
                 <input type="submit" value="Save" />
             </div>

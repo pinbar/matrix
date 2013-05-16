@@ -30,6 +30,6 @@ public class Login {
     @RequestMapping(value = "/")
     public String home() {
 
-        return "landingPage";
+        return "/landing/landingPage";
     }
 }

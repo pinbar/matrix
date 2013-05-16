@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.percipient.matrix.service.CostCenterService;
 import com.percipient.matrix.view.AdminEmpPasswordView;
+import com.percipient.matrix.view.ClientView;
 import com.percipient.matrix.view.CostCenterView;
 import com.percipient.matrix.view.EmployeeView;
 import com.percipient.matrix.view.GroupView;
@@ -69,28 +70,34 @@ public class CostCenterController {
     }
 
     private String gotoCostCenterEdit(Model model) {
-        model.addAttribute(GroupController.MODEL_ATTRIBUTE_GROUP, new GroupView());
+        model.addAttribute(GroupController.MODEL_ATTRIBUTE_GROUP,
+                new GroupView());
         model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_EMPLOYEE,
                 new EmployeeView());
+        model.addAttribute(ClientController.MODEL_ATTRIBUTE_CLIENT,
+                new ClientView());
         model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_CHANGE_PASS,
-				new AdminEmpPasswordView());
-	    model.addAttribute(
+                new AdminEmpPasswordView());
+        model.addAttribute(
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "costCenterEdit");
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 
     private String gotoCostCenterList(Model model) {
-        model.addAttribute(GroupController.MODEL_ATTRIBUTE_GROUP, new GroupView());
+        model.addAttribute(GroupController.MODEL_ATTRIBUTE_GROUP,
+                new GroupView());
         model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_EMPLOYEE,
                 new EmployeeView());
         model.addAttribute(CostCenterController.MODEL_ATTRIBUTE_COST_CENTER,
                 new CostCenterView());
+        model.addAttribute(ClientController.MODEL_ATTRIBUTE_CLIENT,
+                new ClientView());
         model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_CHANGE_PASS,
-				new AdminEmpPasswordView());
-	    model.addAttribute(
+                new AdminEmpPasswordView());
+        model.addAttribute(
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "costCenterList");
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 }

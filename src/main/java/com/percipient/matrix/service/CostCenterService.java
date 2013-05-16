@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.percipient.matrix.dao.ClientRepository;
 import com.percipient.matrix.dao.CostCenterRepository;
+import com.percipient.matrix.domain.Client;
 import com.percipient.matrix.domain.CostCenter;
 import com.percipient.matrix.view.CostCenterView;
 
@@ -28,6 +30,9 @@ class CostCenterServiceImpl implements CostCenterService {
 
     @Autowired
     private CostCenterRepository costCenterRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     @Override
     @Transactional
@@ -70,16 +75,31 @@ class CostCenterServiceImpl implements CostCenterService {
         costCenterView.setId(costCenter.getId());
         costCenterView.setCostCode(costCenter.getCostCode());
         costCenterView.setName(costCenter.getName());
+        costCenterView.setClientName(costCenter.getClient().getName());
+
         return costCenterView;
     }
 
     private CostCenter getCostCenterFromCostCenterView(
             CostCenterView costCenterView) {
 
-        CostCenter costCenter = new CostCenter();
-        costCenter.setId(costCenterView.getId());
+        CostCenter costCenter = null;
+        if (costCenterView.getId() != null) {
+            costCenter = costCenterRepository.getCostCenter(costCenterView
+                    .getId());
+        }
+        if (costCenter == null) {
+            costCenter = new CostCenter();
+        }
         costCenter.setCostCode(costCenterView.getCostCode());
         costCenter.setName(costCenterView.getName());
+
+        if (!costCenter.getClient().getName()
+                .equalsIgnoreCase(costCenterView.getClientName())) {
+            Client client = clientRepository.getClientByName(costCenterView
+                    .getClientName());
+            costCenter.setClient(client);
+        }
         return costCenter;
     }
 }

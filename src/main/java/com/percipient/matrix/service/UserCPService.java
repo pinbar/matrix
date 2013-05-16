@@ -8,6 +8,7 @@ import com.percipient.matrix.dao.EmployeeRepository;
 import com.percipient.matrix.dao.UserRepository;
 import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.security.User;
+import com.percipient.matrix.view.AdminEmpPasswordView;
 import com.percipient.matrix.view.ChangePasswordView;
 import com.percipient.matrix.view.EmployeeContactInfoView;
 
@@ -20,6 +21,8 @@ public interface UserCPService {
     public EmployeeContactInfoView employeeContactInfoView(String userName);
 
     public void saveEmployee(EmployeeContactInfoView employeeContactInfoView);
+
+    public void resetUserCredentials(AdminEmpPasswordView empPasswordView);
 
 }
 
@@ -50,7 +53,18 @@ class UserCPServiceImpl implements UserCPService {
 
         User user = userRepository.getUserByUserName(changePassView
                 .getUserName());
-        user.setPassword(changePassView.getNewPassword1());
+        user.setPassword(changePassView.getNewPassword());
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void resetUserCredentials(AdminEmpPasswordView empPasswordView) {
+
+        User user = userRepository.getUserByUserName(empPasswordView
+                .getUserName());
+        user.setPassword(empPasswordView.getPassword());
+        user.setEnabled(empPasswordView.getActive());
         userRepository.save(user);
     }
 

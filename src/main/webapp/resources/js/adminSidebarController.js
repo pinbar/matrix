@@ -8,12 +8,14 @@ var adminSidebarController = function() {
         empListLinkClicked : "a#emplist",
         empAddLinkClicked : "a#empadd",
         costcenterListLinkClicked : "a#costcenterlist",
-        costcenterAddLinkClicked : "a#costcenteradd"
+        costcenterAddLinkClicked : "a#costcenteradd",
+        clientListLinkClicked : "a#clientlist",
+        clientAddLinkClicked : "a#clientadd"
     },
 
         _divSelectors = [ "div#adminMsgs", "div#grpList", "div#grpUpdate",
             "div#empList", "div#empUpdate", "div#costCenterList",
-            "div#costCenterUpdate" ],
+            "div#costCenterUpdate", "div#empResetPassword", "div#clientUpdate", "div#clientList"  ],
 
         _showHideForms = function(formToShow) {
             $.each(_divSelectors, function(index, data) {
@@ -26,6 +28,7 @@ var adminSidebarController = function() {
         },
 
         _onCostcenterAdd = function(e) {
+            populateOptions({selectedName:"Internal",alwaysShow:true,url:"/admin/client/listAsJson",optionsContainer:"#clientName"});//set 'Internal' by default
         $(".text-error").addClass('hide');
         _showHideForms("div#costCenterUpdate");
         $("form#costCenterForm").find("input[type=text], textarea").val("");
@@ -36,7 +39,8 @@ var adminSidebarController = function() {
     },
 
         _onEmpAdd = function(e) {
-        populateGroupOptions("Employees", true);//set 'employees' by default
+        populateOptions({selectedName:"Employees", alwaysShow:true,url:"/admin/group/listAsJson",optionsContainer:"#groupName"});//set 'Employees' by default
+        populateOptions({selectedName:"Holiday", alwaysShow:true, url:"/admin/costCenter/listAsJson",optionsContainer:".costCode"});//set 'Employees' by default
         $(".text-error").addClass('hide');
         _showHideForms("div#empUpdate");
         $("form#employeeForm").find("input, textarea").not(':button, :submit, :reset').val("");
@@ -59,51 +63,61 @@ var adminSidebarController = function() {
         _onAdminHome = function(e) {
         _showHideForms("div#adminMsgs");
     },
+    
+        _onClientAdd = function(e) {
+        $(".text-error").addClass('hide');
+        _showHideForms("div#clientUpdate");
+        $("form#clientForm").find("input, textarea").not(':button, :submit, :reset').val("");
+    },
 
-        populateGroupOptions = function(selectedGroupName, alwaysShow) {
-        var isEmpUpdateForm = alwaysShow
-                || !($("div#empUpdate").hasClass("hide"));
-        if (isEmpUpdateForm) {
-            $
-                    .ajax({
-                        url : contextPath + "/admin/group/listAsJson",
-                        type : "GET",
-                        dataType : "json",
-                        success : function(response, textStatus, jqXHR) {
-                            var html = "";
-                            $
-                                    .each(
-                                            response,
-                                            function(key, value) {
-                                                var grpName = value.name;
-                                                html = html
-                                                        + "<option value=\""
-                                                        + grpName
-                                                        + "\""
-                                                        + (selectedGroupName
-                                                                && grpName === selectedGroupName ? " selected "
-                                                                : "") + " >"
-                                                        + grpName + "</option>";
-                                            });
-                            $("#groupName").empty().append(html);
-                        },
-                        error : function(response, textStatus, jqXHR) {
-                            alert("error");
-                        }
-                    });
+        _onClientList = function(e) {
+        _showHideForms("div#clientList");
+    },
+    
+    populateOptions= function(args){
+        var show = args.alwaysShow
+        || !($(args.container).hasClass("hide"));
+        if (show) {
+            $.ajax({
+                url : contextPath + args.url,
+                type : "GET",
+                dataType : "json",
+                success : function(response, textStatus, jqXHR) {
+                    var html = "";
+                    $.each(
+                                    response,
+                                    function(key, value) {
+                                        var grpName = value.name;
+                                        html = html
+                                                + "<option value=\""
+                                                + grpName
+                                                + "\""
+                                                + (args.selectedName
+                                                        && grpName === args.selectedName ? " selected "
+                                                        : "") + " >"
+                                                + grpName + "</option>";
+                                    });
+                    $(args.optionsContainer).empty().append(html);
+                },
+                error : function(response, textStatus, jqXHR) {
+                    alert("error");
+                }
+            });  
         }
     };
 
     return ({
         costcenterAddLinkClicked : _onCostcenterAdd,
         costcenterListLinkClicked : _onCostcenterList,
+        clientAddLinkClicked : _onClientAdd,
+        clientListLinkClicked : _onClientList,
         empAddLinkClicked : _onEmpAdd,
         empListLinkClicked : _onEmpList,
         grpAddLinkClicked : _onGrpAdd,
         grpListLinkClicked : _onGrpList,
         adminHomeLinkClicked : _onAdminHome,
         actiontoSelectorMap : actiontoSelectorMap,
-        populateGroupOptions : populateGroupOptions
+        populateOptions : populateOptions
     });
 }();
 

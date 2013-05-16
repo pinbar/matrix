@@ -2,31 +2,31 @@
 
 <div class="well">
     <form:form id="changePasswordForm" class="form-horizontal"
-        method="post" modelAttribute="empContactInfo"
-        action="${pageContext.request.contextPath}/usercp/empcontactinfo">
+        method="post" modelAttribute="changePass"
+        action="${pageContext.request.contextPath}/admin/employee/resetpassword">
 
-        <legend> Contact Information </legend>
-
-        <form:hidden path="employeeId" />
+        <legend> Reset Password </legend>
         <div class="control-group">
-            <label class="control-label" for="phone">Phone</label>
+            <label class="control-label" for="userName">Username</label>
             <div class="controls">
-                <form:input path="phone" />
-                <form:errors class="text-error" path="phone"></form:errors>
+                <form:hidden path="userName" />
+                <form:input path="userName" disabled="true" />
+                <form:errors class="text-error" path="userName"></form:errors>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="email">Email</label>
+            <label class="control-label" for="password">Password
+            </label>
             <div class="controls">
-                <form:input path="email" />
-                <form:errors class="text-error" path="email"></form:errors>
+                <form:password path="password" />
+                <form:errors class="text-error" path="password"></form:errors>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="address">Address</label>
+            <label class="control-label" for="active">Enabled
+            </label>
             <div class="controls">
-                <form:textarea path="address" />
-                <form:errors class="text-error" path="address"></form:errors>
+                <form:checkbox path="active" />
             </div>
         </div>
         <div class="control-group">

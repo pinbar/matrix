@@ -3,11 +3,11 @@
 <html>
 <head>
 <title>Dashboard</title>
-<jsp:include page="commonIncludes.jsp" />
+<jsp:include page="../common/commonIncludes.jsp" />
 </head>
 
 <body>
-    <jsp:include page="header.jsp" />
+    <jsp:include page="../common/header.jsp" />
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span2">
@@ -15,7 +15,7 @@
             </div>
             <div class="span10 well">
                 <div class="span3">
-                    <jsp:include page="clientList.jsp" />
+                    <jsp:include page="../client/clientList.jsp" />
                 </div>
             </div>
         </div>
