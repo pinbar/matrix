@@ -4,10 +4,10 @@
 <html>
 <head>
 <title>Change Password</title>
-<jsp:include page="commonIncludes.jsp" />
+<jsp:include page="../common/commonIncludes.jsp" />
 </head>
 <body>
-    <jsp:include page="header.jsp" />
+    <jsp:include page="../common/header.jsp" />
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span3">
@@ -18,7 +18,7 @@
                     <jsp:include page="changePassword.jsp" />
                 </c:if>
                 <c:if test="${empContactInfo != null}">
-                    <jsp:include page="empContactInfo.jsp" />
+                    <jsp:include page="../employee/empContactInfo.jsp" />
                 </c:if>
             </div>
         </div>

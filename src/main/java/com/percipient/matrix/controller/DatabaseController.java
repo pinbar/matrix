@@ -66,6 +66,6 @@ public class DatabaseController {
         dbView.setCostCenters(costCenters);
 
         model.addAttribute(MODEL_ATTRIBUTE_DB_VIEW, dbView);
-        return "databasePage";
+        return "database/databasePage";
     }
 }

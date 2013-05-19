@@ -19,7 +19,7 @@ import com.percipient.matrix.view.EmployeeContactInfoView;
 @RequestMapping(value = "/usercp")
 public class UserCPController {
 
-    private static final String PAGE_USER_CP = "userCPPage";
+    private static final String PAGE_USER_CP = "user/userCPPage";
     private static final String MODEL_ATTRIBUTE_CHANGE_PASS = "changePass";
     private static final String MODEL_ATTRIBUTE_EMP_CONTACT_INFO = "empContactInfo";
 

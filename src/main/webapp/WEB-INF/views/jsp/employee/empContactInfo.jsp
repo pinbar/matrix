@@ -1,7 +1,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <div class="well">
-    <form:form id="changePasswordForm" class="form-horizontal"
+    <form:form id="contactInfoForm" class="form-horizontal"
         method="post" modelAttribute="empContactInfo"
         action="${pageContext.request.contextPath}/usercp/empcontactinfo">
 

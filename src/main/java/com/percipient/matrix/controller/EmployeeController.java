@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.percipient.matrix.service.EmployeeCostCenterService;
 import com.percipient.matrix.service.EmployeeService;
 import com.percipient.matrix.service.GroupService;
 import com.percipient.matrix.service.UserCPService;
@@ -21,6 +22,7 @@ import com.percipient.matrix.session.UserInfo;
 import com.percipient.matrix.view.AdminEmpPasswordView;
 import com.percipient.matrix.view.ClientView;
 import com.percipient.matrix.view.CostCenterView;
+import com.percipient.matrix.view.EmployeeCostCenterView;
 import com.percipient.matrix.view.EmployeeView;
 import com.percipient.matrix.view.GroupView;
 
@@ -45,6 +47,9 @@ public class EmployeeController {
     @Autowired
     GroupService groupService;
 
+    @Autowired
+    EmployeeCostCenterService employeeCostCenterService;
+
     @RequestMapping(value = "/listAsJson")
     public @ResponseBody
     List<EmployeeView> getEmployeeListAsJSON(Model model) {
@@ -55,7 +60,7 @@ public class EmployeeController {
     @RequestMapping(value = "/new")
     public String newEmployee(Model model) {
         model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEE, new EmployeeView());
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -97,6 +102,15 @@ public class EmployeeController {
         return gotoEmployeeList(model);
     }
 
+    @RequestMapping(value = "/costCenters/listAsJson")
+    public @ResponseBody
+    List<EmployeeCostCenterView> getAllCostCentersForEmp(
+            @RequestParam("employeeId") int employeeId, Model model) {
+        List<EmployeeCostCenterView> empCostCenterViewList = employeeCostCenterService
+                .getEmpCostCentersForEmployee(employeeId);
+        return empCostCenterViewList;
+    }
+
     public String gotoEmployeeEdit(Model model) {
         model.addAttribute(GroupController.MODEL_ATTRIBUTE_GROUP,
                 new GroupView());
@@ -127,7 +141,7 @@ public class EmployeeController {
         model.addAttribute(
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "employeeList");
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 
     public String gotoAdminResetPassword(Model model) {
@@ -142,7 +156,6 @@ public class EmployeeController {
         model.addAttribute(
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "empPassReset");
-
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 }

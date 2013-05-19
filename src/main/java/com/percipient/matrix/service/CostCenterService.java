@@ -90,6 +90,9 @@ class CostCenterServiceImpl implements CostCenterService {
         }
         if (costCenter == null) {
             costCenter = new CostCenter();
+            Client client = clientRepository.getClientByName(costCenterView
+                    .getClientName());
+            costCenter.setClient(client);
         }
         costCenter.setCostCode(costCenterView.getCostCode());
         costCenter.setName(costCenterView.getName());

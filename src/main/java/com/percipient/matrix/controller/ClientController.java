@@ -78,7 +78,7 @@ public class ClientController {
         model.addAttribute(
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "clientUpdate");
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 
     private String gotoClientList(Model model) {
@@ -95,6 +95,6 @@ public class ClientController {
         model.addAttribute(
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "clientList");
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 }

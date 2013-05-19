@@ -2,10 +2,10 @@
 <html>
 <head>
 <title>Web Matrix</title>
-<jsp:include page="commonIncludes.jsp" />
+<jsp:include page="../common/commonIncludes.jsp" />
 </head>
 <body>
-    <jsp:include page="header.jsp" />
+    <jsp:include page="../common/header.jsp" />
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span2">

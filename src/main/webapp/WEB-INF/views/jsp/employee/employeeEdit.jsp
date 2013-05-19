@@ -63,7 +63,34 @@
         <div class="control-group">
             <div class="controls">
                 <input type="submit" value="Save" />
+                <input type="button" class="btn btn-danger" id ="projectsToggle"
+                value="Show/Hide Projects">
             </div>
         </div>
+        <div id="projects" class="collapse control-group">
+            <div class="control-group">
+                <input type="button" id ="addProjectRow" class="btn btn-danger"
+                    value="Add Project Row">
+                <input type="button" id ="saveTable" class="btn btn-danger"
+                    value="Save Table">
+                    
+                    <input type="button" id ="fillDummyData" class="btn btn-danger"
+                    value="fillDummyData"> 
+            </div>
+            <table id ="empCostCodeListTable" class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Cost Code</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
     </form:form>
 </div>

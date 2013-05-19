@@ -5,10 +5,10 @@
 <html>
 <head>
 <title>Administration</title>
-<jsp:include page="commonIncludes.jsp" />
+<jsp:include page="../common/commonIncludes.jsp" />
 </head>
 <body>
-    <jsp:include page="header.jsp" />
+    <jsp:include page="../common/header.jsp" />
     <div class="container-fluid">
         <div class="row-fluid">
             <div id="sidebar" class="span2">
@@ -32,11 +32,11 @@
                 </div>
                 <div id="empList"
                     class="${form != 'employeeList' ? 'hide' : ''}">
-                    <jsp:include page="employeeList.jsp" />
+                    <jsp:include page="../employee/employeeList.jsp" />
                 </div>
                 <div id="empUpdate"
                     class="${form != 'employeeEdit' ? 'hide' : ''}">
-                    <jsp:include page="employeeEdit.jsp" />
+                    <jsp:include page="../employee/employeeEdit.jsp" />
                 </div>
                 <div id="empResetPassword"
                     class="${form != 'empPassReset' ? 'hide' : ''}">
@@ -44,27 +44,27 @@
                 </div>
                 <div id="grpList"
                     class="${form != 'groupList' ? 'hide' : ''}">
-                    <jsp:include page="groupList.jsp" />
+                    <jsp:include page="../group/groupList.jsp" />
                 </div>
                 <div id="grpUpdate"
                     class="${form != 'groupEdit' ? 'hide' : ''}">
-                    <jsp:include page="groupEdit.jsp" />
+                    <jsp:include page="../group/groupEdit.jsp" />
                 </div>
                 <div id="costCenterList"
                     class="${form != 'costCenterList' ? 'hide' : ''}">
-                    <jsp:include page="costCenterList.jsp" />
+                    <jsp:include page="../costcenter/costCenterList.jsp" />
                 </div>
                 <div id="costCenterUpdate"
                     class="${form != 'costCenterEdit' ? 'hide' : ''}">
-                    <jsp:include page="costCenterEdit.jsp" />
+                    <jsp:include page="../costcenter/costCenterEdit.jsp" />
                 </div>
                 <div id="clientList"
                     class="${form != 'clientList' ? 'hide' : ''}">
-                    <jsp:include page="clientList.jsp" />
+                    <jsp:include page="../client/clientList.jsp" />
                 </div>
                 <div id="clientUpdate"
                     class="${form != 'clientUpdate' ? 'hide' : ''}">
-                    <jsp:include page="clientEdit.jsp" />
+                    <jsp:include page="../client/clientEdit.jsp" />
                 </div>
 
             </div>
@@ -72,6 +72,8 @@
     </div>
     <script
         src="${pageContext.request.contextPath}/resources/js/adminSidebarController.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/js/employee.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
     <script

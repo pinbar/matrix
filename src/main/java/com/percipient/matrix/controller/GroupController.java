@@ -42,7 +42,7 @@ public class GroupController {
     @RequestMapping(value = "/new")
     public String newGroup(Model model) {
         model.addAttribute(MODEL_ATTRIBUTE_GROUP, new GroupView());
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -84,7 +84,7 @@ public class GroupController {
         model.addAttribute(
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "groupEdit");
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 
     public String gotoGroupList(Model model) {
@@ -101,6 +101,6 @@ public class GroupController {
         model.addAttribute(
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "groupList");
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 }

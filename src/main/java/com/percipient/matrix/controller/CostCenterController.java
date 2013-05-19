@@ -81,7 +81,7 @@ public class CostCenterController {
         model.addAttribute(
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "costCenterEdit");
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 
     private String gotoCostCenterList(Model model) {
@@ -98,6 +98,6 @@ public class CostCenterController {
         model.addAttribute(
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "costCenterList");
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 }

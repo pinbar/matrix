@@ -18,6 +18,7 @@ public class AdministrationController {
 
     public static final String MODEL_ATTRIBUTE_DEFAULT_FORM = "form";
     public static final String MODEL_ATTRIBUTE_GROUPS = "groups";
+    public static final String ADMIN_PAGE = "admin/administrationPage";
 
     @Autowired
     GroupService groupService;
@@ -35,6 +36,6 @@ public class AdministrationController {
         model.addAttribute(MODEL_ATTRIBUTE_DEFAULT_FORM, "admin");
         model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_CHANGE_PASS,
                 new AdminEmpPasswordView());
-        return "administrationPage";
+       return  AdministrationController.ADMIN_PAGE;
     }
 }

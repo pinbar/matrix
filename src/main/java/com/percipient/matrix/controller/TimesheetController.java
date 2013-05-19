@@ -47,7 +47,7 @@ public class TimesheetController {
         List<CostCenterView> costCenters = costCenterService.getCostCenters();
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
-        return "timesheetPage";
+        return "timesheet/timesheetPage";
     }
 
     @RequestMapping(value = "/{weekEnding}", method = RequestMethod.GET)
@@ -116,7 +116,7 @@ public class TimesheetController {
         List<CostCenterView> costCenters = costCenterService.getCostCenters();
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
-        return "timesheetPage";
+        return "timesheet/timesheetPage";
     }
 
     @RequestMapping(value = "/deleteCostCodeRow", method = RequestMethod.GET)

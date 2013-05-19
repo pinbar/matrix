@@ -26,20 +26,20 @@ public class ReportController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String go() {
-        return "reportPage";
+        return "report/reportPage";
     }
 
     @RequestMapping(value = "/client/list", method = RequestMethod.GET)
     public String getGroupList(Model model) {
         List<?> clients = clientService.getClients();
         model.addAttribute(MODEL_ATTRIBUTE_CLIENTS, clients);
-        return "reportPage";
+        return "report/reportPage";
     }
 
     @RequestMapping(value = "/employee/list", method = RequestMethod.GET)
     public String getEmployeeList(Model model) {
         List<?> employees = employeeService.getEmployees();
         model.addAttribute(MODEL_ATTRIBUTE_EMPLOYEES, employees);
-        return "reportPage";
+        return "report/reportPage";
     }
 }

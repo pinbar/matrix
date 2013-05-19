@@ -8,8 +8,8 @@
     rel="stylesheet" media="screen">
 <link rel="stylesheet"
     href="${pageContext.request.contextPath}/resources/css/common.css">
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery-1.8.3.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container">

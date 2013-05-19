@@ -74,10 +74,6 @@ $(document).ready(
             bindEmpResetPassword();
             bindUpdateRows();
             bindDeleteRows();
-            adminSidebarController.populateGroupOptions($("#hiddenGroupName")
-                    .val(), false);
-            adminSidebarController.populateClientOptions($("#hiddenClientName")
-                    .val(), false);
         });
 function bindUpdateRows() {
     $("table")
@@ -159,26 +155,6 @@ function bindEmpResetPassword() {
                         populate($("div#" + 'empResetPassword'), {
                             userName : userName,
                             active : active
-                        });
-                        $("div#" + divToShow).removeClass('hide');
-                    });
-
-}
-function bindEmpReset() {
-    $("table")
-            .on(
-                    "click",
-                    ".resetEmp",
-                    function(e) {
-                        var table = $.fn.dataTable.fnTables(true), row = $(
-                                e.target).closest('tr'), data = $(table)
-                                .dataTable()._(row), userName = data[0].userName, divToShow = 'empReset';
-                        $("div#adminMsgs").addClass('hide');
-                        $("div#empList").addClass('hide');
-                        $("div#grpList").addClass('hide');
-                        $("div#costCenterList").addClass('hide');
-                        populate($("div#" + 'empReset'), {
-                            userName : userName
                         });
                         $("div#" + divToShow).removeClass('hide');
                     });
@@ -271,8 +247,8 @@ function populate(container, data) {
                 $('[id=' + key + ']', container).val(value);
                 var checkBox = $('[type= "checkbox"]' + '[name=' + key + ']',
                         container);
-                if (checkBox) // TODO check if value is a list if a list loop
-                    // through
+                if (checkBox) 
+                    // TODO check if value is a list if a list loop through
                     checkBox.attr('checked', value);
                 if (key === "groupName") {
                     selectedGroupName = value;
@@ -282,9 +258,9 @@ function populate(container, data) {
                 }
             });
     if (container.attr("id") == "empUpdate") {
-        adminSidebarController.populateGroupOptions(selectedGroupName, true);
+        adminSidebarController.populateOptions({selectedName:selectedGroupName, alwaysShow:true,url:"/admin/group/listAsJson",optionsContainer:"#groupName"});
     }
     if (container.attr("id") == "costCenterUpdate") {
-        adminSidebarController.populateClientOptions(selectedClientName, true);
+        adminSidebarController.populateOptions({selectedName:selectedClientName,alwaysShow:true,url:"/admin/client/listAsJson",optionsContainer:"#clientName"});;
     }
 }
