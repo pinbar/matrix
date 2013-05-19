@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * This code controls the interaction in the add costcode panel of employee 
  * edit/add  
@@ -105,7 +104,7 @@ var empCostCodeController = function() {
                 alert("error");
             }
         });
-  }
+  },
     appendEmptyLastRow = function() {
         var id = getAppendId();
 

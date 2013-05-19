@@ -1,9 +1,10 @@
 To Do:
 ======
-1. Cost center / client. Set inactive instead of delete (due to dependency on timesheet)<br>
-2. Employee Client relationship.<br>
-3. Encrypt password for DB storage.<br>
-4. Attachment errors handling and messages.<br>
+1. Match costCode instead of cost center name in the select menu on employee edit page. Wire up the GET correctly (right now its in fillDummyData)
+2. Cost center / client. Set inactive instead of delete (due to dependency on timesheet)<br>
+3. Employee Client relationship.<br>
+4. Encrypt password for DB storage.<br>
+5. Attachment errors handling and messages.<br>
 
 Features:
 =========
