@@ -74,7 +74,8 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].costCode"></form:errors>
-                                            </div></td>
+                                            </div>
+                                        </td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].monday.hours"
                                                 type="text"
@@ -89,7 +90,8 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].monday.hours"></form:errors>
-                                            </div></td>
+                                            </div>
+                                        </td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].tuesday.hours"
                                                 type="text"
@@ -104,7 +106,8 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].tuesday.hours"></form:errors>
-                                            </div></td>
+                                            </div>
+                                        </td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].wednesday.hours"
                                                 type="text"
@@ -119,7 +122,8 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].wednesday.hours"></form:errors>
-                                            </div></td>
+                                            </div>
+                                        </td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].thursday.hours"
                                                 type="text"
@@ -134,7 +138,8 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].thursday.hours"></form:errors>
-                                            </div></td>
+                                            </div>
+                                        </td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].friday.hours"
                                                 type="text"
@@ -149,7 +154,8 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].friday.hours"></form:errors>
-                                            </div></td>
+                                            </div>
+                                        </td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].saturday.hours"
                                                 type="text"
@@ -164,7 +170,8 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].saturday.hours"></form:errors>
-                                            </div></td>
+                                            </div>
+                                        </td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].sunday.hours"
                                                 type="text"
@@ -179,10 +186,13 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].sunday.hours"></form:errors>
-                                            </div></td>
+                                            </div>
+                                        </td>
                                         <td><a
                                             href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}&weekEnding=${timesheet.weekEnding}"><span
-                                                class="icon-trash"></span></a></td>
+                                                class="icon-trash"></span>
+                                        </a>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
@@ -193,8 +203,8 @@
                         <a
                             href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&weekEnding=${timesheet.weekEnding}"><input
                             id="addCostCodeBtn" type="button"
-                            class="btn btn-info" value="Add Row"></a>
-                        <input type="submit" class="btn btn-success"
+                            class="btn btn-info" value="Add Row">
+                        </a> <input type="submit" class="btn btn-success"
                             value="Save"> <input type="reset"
                             id="cancel" name="cancel"
                             class="btn btn-warning" value="Cancel">
@@ -280,7 +290,7 @@
         src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload.js"></script>
-        <script
+    <script
         src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/load-image.min.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload-process.js"></script>

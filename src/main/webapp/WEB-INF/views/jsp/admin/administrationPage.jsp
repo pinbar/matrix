@@ -80,7 +80,5 @@
         src="${pageContext.request.contextPath}/resources/jquery/js/jquery.dataTables.min.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/jquery/js/dataTables.fnReloadAjax.js"></script>
-        <script
-        src="${pageContext.request.contextPath}/resources/js/employee.js"></script>
 </body>
 </html>

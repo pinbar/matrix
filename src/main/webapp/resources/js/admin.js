@@ -263,4 +263,5 @@ function populate(container, data) {
     if (container.attr("id") == "costCenterUpdate") {
         adminSidebarController.populateOptions({selectedName:selectedClientName,alwaysShow:true,url:"/admin/client/listAsJson",optionsContainer:"#clientName"});;
     }
+    $("#errorMessages").empty();
 }

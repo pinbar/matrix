@@ -25,8 +25,10 @@
                         class="table table-striped table-bordered table-condensed table-auto">
                         <thead>
                             <tr>
-                                <th><u>id</u></th>
-                                <th><u>group_name</u></th>
+                                <th><u>id</u>
+                                </th>
+                                <th><u>group_name</u>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,9 +49,12 @@
                         class="table table-striped table-bordered table-condensed table-auto">
                         <thead>
                             <tr>
-                                <th><u>id</u></th>
-                                <th><u>username</u></th>
-                                <th><u>group_id</u></th>
+                                <th><u>id</u>
+                                </th>
+                                <th><u>username</u>
+                                </th>
+                                <th><u>group_id</u>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -72,8 +77,10 @@
                         class="table table-striped table-bordered table-condensed table-auto">
                         <thead>
                             <tr>
-                                <th><u>group_id</u></th>
-                                <th><u>authority</u></th>
+                                <th><u>group_id</u>
+                                </th>
+                                <th><u>authority</u>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,9 +102,12 @@
                         class="table table-striped table-bordered table-condensed table-auto">
                         <thead>
                             <tr>
-                                <th><u>username</u></th>
-                                <th><u>password</u></th>
-                                <th><u>enabled</u></th>
+                                <th><u>username</u>
+                                </th>
+                                <th><u>password</u>
+                                </th>
+                                <th><u>enabled</u>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -119,10 +129,14 @@
                         class="table table-striped table-bordered table-condensed table-auto">
                         <thead>
                             <tr>
-                                <th><u>id</u></th>
-                                <th><u>first_name</u></th>
-                                <th><u>last_name</u></th>
-                                <th><u>username</u></th>
+                                <th><u>id</u>
+                                </th>
+                                <th><u>first_name</u>
+                                </th>
+                                <th><u>last_name</u>
+                                </th>
+                                <th><u>username</u>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -146,9 +160,12 @@
                         class="table table-striped table-bordered table-condensed table-auto">
                         <thead>
                             <tr>
-                                <th><u>id</u></th>
-                                <th><u>week_ending</u></th>
-                                <th><u>status</u></th>                                
+                                <th><u>id</u>
+                                </th>
+                                <th><u>week_ending</u>
+                                </th>
+                                <th><u>status</u>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -170,10 +187,14 @@
                         class="table table-striped table-bordered table-condensed table-auto">
                         <thead>
                             <tr>
-                                <th><u>id</u></th>
-                                <th><u>cost_code</u></th>
-                                <th><u>item_date</u></th>
-                                <th><u>hours</u></th>
+                                <th><u>id</u>
+                                </th>
+                                <th><u>cost_code</u>
+                                </th>
+                                <th><u>item_date</u>
+                                </th>
+                                <th><u>hours</u>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -197,8 +218,10 @@
                         class="table table-striped table-bordered table-condensed table-auto">
                         <thead>
                             <tr>
-                                <th><u>cost_code</u></th>
-                                <th><u>name</u></th>
+                                <th><u>cost_code</u>
+                                </th>
+                                <th><u>name</u>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>

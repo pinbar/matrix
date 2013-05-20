@@ -17,9 +17,12 @@ public interface EmployeeCostCenterRepository {
 
     public List<EmployeeCostCenter> getAllForEmployee(Integer employeeId);
 
-    public void deleteAllForEmployee(Integer employeeId);
+    public void deleteForEmployee(List<EmployeeCostCenter> empCCList);
 
     public Boolean delete(Integer employeeId, Integer costCenterId);
+
+    public void saveForEmployee(
+            List<EmployeeCostCenter> empCCList);
 }
 
 @Repository
@@ -27,6 +30,7 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
+    
 
     @Override
     public void save(EmployeeCostCenter empCostCenter) {
@@ -42,10 +46,10 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
     }
 
     @Override
-    public void deleteAllForEmployee(Integer timesheetId) {
-        String query = "delete from EmployeeCostCenter as ecc where ecc.employeeId = :employeeId";
-        sessionFactory.getCurrentSession().createQuery(query)
-                .setParameter("timesheetId", timesheetId).list();
+    public void deleteForEmployee(List<EmployeeCostCenter> empCCList) {
+         for (EmployeeCostCenter empCC : empCCList) {
+            sessionFactory.getCurrentSession().delete(empCC);
+        }
     }
 
     @Override
@@ -61,4 +65,12 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
         return null;
     }
 
+    @Override
+    public void saveForEmployee(
+            List<EmployeeCostCenter> empCCList) {
+        for (EmployeeCostCenter empCC : empCCList) {
+            sessionFactory.getCurrentSession().saveOrUpdate(empCC);
+        }
+        
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -109,6 +110,24 @@ public class EmployeeController {
         List<EmployeeCostCenterView> empCostCenterViewList = employeeCostCenterService
                 .getEmpCostCentersForEmployee(employeeId);
         return empCostCenterViewList;
+    }
+
+    @RequestMapping(value = "/costCenters/save", method = RequestMethod.POST)
+    public @ResponseBody
+    List<EmployeeCostCenterView> saveCostCentersForEmp(
+            @RequestBody List<EmployeeCostCenterView> empCostCenterViewList) {
+        employeeCostCenterService
+               .saveEmpCostCentersForEmployee(empCostCenterViewList);
+        return null;
+    }
+    
+    @RequestMapping(value = "/costCenters/delete", method = RequestMethod.POST)
+    public @ResponseBody
+    List<EmployeeCostCenterView> deleteCostCentersForEmp(
+            @RequestBody List<EmployeeCostCenterView> empCostCenterViewList) {
+        employeeCostCenterService
+               .deleteEmpCostCentersForEmployee(empCostCenterViewList);
+        return null;
     }
 
     public String gotoEmployeeEdit(Model model) {

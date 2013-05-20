@@ -3,8 +3,10 @@
         class="table table-striped table-bordered table-condensed">
         <thead>
             <tr>
-                <th><u>Client Id</u></th>
-                <th><u>Name</u></th>
+                <th><u>Client Id</u>
+                </th>
+                <th><u>Name</u>
+                </th>
                 <th></th>
                 <th></th>
             </tr>

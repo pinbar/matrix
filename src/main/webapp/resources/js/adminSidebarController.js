@@ -96,17 +96,23 @@ var adminSidebarController = function() {
                         dataType : "json",
                         success : function(response, textStatus, jqXHR) {
                             var html = "";
-                            $.each(response,
+                            $
+                                    .each(
+                                            response,
                                             function(key, value) {
-                                                var grpName = value.name;
+                                                var grpName = value.name, grpVal;
+                                                value.costCode ? grpVal = value.costCode
+                                                        : value.name;
                                                 html = html
                                                         + "<option value=\""
-                                                        + grpName
+                                                        + grpVal
                                                         + "\""
                                                         + (args.selectedName
-                                                                && grpName === args.selectedName ? " selected "
+                                                                && (grpName === args.selectedName)
+                                                                || (grpVal === args.selectedName) ? " selected "
                                                                 : "") + " >"
                                                         + grpName + "</option>";
+
                                             });
                             $(args.optionsContainer).empty().append(html);
                         },

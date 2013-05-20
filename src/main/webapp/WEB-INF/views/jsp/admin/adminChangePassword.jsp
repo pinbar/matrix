@@ -23,8 +23,7 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="active">Enabled
-            </label>
+            <label class="control-label" for="active">Enabled </label>
             <div class="controls">
                 <form:checkbox path="active" />
             </div>

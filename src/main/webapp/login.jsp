@@ -8,8 +8,10 @@
     rel="stylesheet" media="screen">
 <link rel="stylesheet"
     href="${pageContext.request.contextPath}/resources/css/common.css">
-<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery-1.8.3.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+<script
+    src="${pageContext.request.contextPath}/resources/jquery/js/jquery-1.8.3.min.js"></script>
+<script
+    src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -30,8 +32,7 @@
                     <label class="checkbox"> <input
                         id="j_remember"
                         name="_spring_security_remember_me"
-                        type="checkbox" /> Remember Me
-                    </label>
+                        type="checkbox" /> Remember Me </label>
                     <button type="submit" name="submit"
                         class="btn btn-info btn-block">Sign in</button>
                 </form>

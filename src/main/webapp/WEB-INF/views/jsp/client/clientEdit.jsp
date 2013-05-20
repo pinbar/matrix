@@ -35,7 +35,8 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="name">Primary Contact</label>
+            <label class="control-label" for="name">Primary
+                Contact</label>
             <div class="controls">
                 <form:textarea path="primaryContact" />
                 <form:errors class="text-error" path="primaryContact"></form:errors>
