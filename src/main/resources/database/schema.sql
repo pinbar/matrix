@@ -45,7 +45,7 @@ create table cost_centers (
 );
 
 create table employees_cost_centers (
-  employee_id bigint not null, cost_code varchar(250) not null, start_date date, end_date date, 
+  employee_id bigint not null, cost_code varchar(250) not null, 
   primary key(employee_id, cost_code),
   constraint fk_ecc_eid foreign key(employee_id) references employees(id),
   constraint fk_ecc_cc foreign key(cost_code) references cost_centers(cost_code)

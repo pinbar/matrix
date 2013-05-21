@@ -10,18 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.percipient.matrix.dao.EmployeeCostCenterRepository;
 import com.percipient.matrix.domain.EmployeeCostCenter;
 import com.percipient.matrix.util.DateUtil;
-import com.percipient.matrix.view.EmployeeCostCenterView;
 
 public interface EmployeeCostCenterService {
 
-    public List<EmployeeCostCenterView> getEmpCostCentersForEmployee(
-            Integer employeeId);
+    List<String> getCostCodesForEmployee(Integer employeeId);
 
-    public void saveEmpCostCentersForEmployee(
-            List<EmployeeCostCenterView> empCCViewList);
+    public void saveCostCodesForEmployee(Integer employeeId,
+            List<String> costCodeList);
 
-    public void deleteEmpCostCentersForEmployee(
-            List<EmployeeCostCenterView> empCCViewList);
+    public void deleteCostCodesForEmployee(Integer employeeId,
+            List<String> costCodeList);
 }
 
 @Service
@@ -35,65 +33,49 @@ class EmployeeCostCenterServiceImpl implements EmployeeCostCenterService {
 
     @Override
     @Transactional
-    public List<EmployeeCostCenterView> getEmpCostCentersForEmployee(
-            Integer employeeId) {
+    public List<String> getCostCodesForEmployee(Integer employeeId) {
 
-        List<EmployeeCostCenterView> empCCViewList = new ArrayList<EmployeeCostCenterView>();
+        List<String> empCostCodes = new ArrayList<String>();
         List<EmployeeCostCenter> empCCList = employeeCostCenterRepository
                 .getAllForEmployee(employeeId);
         if (empCCList != null) {
             for (EmployeeCostCenter empCC : empCCList) {
-                EmployeeCostCenterView empCCView = getEmpCCViewFromEmpCC(empCC);
-                empCCViewList.add(empCCView);
+                empCostCodes.add(empCC.getCostCode());
             }
         }
-        return empCCViewList;
-    }
-
-    private EmployeeCostCenterView getEmpCCViewFromEmpCC(
-            EmployeeCostCenter empCC) {
-
-        EmployeeCostCenterView empCCView = new EmployeeCostCenterView();
-        empCCView.setCostCode(empCC.getCostCode());
-        empCCView.setEmployeeId(empCC.getEmployeeId());
-        empCCView.setStartDate(dateUtil.getAsString(empCC.getStartDate()));
-        empCCView.setEndDate(dateUtil.getAsString(empCC.getEndDate()));
-
-        return empCCView;
-    }
-
-    private EmployeeCostCenter getEmpCCFromEmpCCView(
-            EmployeeCostCenterView empCCView) {
-        EmployeeCostCenter empCC = new EmployeeCostCenter();
-        empCC.setCostCode(empCCView.getCostCode());
-        empCC.setEmployeeId(empCCView.getEmployeeId());
-        empCC.setStartDate(dateUtil.getAsDate(empCCView.getStartDate()));
-        empCC.setEndDate(dateUtil.getAsDate(empCCView.getEndDate()));
-        return empCC;
+        return empCostCodes;
     }
 
     @Override
     @Transactional
-    public void saveEmpCostCentersForEmployee(
-            List<EmployeeCostCenterView> empCCViewList) {
-        List<EmployeeCostCenter> empCCList = new ArrayList<EmployeeCostCenter>();
-
-        for (EmployeeCostCenterView empCCView : empCCViewList) {
-            empCCList.add(getEmpCCFromEmpCCView(empCCView));
-        }
-        employeeCostCenterRepository.saveForEmployee(empCCList);
+    public void saveCostCodesForEmployee(Integer employeeId,
+            List<String> costCodeList) {
+        List<EmployeeCostCenter> empCCList = getEmployeeCostCenterList(
+                employeeId, costCodeList);
+        employeeCostCenterRepository.save(empCCList);
     }
 
     @Override
     @Transactional
-    public void deleteEmpCostCentersForEmployee(
-            List<EmployeeCostCenterView> empCCViewList) {
-        List<EmployeeCostCenter> empCCList = new ArrayList<EmployeeCostCenter>();
-
-        for (EmployeeCostCenterView empCCView : empCCViewList) {
-            empCCList.add(getEmpCCFromEmpCCView(empCCView));
-        }
+    public void deleteCostCodesForEmployee(Integer employeeId,
+            List<String> costCodeList) {
+        List<EmployeeCostCenter> empCCList = getEmployeeCostCenterList(
+                employeeId, costCodeList);
         employeeCostCenterRepository.deleteForEmployee(empCCList);
+    }
+
+    private List<EmployeeCostCenter> getEmployeeCostCenterList(
+            Integer employeeId, List<String> costCodeList) {
+        List<EmployeeCostCenter> empCCList = new ArrayList<EmployeeCostCenter>();
+        EmployeeCostCenter empCC;
+        for (String costCode : costCodeList) {
+            empCC = new EmployeeCostCenter();
+            empCC.setEmployeeId(employeeId);
+            empCC.setCostCode(costCode);
+
+            empCCList.add(empCC);
+        }
+        return empCCList;
     }
 
 }

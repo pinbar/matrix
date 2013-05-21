@@ -11,18 +11,18 @@ import com.percipient.matrix.domain.EmployeeCostCenter;
 public interface EmployeeCostCenterRepository {
 
     public EmployeeCostCenter getEmployeeCostCenter(Integer employeeId,
-            Integer costCenterId);
-
-    public void save(EmployeeCostCenter EmployeeCostCenterView);
+            String costCode);
 
     public List<EmployeeCostCenter> getAllForEmployee(Integer employeeId);
 
+    public void save(EmployeeCostCenter employeeCostCenter);
+
+    public void save(List<EmployeeCostCenter> empCCList);
+
     public void deleteForEmployee(List<EmployeeCostCenter> empCCList);
 
-    public Boolean delete(Integer employeeId, Integer costCenterId);
+    public void delete(EmployeeCostCenter employeeCostCenter);
 
-    public void saveForEmployee(
-            List<EmployeeCostCenter> empCCList);
 }
 
 @Repository
@@ -30,11 +30,14 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
-    
 
     @Override
-    public void save(EmployeeCostCenter empCostCenter) {
-        sessionFactory.getCurrentSession().saveOrUpdate(empCostCenter);
+    public EmployeeCostCenter getEmployeeCostCenter(Integer employeeId,
+            String costCode) {
+        String query = "from EmployeeCostCenter as ecc where ecc.employeeId = :employeeId and ecc.costCode = :costCode";
+        return (EmployeeCostCenter) sessionFactory.getCurrentSession()
+                .createQuery(query).setParameter("employeeId", employeeId)
+                .setParameter("costCode", costCode).uniqueResult();
     }
 
     @Override
@@ -46,31 +49,28 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
     }
 
     @Override
+    public void save(EmployeeCostCenter empCostCenter) {
+        sessionFactory.getCurrentSession().saveOrUpdate(empCostCenter);
+    }
+
+    @Override
+    public void save(List<EmployeeCostCenter> empCCList) {
+        for (EmployeeCostCenter empCC : empCCList) {
+            sessionFactory.getCurrentSession().saveOrUpdate(empCC);
+        }
+
+    }
+
+    @Override
     public void deleteForEmployee(List<EmployeeCostCenter> empCCList) {
-         for (EmployeeCostCenter empCC : empCCList) {
+        for (EmployeeCostCenter empCC : empCCList) {
             sessionFactory.getCurrentSession().delete(empCC);
         }
     }
 
     @Override
-    public EmployeeCostCenter getEmployeeCostCenter(Integer employeeId,
-            Integer costCenterId) {
-        // TODO Auto-generated method stub
-        return null;
+    public void delete(EmployeeCostCenter employeeCostCenter) {
+        sessionFactory.getCurrentSession().delete(employeeCostCenter);
     }
 
-    @Override
-    public Boolean delete(Integer employeeId, Integer costCenterId) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void saveForEmployee(
-            List<EmployeeCostCenter> empCCList) {
-        for (EmployeeCostCenter empCC : empCCList) {
-            sessionFactory.getCurrentSession().saveOrUpdate(empCC);
-        }
-        
-    }
 }

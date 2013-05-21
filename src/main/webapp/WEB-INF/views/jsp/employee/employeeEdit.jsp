@@ -6,7 +6,7 @@
         modelAttribute="employee"
         action="${pageContext.request.contextPath}/admin/employee/save">
         <form:hidden path="id" />
-         <div id="errorMessages" class="text-error"></div>
+        <div id="errorMessages" class="text-error"></div>
         <div class="control-group">
             <label class="control-label" for="userName">User
                 Name</label>
@@ -73,22 +73,21 @@
                 <input type="button" id="addProjectRow"
                     class="btn btn-danger" value="Add Project Row">
                 <input type="button" id="saveTable"
-                    class="btn btn-danger" value="Save Table">
-                <input type="hidden" id ="empId" value="${employee.id}">     
-            <table id="empCostCodeListTable"
-                class="spacer table table-bordered table-condensed">
-                <thead>
-                    <tr>
-                        <th>Cost Code</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+                    class="btn btn-danger" value="Save Table"> <input
+                    type="hidden" id="empId" value="${employee.id}">
+                <table id="empCostCodeListTable"
+                    class="spacer table table-bordered table-condensed table-auto">
+                    <thead>
+                        <tr>
+                            <th>Cost Code</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </form:form>

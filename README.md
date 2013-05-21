@@ -1,15 +1,10 @@
 To Do:
 ======
-1. Match costCode instead of cost center name in the select menu on employee edit page. Wire up the GET correctly (right now its in fillDummyData)<br>
---Done do qa (fixed it client side)<br>
-2. Cost center / client. Set inactive instead of delete (due to dependency on timesheet)
--- deleting the coscenter/client entity as of now 
-<br>
-3. Cleanup on the employee/ costocde 
-4. validation dates etc employee-costcode use case 
-5. Employee Client relationship.<br>
-6. Encrypt password for DB storage.<br>
-7. Attachment errors handling and messages.<br>
+1. UI change from drop-down to "feeder" for employee/ costocde <br>
+2. Validation dates etc employee-costcode use case <br>
+3. Employee Client relationship.<br>
+4. Encrypt password for DB storage.<br>
+5. Attachment errors handling and messages.<br>
 
 Features:
 =========

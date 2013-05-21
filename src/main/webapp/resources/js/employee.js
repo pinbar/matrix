@@ -13,12 +13,7 @@ var empCostCodeController = function() {
                 + id
                 + "\" ><td><select class=\"tableInput ccSelect\" id =\"costCodeListSelect_"
                 + id
-                + "\"></select></td><td><input class=\"dp tableInput\" type=\"text\" id=\"startDate_"
-                + id
-                + "\"></td>"
-                + "<td><input class=\"dp tableInput\" type=\"text\" id=\"endDate_"
-                + id
-                + "\"></td>"
+                + "\"></select>"
                 + "<td><a class=\"saveCostCodeItem\" href=\"javascript:;\"><i class=\"icon-upload\" ></i> </a></td>"
                 + "<td><a class=\"delCostCodeItem\" href=\"javascript:;\"><i class=\"icon-trash\" ></i> </a></td></tr>";
         return html;
@@ -44,11 +39,8 @@ var empCostCodeController = function() {
         });
     }, delCostCodeItem = function(e) {
         var postData = [], rowData = {}, row = $(e.target).closest('tr'), id = row
-                .attr('data-id'), url = contextPath+"/admin/employee/costCenters/delete";
-        rowData.costCode = row.find('select').find('option:selected').val();
-        rowData.startDate = $('#startDate_' + id).val();
-        rowData.endDate = $('#endDate_' + id).val();
-        rowData.employeeId = $('#id').val();
+                .attr('data-id'), url = contextPath+"/admin/employee/costCenters/delete"+"?employeeId="+$('#id').val();
+        rowData = row.find('select').find('option:selected').val();
         postData.push(rowData);
         $.ajax({
             url : url,
@@ -70,11 +62,8 @@ var empCostCodeController = function() {
             tableNode.find('tbody').empty();
         }
     }, saveCostCodeItem = function(e) {
-        var row = $(e.target).closest('tr'), id = row.attr('data-id'), postArgs = [], postArg = {}, url = contextPath+"/admin/employee/costCenters/save";
-        postArg.costCode = row.find('select').find('option:selected').val();
-        postArg.startDate = $('#startDate_' + id).val();
-        postArg.endDate = $('#endDate_' + id).val();
-        postArg.employeeId = $('#id').val();
+        var row = $(e.target).closest('tr'), id = row.attr('data-id'), postArgs = [], postArg = {}, url = contextPath+"/admin/employee/costCenters/save"+"?employeeId="+$('#id').val();
+        postArg = row.find('select').find('option:selected').val();
         postArgs.push(postArg);
         $.ajax({
             url : url,
@@ -92,15 +81,12 @@ var empCostCodeController = function() {
     },
 
     saveTable = function(e) {
-        var postData = [], url =contextPath+"/admin/employee/costCenters/save";
+        var postData = [], url =contextPath+"/admin/employee/costCenters/save"+"?employeeId="+$('#id').val();
         tableNode.find('tbody>tr').each(
                 function() {
                     var row = {}, id = this.getAttribute('data-id');
-                    row.costCode = $(this).find('select').find(
+                    row = $(this).find('select').find(
                             'option:selected').val();
-                    row.startDate = $('#startDate_' + id).val();
-                    row.endDate = $('#endDate_' + id).val();
-                    row.employeeId = $('#id').val();
                     postData.push(row);
                 });
         $.ajax({
@@ -125,9 +111,6 @@ var empCostCodeController = function() {
             url : costCenterurl,
             optionsContainer : "#costCodeListSelect_" + id,
             id : id
-        });
-        $("#costCodeListTr_" + id).find(".dp").datepicker({
-            format : 'mm-dd-yyyy'
         });
         var saveAllBtn = $('#saveTable');
         if (saveAllBtn.attr('class').indexOf('disabled') >= 0) {
@@ -193,16 +176,11 @@ var empCostCodeController = function() {
             var id = getAppendId();
             tableNode.append(getHtmlTemplate());
             populateOptions({
-                selectedName : value.costCode,
+                selectedName : value,
                 alwaysShow : true,
                 url : costCenterurl,
                 optionsContainer : "#costCodeListSelect_" + id,
                 id : id
-            });
-            $('[id= startDate_' + id + ']', tableNode).val(value.startDate);
-            $('[id= endDate_' + id + ']', tableNode).val(value.endDate);
-            $("#costCodeListTr_" + id).find(".dp").datepicker({
-                format : 'mm-dd-yyyy'
             });
         });
 

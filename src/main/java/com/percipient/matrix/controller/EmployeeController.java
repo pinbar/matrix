@@ -105,28 +105,28 @@ public class EmployeeController {
 
     @RequestMapping(value = "/costCenters/listAsJson")
     public @ResponseBody
-    List<EmployeeCostCenterView> getAllCostCentersForEmp(
+    List<String> getAllCostCodesForEmp(
             @RequestParam("employeeId") int employeeId, Model model) {
-        List<EmployeeCostCenterView> empCostCenterViewList = employeeCostCenterService
-                .getEmpCostCentersForEmployee(employeeId);
-        return empCostCenterViewList;
+        List<String> empCostCodeList = employeeCostCenterService
+                .getCostCodesForEmployee(employeeId);
+        return empCostCodeList;
     }
 
     @RequestMapping(value = "/costCenters/save", method = RequestMethod.POST)
     public @ResponseBody
-    List<EmployeeCostCenterView> saveCostCentersForEmp(
-            @RequestBody List<EmployeeCostCenterView> empCostCenterViewList) {
-        employeeCostCenterService
-               .saveEmpCostCentersForEmployee(empCostCenterViewList);
-        return null;
+    void saveCostCodessForEmp(@RequestParam("employeeId") int employeeId,
+            @RequestBody List<String> costCodeList) {
+        employeeCostCenterService.saveCostCodesForEmployee(employeeId,
+                costCodeList);
     }
-    
+
     @RequestMapping(value = "/costCenters/delete", method = RequestMethod.POST)
     public @ResponseBody
     List<EmployeeCostCenterView> deleteCostCentersForEmp(
-            @RequestBody List<EmployeeCostCenterView> empCostCenterViewList) {
-        employeeCostCenterService
-               .deleteEmpCostCentersForEmployee(empCostCenterViewList);
+            @RequestParam("employeeId") int employeeId,
+            @RequestBody List<String> empCostCenterViewList) {
+        employeeCostCenterService.deleteCostCodesForEmployee(employeeId,
+                empCostCenterViewList);
         return null;
     }
 
