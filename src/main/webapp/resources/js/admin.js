@@ -259,6 +259,8 @@ function populate(container, data) {
             });
     if (container.attr("id") == "empUpdate") {
         adminSidebarController.populateOptions({selectedName:selectedGroupName, alwaysShow:true,url:"/admin/group/listAsJson",optionsContainer:"#groupName"});
+        //hide the project view panel 
+        $("div#projects").removeClass("in").css({height: "0px"});
     }
     if (container.attr("id") == "costCenterUpdate") {
         adminSidebarController.populateOptions({selectedName:selectedClientName,alwaysShow:true,url:"/admin/client/listAsJson",optionsContainer:"#clientName"});;

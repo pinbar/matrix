@@ -101,11 +101,11 @@ var adminSidebarController = function() {
                                             response,
                                             function(key, value) {
                                                 var grpName = value.name, grpVal;
-                                                value.costCode ? grpVal = value.costCode
+                                                grpVal= value.costCode ? value.costCode
                                                         : value.name;
                                                 html = html
                                                         + "<option value=\""
-                                                        + grpVal
+                                                        + grpVal 
                                                         + "\""
                                                         + (args.selectedName
                                                                 && (grpName === args.selectedName)

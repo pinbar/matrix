@@ -5,7 +5,7 @@
  */
 var empCostCodeController = function() {
     var tableId = "empCostCodeListTable", tableNode = $("#" + tableId),
-
+    costCenterurl ="/admin/costCenter/listAsJson" ,
     getHtmlTemplate = function() {
         var id = getAppendId(), html = "<tr data-id=\""
                 + id
@@ -27,7 +27,7 @@ var empCostCodeController = function() {
                 : parseInt(lastTr.attr('data-id'), 10) + 1;
         return id;
     }, getAllCostCodeForEmp = function(e) {
-        var employeeId = $('#employeeForm #id').val(), url = "employee/costCenters/listAsJson?employeeId="
+        var employeeId = $('#employeeForm #id').val(), url = contextPath+"/admin/employee/costCenters/listAsJson?employeeId="
                 + employeeId;
         $.ajax({
             url : url,
@@ -35,7 +35,7 @@ var empCostCodeController = function() {
             dataType : "json",
             contentType : 'application/json',
             success : function(response, textStatus, jqXHR) {
-                populateTable(response);
+                populateTable(response, true);
                 disableUploadControls();
             },
             error : function(response, textStatus, jqXHR) {
@@ -44,7 +44,7 @@ var empCostCodeController = function() {
         });
     }, delCostCodeItem = function(e) {
         var postData = [], rowData = {}, row = $(e.target).closest('tr'), id = row
-                .attr('data-id'), url = "employee/costCenters/delete";
+                .attr('data-id'), url = contextPath+"/admin/employee/costCenters/delete";
         rowData.costCode = row.find('select').find('option:selected').val();
         rowData.startDate = $('#startDate_' + id).val();
         rowData.endDate = $('#endDate_' + id).val();
@@ -70,7 +70,7 @@ var empCostCodeController = function() {
             tableNode.find('tbody').empty();
         }
     }, saveCostCodeItem = function(e) {
-        var row = $(e.target).closest('tr'), id = row.attr('data-id'), postArgs = [], postArg = {}, url = "employee/costCenters/save";
+        var row = $(e.target).closest('tr'), id = row.attr('data-id'), postArgs = [], postArg = {}, url = contextPath+"/admin/employee/costCenters/save";
         postArg.costCode = row.find('select').find('option:selected').val();
         postArg.startDate = $('#startDate_' + id).val();
         postArg.endDate = $('#endDate_' + id).val();
@@ -92,7 +92,7 @@ var empCostCodeController = function() {
     },
 
     saveTable = function(e) {
-        var postData = [], url = "employee/costCenters/save";
+        var postData = [], url =contextPath+"/admin/employee/costCenters/save";
         tableNode.find('tbody>tr').each(
                 function() {
                     var row = {}, id = this.getAttribute('data-id');
@@ -122,7 +122,7 @@ var empCostCodeController = function() {
         populateOptions({
             selectedName : "HOL",
             alwaysShow : true,
-            url : "/admin/costCenter/listAsJson",
+            url : costCenterurl,
             optionsContainer : "#costCodeListSelect_" + id,
             id : id
         });
@@ -195,7 +195,7 @@ var empCostCodeController = function() {
             populateOptions({
                 selectedName : value.costCode,
                 alwaysShow : true,
-                url : "/admin/costCenter/listAsJson",
+                url : costCenterurl,
                 optionsContainer : "#costCodeListSelect_" + id,
                 id : id
             });
@@ -270,15 +270,10 @@ $(document)
                                             // if shown fetch data
                                             if ($('div#projects').attr('class')
                                                     .indexOf('in') >= 0) {
-                                                // check for existing content ,
-                                                // otherwise load content from
-                                                // server
-                                                if (tableNode.find('tbody')
-                                                        .find('tr').length < 1) {
-
+                                               
                                                     empCostCodeController
                                                             .getAllCostCodeForEmp(e);
-                                                }
+                                               
                                             }
                                         });
                         tableNode.on("click", ".saveCostCodeItem", function(e) {

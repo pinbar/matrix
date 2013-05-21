@@ -73,7 +73,8 @@
                 <input type="button" id="addProjectRow"
                     class="btn btn-danger" value="Add Project Row">
                 <input type="button" id="saveTable"
-                    class="btn btn-danger" value="Save Table"> 
+                    class="btn btn-danger" value="Save Table">
+                <input type="hidden" id ="empId" value="${employee.id}">     
             <table id="empCostCodeListTable"
                 class="spacer table table-bordered table-condensed">
                 <thead>
