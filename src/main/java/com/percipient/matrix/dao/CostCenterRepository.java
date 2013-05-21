@@ -12,9 +12,11 @@ public interface CostCenterRepository {
 
     public List<CostCenter> getCostCenters();
 
-    public void save(CostCenter costCenter);
+    public CostCenter getCostCenter(String costCode);
 
     public CostCenter getCostCenter(Integer costCenterId);
+
+    public void save(CostCenter costCenter);
 
     public void deleteCostCenter(CostCenter costCenter);
 
@@ -34,14 +36,22 @@ class CostCenterRepositoryImpl implements CostCenterRepository {
     }
 
     @Override
-    public void save(CostCenter costCenter) {
-        sessionFactory.getCurrentSession().saveOrUpdate(costCenter);
+    public CostCenter getCostCenter(String costCode) {
+        String query = "from CostCenter as cc where cc.costCode = :costCode";
+        return (CostCenter) sessionFactory.getCurrentSession()
+                .createQuery(query).setParameter("costCode", costCode)
+                .uniqueResult();
     }
 
     @Override
     public CostCenter getCostCenter(Integer costCenterId) {
         return (CostCenter) sessionFactory.getCurrentSession().get(
                 CostCenter.class, costCenterId);
+    }
+
+    @Override
+    public void save(CostCenter costCenter) {
+        sessionFactory.getCurrentSession().saveOrUpdate(costCenter);
     }
 
     @Override

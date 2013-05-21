@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.percipient.matrix.service.CostCenterService;
+import com.percipient.matrix.service.EmployeeCostCenterService;
 import com.percipient.matrix.service.TimesheetService;
+import com.percipient.matrix.session.UserInfo;
 import com.percipient.matrix.util.DateUtil;
 import com.percipient.matrix.view.CostCenterView;
 import com.percipient.matrix.view.TimesheetView;
@@ -33,10 +34,13 @@ public class TimesheetController {
     @Autowired
     TimesheetService timesheetService;
     @Autowired
-    CostCenterService costCenterService;
+    EmployeeCostCenterService employeeCostCenterService;
 
     @Autowired
     DateUtil dateUtil;
+
+    @Autowired
+    UserInfo userInfo;
 
     @RequestMapping(method = RequestMethod.GET)
     public String getTimesheetPreview(Model model) {
@@ -44,7 +48,8 @@ public class TimesheetController {
         List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, tsPreviews.get(0));
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
-        List<CostCenterView> costCenters = costCenterService.getCostCenters();
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(userInfo.getEmployeeId());
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
         return "timesheet/timesheetPage";
@@ -113,7 +118,8 @@ public class TimesheetController {
 
         List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
-        List<CostCenterView> costCenters = costCenterService.getCostCenters();
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(userInfo.getEmployeeId());
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
         return "timesheet/timesheetPage";

@@ -17,6 +17,9 @@ public interface CostCenterService {
 
     public List<CostCenterView> getCostCenters();
 
+    public List<CostCenterView> getCCViewListFromCostCodes(
+            List<String> costCodes);
+
     public void saveCostCenter(CostCenterView costCenterView);
 
     public CostCenterView getCostCenter(Integer costCenterId);
@@ -45,6 +48,21 @@ class CostCenterServiceImpl implements CostCenterService {
             costCenterViews.add(costCenterView);
         }
         return costCenterViews;
+    }
+
+    @Override
+    @Transactional
+    public List<CostCenterView> getCCViewListFromCostCodes(
+            List<String> costCodes) {
+        List<CostCenterView> costCenterViewList = new ArrayList<CostCenterView>();
+        CostCenter costCenter;
+        CostCenterView costCenterView;
+        for (String costCode : costCodes) {
+            costCenter = costCenterRepository.getCostCenter(costCode);
+            costCenterView = getCostCenterViewFromCostCenter(costCenter);
+            costCenterViewList.add(costCenterView);
+        }
+        return costCenterViewList;
     }
 
     @Override
