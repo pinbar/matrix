@@ -103,7 +103,7 @@ var empCostCodeController = function() {
 }();
 $(document).ready(function() {
     $("#employeeSave").on("click",function(e){
-        empCostCodeController.onBeforeSave();       
+        empCostCodeController.onBeforeSave();
     });
 
 });
