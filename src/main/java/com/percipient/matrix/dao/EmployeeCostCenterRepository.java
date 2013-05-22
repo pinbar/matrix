@@ -19,9 +19,12 @@ public interface EmployeeCostCenterRepository {
 
     public void save(List<EmployeeCostCenter> empCCList);
 
-    public void deleteForEmployee(List<EmployeeCostCenter> empCCList);
 
     public void delete(EmployeeCostCenter employeeCostCenter);
+
+    public void delete(List<EmployeeCostCenter> empCCList);
+
+    public void deleteAllForEmployee(Integer employeeId);
 
 }
 
@@ -62,7 +65,7 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
     }
 
     @Override
-    public void deleteForEmployee(List<EmployeeCostCenter> empCCList) {
+    public void delete(List<EmployeeCostCenter> empCCList) {
         for (EmployeeCostCenter empCC : empCCList) {
             sessionFactory.getCurrentSession().delete(empCC);
         }
@@ -71,6 +74,13 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
     @Override
     public void delete(EmployeeCostCenter employeeCostCenter) {
         sessionFactory.getCurrentSession().delete(employeeCostCenter);
+    }
+
+    @Override
+    public void deleteAllForEmployee(Integer employeeId) {
+        String query = "delete from EmployeeCostCenter as ecc where ecc.employeeId = :employeeId";
+        sessionFactory.getCurrentSession().createQuery(query)
+                .setParameter("employeeId", employeeId);
     }
 
 }

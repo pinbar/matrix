@@ -1,7 +1,10 @@
 package com.percipient.matrix.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +70,13 @@ public class EmployeeController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String saveEmployee(
             @Valid @ModelAttribute(MODEL_ATTRIBUTE_EMPLOYEE) EmployeeView employeeView,
-            BindingResult result, Model model) {
+            BindingResult result, Model model, HttpServletRequest request) {
+        String costCodeStr = (String) request.getParameter("costCodeStr");
+        String[] costCodes = costCodeStr != null ? costCodeStr.split(",")
+                : null;
+        if (null != costCodes && costCodes.length > 0) {
+            employeeView.setCostCodes(Arrays.asList(costCodes));
+        }
 
         if (result.hasErrors()) {
             return gotoEmployeeEdit(model);
@@ -106,9 +115,12 @@ public class EmployeeController {
     @RequestMapping(value = "/costCenters/listAsJson")
     public @ResponseBody
     List<String> getAllCostCodesForEmp(
-            @RequestParam("employeeId") int employeeId, Model model) {
-        List<String> empCostCodeList = employeeCostCenterService
-                .getCostCodesForEmployee(employeeId);
+            @RequestParam("employeeId") Integer employeeId, Model model) {
+        List<String> empCostCodeList = new ArrayList<String>();
+        if (null != employeeId) {
+            empCostCodeList = employeeCostCenterService
+                    .getCostCodesForEmployee(employeeId);
+        }
         return empCostCodeList;
     }
 

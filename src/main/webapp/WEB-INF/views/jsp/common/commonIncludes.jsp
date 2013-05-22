@@ -8,7 +8,7 @@
     href="${pageContext.request.contextPath}/resources/css/common.css">
 
 <script
-    src="${pageContext.request.contextPath}/resources/jquery/js/jquery-1.8.3.js"></script>
+    src="${pageContext.request.contextPath}/resources/jquery/js/jquery-1.9.1.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 <script

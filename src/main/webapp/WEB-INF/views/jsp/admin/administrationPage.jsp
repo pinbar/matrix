@@ -6,6 +6,14 @@
 <head>
 <title>Administration</title>
 <jsp:include page="../common/commonIncludes.jsp" />
+<link rel="stylesheet"
+    href="${pageContext.request.contextPath}/resources/jquery/css/jqueryui-bootstrap.css">
+   <  
+<link rel="stylesheet"
+    href="${pageContext.request.contextPath}/resources/jquery-ui-multiselect/css/jquery.multiselect.css">
+<link rel="stylesheet"
+    href="${pageContext.request.contextPath}/resources/jquery-ui-multiselect/css/jquery.multiselect.filter.css">
+    
 </head>
 <body>
     <jsp:include page="../common/header.jsp" />
@@ -71,14 +79,21 @@
         </div>
     </div>
     <script
-        src="${pageContext.request.contextPath}/resources/js/adminSidebarController.js"></script>
-    <script
         src="${pageContext.request.contextPath}/resources/js/employee.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/js/adminSidebarController.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/jquery/js/jquery.dataTables.min.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/jquery/js/dataTables.fnReloadAjax.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/jquery/js/jquery-ui-1.10.3.custom.min.js"></script>
+        
+    <script
+        src="${pageContext.request.contextPath}/resources/jquery-ui-multiselect/js/jquery.multiselect.min.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/jquery-ui-multiselect/js/jquery.multiselect.filter.min.js"></script>
 </body>
 </html>

@@ -61,34 +61,12 @@
                 </form:select>
             </div>
         </div>
+        <div id="projects" class="control-group"></div>
         <div class="control-group">
             <div class="controls">
-                <input type="submit" value="Save" /> <input
-                    type="button" class="btn btn-danger"
-                    id="projectsToggle" value="Show/Hide Projects">
+                <input id="employeeSave" type="submit" class="btn btn-danger" value="Save" />
             </div>
         </div>
-        <div id="projects" class="collapse control-group">
-            <div class="control-group">
-                <input type="button" id="addProjectRow"
-                    class="btn btn-danger" value="Add Project Row">
-                <input type="button" id="saveTable"
-                    class="btn btn-danger" value="Save Table"> <input
-                    type="hidden" id="empId" value="${employee.id}">
-                <table id="empCostCodeListTable"
-                    class="spacer table table-bordered table-condensed table-auto">
-                    <thead>
-                        <tr>
-                            <th>Cost Code</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </form:form>
+
 </div>

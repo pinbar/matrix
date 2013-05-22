@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.percipient.matrix.dao.EmployeeCostCenterRepository;
 import com.percipient.matrix.dao.EmployeeRepository;
 import com.percipient.matrix.dao.GroupRepository;
 import com.percipient.matrix.dao.TimesheetRepository;
 import com.percipient.matrix.domain.Employee;
+import com.percipient.matrix.domain.EmployeeCostCenter;
 import com.percipient.matrix.domain.Timesheet;
 import com.percipient.matrix.security.Group;
 import com.percipient.matrix.security.GroupMember;
@@ -37,6 +39,9 @@ class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private EmployeeCostCenterRepository employeeCostCenterRepository;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -83,7 +88,15 @@ class EmployeeServiceImpl implements EmployeeService {
     public void saveEmployee(EmployeeView employeeView) {
 
         Employee employee = getEmployeeFromEmployeeView(employeeView);
-        employeeRepository.saveEmployee(employee);
+         Integer id = employeeRepository.saveEmployee(employee);
+         if (id != null) {
+             employeeView.setId(id);
+         }
+         if (employeeView.getCostCodes() != null
+                 && !employeeView.getCostCodes().isEmpty()) {
+             List<EmployeeCostCenter> empCostCenterList = collateUpdatedCostCenterList(employeeView);
+             employeeCostCenterRepository.save(empCostCenterList);
+         }
     }
 
     @Override
@@ -94,6 +107,7 @@ class EmployeeServiceImpl implements EmployeeService {
         List<Timesheet> timesheets = timesheetRepository
                 .getTimesheets(employee);
         timesheetRepository.delete(timesheets);
+        employeeCostCenterRepository.deleteAllForEmployee(employeeView.getId());
         employeeRepository.deleteEmployee(employee);
     }
 
@@ -146,5 +160,30 @@ class EmployeeServiceImpl implements EmployeeService {
         employeeView.setGroupName(group.getName());
 
         return employeeView;
+    }
+
+    private List<EmployeeCostCenter> collateUpdatedCostCenterList(
+            EmployeeView employeeView) {
+        List<EmployeeCostCenter> empCostCenterList = new ArrayList<EmployeeCostCenter>();
+        List<EmployeeCostCenter> existingEmpCostCenterList = employeeCostCenterRepository
+                .getAllForEmployee(employeeView.getId());
+
+        List<String> costCodes = employeeView.getCostCodes();
+        for (String costCode : costCodes) {
+            EmployeeCostCenter empCC = employeeCostCenterRepository
+                    .getEmployeeCostCenter(employeeView.getId(), costCode);
+            if (empCC == null) {
+                empCC = new EmployeeCostCenter();
+                empCC.setCostCode(costCode);
+                empCC.setEmployeeId(employeeView.getId());
+            } else {
+                existingEmpCostCenterList.remove(empCC);
+            }
+            empCostCenterList.add(empCC);
+        }
+        // delete the remaining, these were unchecked
+        employeeCostCenterRepository.delete(existingEmpCostCenterList);
+
+        return empCostCenterList;
     }
 }

@@ -17,7 +17,7 @@ public interface EmployeeRepository {
 
     public List<Employee> getEmployees();
 
-    public void saveEmployee(Employee employee);
+    public Integer saveEmployee(Employee employee);
 
     public void deleteEmployee(Employee employee);
 
@@ -56,8 +56,14 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public void saveEmployee(Employee employee) {
-        sessionFactory.getCurrentSession().saveOrUpdate(employee);
+    public Integer saveEmployee(Employee employee) {
+       Integer id =null; 
+        if (employee.getId() != null) {
+            sessionFactory.getCurrentSession().saveOrUpdate(employee);
+        }else {
+           id =(Integer)sessionFactory.getCurrentSession().save(employee);
+        }
+        return id; 
     }
 
     @Override

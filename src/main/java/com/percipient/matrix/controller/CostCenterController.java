@@ -1,6 +1,7 @@
 package com.percipient.matrix.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -35,6 +36,14 @@ public class CostCenterController {
     @ResponseBody
     public List<CostCenterView> getGroups(Model model) {
         List<CostCenterView> costCenters = costCenterService.getCostCenters();
+        return costCenters;
+
+    }
+    
+    @RequestMapping(value = "/grouped/listAsJson", produces = "application/json")
+    @ResponseBody
+    public Map<String, List<CostCenterView>> getGroupsByClient(Model model) {
+        Map<String, List<CostCenterView>> costCenters = costCenterService.getCostCentersGroupedByClient();
         return costCenters;
 
     }

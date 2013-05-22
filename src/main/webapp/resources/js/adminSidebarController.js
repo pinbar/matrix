@@ -55,6 +55,7 @@ var adminSidebarController = function() {
         _showHideForms("div#empUpdate");
         $("form#employeeForm").find("input, textarea").not(
                 ':button, :submit, :reset').val("");
+        empCostCodeController.getAllCostCodeForEmp();
     },
 
     _onEmpList = function(e) {

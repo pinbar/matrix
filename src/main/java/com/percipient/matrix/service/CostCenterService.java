@@ -1,7 +1,9 @@
 package com.percipient.matrix.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import com.percipient.matrix.view.CostCenterView;
 public interface CostCenterService {
 
     public List<CostCenterView> getCostCenters();
+
+    public Map<String, List<CostCenterView>> getCostCentersGroupedByClient();
 
     public List<CostCenterView> getCCViewListFromCostCodes(
             List<String> costCodes);
@@ -48,6 +52,30 @@ class CostCenterServiceImpl implements CostCenterService {
             costCenterViews.add(costCenterView);
         }
         return costCenterViews;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, List<CostCenterView>> getCostCentersGroupedByClient() {
+
+        Map<String, List<CostCenterView>> ccGroup = new HashMap<String, List<CostCenterView>>();
+        List<CostCenter> costCenters = costCenterRepository.getCostCenters();
+        for (CostCenter costCenter : costCenters) {
+            CostCenterView costCenterView = new CostCenterView();
+            costCenterView.setCostCode(costCenter.getCostCode());
+            costCenterView.setName(costCenter.getName());
+            Client client = clientRepository.getClient(costCenter.getClient()
+                    .getId());
+            String clientName = client.getName();
+            if (ccGroup.containsKey(clientName)) {
+                ccGroup.get(clientName).add(costCenterView);
+            } else {
+                List<CostCenterView> costCenterViews = new ArrayList<CostCenterView>();
+                costCenterViews.add(costCenterView);
+                ccGroup.put(clientName, costCenterViews);
+            }
+        }
+        return ccGroup;
     }
 
     @Override

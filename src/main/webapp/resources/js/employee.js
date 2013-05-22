@@ -4,268 +4,107 @@
  * 
  */
 var empCostCodeController = function() {
-    var tableId = "empCostCodeListTable", tableNode = $("#" + tableId),
-    costCenterurl ="/admin/costCenter/listAsJson" ,
-    getHtmlTemplate = function() {
-        var id = getAppendId(), html = "<tr data-id=\""
-                + id
-                + "\"id=\"costCodeListTr_"
-                + id
-                + "\" ><td><select class=\"tableInput ccSelect\" id =\"costCodeListSelect_"
-                + id
-                + "\"></select>"
-                + "<td><a class=\"saveCostCodeItem\" href=\"javascript:;\"><i class=\"icon-upload\" ></i> </a></td>"
-                + "<td><a class=\"delCostCodeItem\" href=\"javascript:;\"><i class=\"icon-trash\" ></i> </a></td></tr>";
-        return html;
-    }, getAppendId = function() {
-        var lastTr = $("#empCostCodeListTable tbody>tr:last"), id = (lastTr.length === 0) ? 0
-                : parseInt(lastTr.attr('data-id'), 10) + 1;
-        return id;
+    var container = $("#projects"), costCenterUrl = "/admin/costCenter/grouped/listAsJson", getHtmlTemplate = function() {
+        return "<div class=\"controls\"><select multiple=\"multiple\" class=\"ccSelect\" id =\"costCodeListSelect\"></select></div>";
     }, getAllCostCodeForEmp = function(e) {
-        var employeeId = $('#employeeForm #id').val(), url = contextPath+"/admin/employee/costCenters/listAsJson?employeeId="
+        var employeeId = $('#employeeForm #id').val();
+        if (!employeeId) {
+            populateContainer([]);
+            return;
+        }
+        var url = contextPath
+                + "/admin/employee/costCenters/listAsJson?employeeId="
                 + employeeId;
-        $.ajax({
-            url : url,
-            type : "GET",
-            dataType : "json",
-            contentType : 'application/json',
-            success : function(response, textStatus, jqXHR) {
-                populateTable(response, true);
-                disableUploadControls();
-            },
-            error : function(response, textStatus, jqXHR) {
-                alert("error");
-            }
-        });
-    }, delCostCodeItem = function(e) {
-        var postData = [], rowData = {}, row = $(e.target).closest('tr'), id = row
-                .attr('data-id'), url = contextPath+"/admin/employee/costCenters/delete"+"?employeeId="+$('#id').val();
-        rowData = row.find('select').find('option:selected').val();
-        postData.push(rowData);
-        $.ajax({
-            url : url,
-            type : "POST",
-            dataType : "json",
-            data : JSON.stringify(postData),
-            contentType : 'application/json',
-            success : function(response, textStatus, jqXHR) {
-                deleteRow(row);
-            },
-            error : function(response, textStatus, jqXHR) {
-                alert("error");
-            }
-        });
-    }, deleteRow = function(row) {
-        if (row) {
-            row.remove();
-        } else {
-            tableNode.find('tbody').empty();
-        }
-    }, saveCostCodeItem = function(e) {
-        var row = $(e.target).closest('tr'), id = row.attr('data-id'), postArgs = [], postArg = {}, url = contextPath+"/admin/employee/costCenters/save"+"?employeeId="+$('#id').val();
-        postArg = row.find('select').find('option:selected').val();
-        postArgs.push(postArg);
-        $.ajax({
-            url : url,
-            type : "POST",
-            dataType : "json",
-            contentType : 'application/json',
-            data : JSON.stringify(postArgs),
-            success : function(response, textStatus, jqXHR) {
-                disableUploadControls(row);
-            },
-            error : function(response, textStatus, jqXHR) {
-                alert("error");
-            }
-        });
-    },
+        $.ajax(
+            {
+                url : url,
+                type : "GET",
+                dataType : "json",
+                contentType : 'application/json',
+                success : function(response, textStatus, jqXHR) {
+                    populateContainer(response);
+                },
+                error : function(response, textStatus, jqXHR) {
+                    alert("error");
+                }
+            });
+    }, buildGroupedOptions = function(args, selected) {
+        var html = "";
+        $
+                .each(
+                        args,
+                        function(key, value) {
+                            html = html + "<optgroup label=" + key + ">";
+                            $
+                                    .each(
+                                            value,
+                                            function(index, opts) {
+                                                html = html
+                                                        + "<option value=\""
+                                                        + opts.costCode
+                                                        + "\""
+                                                        + (selected
+                                                                && ($
+                                                                        .inArray(
+                                                                                opts.costCode,
+                                                                                selected) > -1) ? " selected "
+                                                                : "") + " >"
+                                                        + opts.name
+                                                        + "</option>";
+                                            });
+                            html + "</optgroup>";
+                        });
+        return html;
 
-    saveTable = function(e) {
-        var postData = [], url =contextPath+"/admin/employee/costCenters/save"+"?employeeId="+$('#id').val();
-        tableNode.find('tbody>tr').each(
-                function() {
-                    var row = {}, id = this.getAttribute('data-id');
-                    row = $(this).find('select').find(
-                            'option:selected').val();
-                    postData.push(row);
-                });
-        $.ajax({
-            url : url,
-            type : "POST",
-            dataType : "json",
-            data : JSON.stringify(postData),
-            contentType : 'application/json',
-            success : function(response, textStatus, jqXHR) {
-                disableUploadControls();
-            },
-            error : function(response, textStatus, jqXHR) {
-                alert("error");
-            }
-        });
-    }, appendEmptyLastRow = function() {
-        var id = getAppendId();
-        tableNode.append(getHtmlTemplate());
-        populateOptions({
-            selectedName : "HOL",
-            alwaysShow : true,
-            url : costCenterurl,
-            optionsContainer : "#costCodeListSelect_" + id,
-            id : id
-        });
-        var saveAllBtn = $('#saveTable');
-        if (saveAllBtn.attr('class').indexOf('disabled') >= 0) {
-            saveAllBtn.on('click', function(e) {
-                empCostCodeController.saveTable(e);
-            });
-            saveAllBtn.removeClass("disabled");
-        }
-    }, disableUploadControls = function(row) {
-        if (row) {
-            var control = row.find(".saveCostCodeItem");
-            if (control) {
-                control.removeClass("saveCostCodeItem")
-                control.empty();
-                control.html("<i class=\"icon-ok\" ></i> ");
-            }
-        } else {
-            $(".saveCostCodeItem").each(function(index, item) {
-                var control = $(item);
-                control.removeClass("saveCostCodeItem")
-                control.empty();
-                control.html("<i class=\"icon-ok\" ></i> ");
-            });
-        }
-        // all have been saved to the server
-        if ($(".icon-upload").length == 0) {
-            $('#saveTable').off('click');
-            $('#saveTable').addClass('disabled')
-        }
-    }, enableUploadControls = function(row) {
-        if (row) {
-            var control = $(row.find("a")[0]);
-            if (control) {
-                control.addClass("saveCostCodeItem")
-                control.empty();
-                control.html("<i class=\"icon-upload\" ></i> ");
-            }
-        } else {
-            $(".icon-ok").each(function(index, item) {
-                var control = $(item).closest('a');
-                control.addClass("saveCostCodeItem")
-                control.empty();
-                control.html("<i class=\"icon-upload\" ></i> ");
-            });
-        }
-        // all have not been saved to the server
-        if ($(".icon-upload").length > 0) {
-            $('#saveTable').on('click', function(e) {
-                saveTable(e);
-            });
-            $('#saveTable').removeClass('disabled')
-        }
-    }, initTable = function(args) {
-        if (tableNode) {
-            appendEmptyLastRow();
-        }
-    }, populateTable = function(response, rerender) {
-        if (rerender) {
-            // send the rerender flag if the table needs to be redrawn
-            tableNode.find('tbody').empty();
-        }
+    }, populateContainer = function(response) {
+        var selected = [];
+        container.empty().html(getHtmlTemplate());
         $.each(response, function(key, value) {
-            var id = getAppendId();
-            tableNode.append(getHtmlTemplate());
-            populateOptions({
-                selectedName : value,
-                alwaysShow : true,
-                url : costCenterurl,
-                optionsContainer : "#costCodeListSelect_" + id,
-                id : id
-            });
+            selected.push(value);
         });
-
+        populateOptions(
+            {
+                selectedName : selected,
+                alwaysShow : true,
+                url : costCenterUrl,
+                optionsContainer : "#costCodeListSelect"
+            });
+    }, onBeforeSave = function() {
+        var selected=[];
+         $(".ui-multiselect-menu input[aria-selected='true' ]").each(function(index, node){
+             selected.push(($(node).attr("value")));
+         }) ;   
+         $("#employeeForm").append("<input name=\"costCodeStr\" type=\"hidden\" value='"+selected.join(',')+"'>");
     }, populateOptions = function(args) {
-        var selectedName = args.selectedName, selectNode = $(args.optionsContainer), optionsHtml, optionsContainer = args.optionsContainer;
-        $(".ccSelect").each(function(id, node) {
-            if (node.innerHTML) {
-                optionsHtml = node.innerHTML;
-                return (false);
-            }
-        })
-        if (optionsHtml) {
-            if (selectNode.length === 0) {
-                var selectHtml = "<select id=\"costCodeListSelect_" + args.id
-                        + "\"></select>";
-                $("#empCostCodeListTable tbody>tr:last").find('td')[0].epmty()
-                        .append(selectHtml);
-                optionsContainer = "costCodeListSelect_" + args.id;
-            }
-            $(optionsContainer).empty().append(optionsHtml);
-            $(optionsContainer).find("option").filter(function() {
-                return $(this).val() == selectedName;
-            }).attr("selected", "selected");
-        } else {
-            // create this only once via ajax
-            adminSidebarController.populateOptions(args);
-        }
+        $
+                .ajax(
+                    {
+                        url : contextPath + args.url,
+                        type : "GET",
+                        dataType : "json",
+                        success : function(response, textStatus, jqXHR) {
+                            var html = buildGroupedOptions(response,
+                                    args.selectedName);
+                            $(args.optionsContainer).empty().append(html);
+                            $("#costCodeListSelect").multiselect()
+                                    .multiselectfilter();
+                        },
+                        error : function(response, textStatus, jqXHR) {
+                            alert("error");
+                        }
+                    });
     };
 
-    return ({
-        initTable : initTable,
-        addRow : appendEmptyLastRow,
-        populateOptions : populateOptions,
-        populateTable : populateTable,
-        getAllCostCodeForEmp : getAllCostCodeForEmp,
-        saveCostCodeItem : saveCostCodeItem,
-        delCostCodeItem : delCostCodeItem,
-        saveTable : saveTable,
-        enableUploadControls:enableUploadControls, 
-        tableNode : tableNode
-    });
+    return (
+        {   onBeforeSave : onBeforeSave,
+            getAllCostCodeForEmp : getAllCostCodeForEmp,
+            container : container
+        });
 }();
+$(document).ready(function() {
+    $("#employeeSave").on("click",function(e){
+        empCostCodeController.onBeforeSave();       
+    });
 
-$(document)
-        .ready(
-                function() {
-                   var  tableNode = empCostCodeController.tableNode;
-                    $(function() {
-                        $('#addProjectRow').click(function(e) {
-                            empCostCodeController.addRow();
-                        });
-                        $('#projectsToggle')
-                                .click(
-                                        function(e) {
-                                            if (!$("#id").val()) {
-                                                $("#errorMessages")
-                                                        .empty()
-                                                        .append(
-                                                                'You must save the employee before adding details.')
-                                                        .removeClass('hide');
-                                                return;
-                                            }
-                                            $("div#projects")
-                                                    .collapse("toggle");
-                                            // if shown fetch data
-                                            if ($('div#projects').attr('class')
-                                                    .indexOf('in') >= 0) {
-                                               
-                                                    empCostCodeController
-                                                            .getAllCostCodeForEmp(e);
-                                               
-                                            }
-                                        });
-                        tableNode.on("click", ".saveCostCodeItem", function(e) {
-                            empCostCodeController.saveCostCodeItem(e);
-                        });
-                        tableNode.on("click", ".delCostCodeItem", function(e) {
-                            empCostCodeController.delCostCodeItem(e);
-                        });
-                        $('#saveTable').on("click", function(e) {
-                            empCostCodeController.saveTable(e);
-                        });
-                       tableNode.on ("change", ".tableInput",function(e){
-                           empCostCodeController.enableUploadControls($(e.target).closest('tr'))
-                           });    
-                       
-                    });
-                });
+});
+

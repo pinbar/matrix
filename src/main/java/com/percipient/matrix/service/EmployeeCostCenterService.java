@@ -70,7 +70,17 @@ class EmployeeCostCenterServiceImpl implements EmployeeCostCenterService {
             List<String> costCodeList) {
         List<EmployeeCostCenter> empCCList = getEmployeeCostCenterList(
                 employeeId, costCodeList);
-        employeeCostCenterRepository.deleteForEmployee(empCCList);
+        employeeCostCenterRepository.delete(empCCList);
+    }
+
+    @Override
+    @Transactional
+    public List<CostCenterView> getCostCenterViewListForEmployees(
+            Integer employeeId) {
+        List<String> costCodes = getCostCodesForEmployee(employeeId);
+        List<CostCenterView> costCenterViewList = costCenterService
+                .getCCViewListFromCostCodes(costCodes);
+        return costCenterViewList;
     }
 
     @Override
