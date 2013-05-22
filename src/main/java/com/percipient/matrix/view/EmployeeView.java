@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -106,6 +107,10 @@ public class EmployeeView {
 
     public void setCostCodes(List<String> costCodes) {
         this.costCodes = costCodes;
+    }
+    
+    public String  getCostCodesStr() {
+         return StringUtils.join(costCodes, ",");
     }
 
 }

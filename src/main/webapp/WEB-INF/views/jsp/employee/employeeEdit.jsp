@@ -61,12 +61,14 @@
                 </form:select>
             </div>
         </div>
-        <div id="projects" class="control-group"></div>
+          <input id="costCodes" name="costCodes" type="hidden"
+                    value="${employee.costCodesStr}"/>
+         <div id="projects" class="control-group"></div>
         <div class="control-group">
             <div class="controls">
                 <input id="employeeSave" type="submit" class="btn btn-danger" value="Save" />
             </div>
         </div>
-    </form:form>
+       </form:form>
 
 </div>

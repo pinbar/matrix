@@ -71,7 +71,7 @@ public class EmployeeController {
     public String saveEmployee(
             @Valid @ModelAttribute(MODEL_ATTRIBUTE_EMPLOYEE) EmployeeView employeeView,
             BindingResult result, Model model, HttpServletRequest request) {
-        String costCodeStr = (String) request.getParameter("costCodeStr");
+        String costCodeStr = (String) request.getParameter("costCodes");
         String[] costCodes = costCodeStr != null ? costCodeStr.split(",")
                 : null;
         if (null != costCodes && costCodes.length > 0) {
@@ -155,7 +155,7 @@ public class EmployeeController {
                 AdministrationController.MODEL_ATTRIBUTE_DEFAULT_FORM,
                 "employeeEdit");
 
-        return "administrationPage";
+        return AdministrationController.ADMIN_PAGE;
     }
 
     public String gotoEmployeeList(Model model) {

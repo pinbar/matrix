@@ -5,11 +5,16 @@
  */
 var empCostCodeController = function() {
     var container = $("#projects"), costCenterUrl = "/admin/costCenter/grouped/listAsJson", getHtmlTemplate = function() {
-        return "<div class=\"controls\"><select multiple=\"multiple\" class=\"ccSelect\" id =\"costCodeListSelect\"></select></div>";
+        return "<label class=\"control-label\" for=\"costCodeListSelect\" title> <span> CostCenters</span></label>"
+                + "<div class=\"controls\">"
+                + "<select multiple=\"multiple\" class=\"ccSelect\" id =\"costCodeListSelect\"></select>"
+                + "</div>";
     }, getAllCostCodeForEmp = function(e) {
         var employeeId = $('#employeeForm #id').val();
-        if (!employeeId) {
-            populateContainer([]);
+        //from error condition 
+        var prePopulatedCostCodes = $("#costCodes").val().split(',');
+        if (!employeeId || prePopulatedCostCodes) {
+            populateContainer(prePopulatedCostCodes || []);
             return;
         }
         var url = contextPath
@@ -70,11 +75,12 @@ var empCostCodeController = function() {
                 optionsContainer : "#costCodeListSelect"
             });
     }, onBeforeSave = function() {
-        var selected=[];
-         $(".ui-multiselect-menu input[aria-selected='true' ]").each(function(index, node){
-             selected.push(($(node).attr("value")));
-         }) ;   
-         $("#employeeForm").append("<input name=\"costCodeStr\" type=\"hidden\" value='"+selected.join(',')+"'>");
+        var selected = [];
+        $(".ui-multiselect-menu input[aria-selected='true' ]").each(
+                function(index, node) {
+                    selected.push(($(node).attr("value")));
+                });
+        $("#costCodes").val(selected.join(','));
     }, populateOptions = function(args) {
         $
                 .ajax(
@@ -96,15 +102,19 @@ var empCostCodeController = function() {
     };
 
     return (
-        {   onBeforeSave : onBeforeSave,
+        {
+            onBeforeSave : onBeforeSave,
             getAllCostCodeForEmp : getAllCostCodeForEmp,
             container : container
         });
 }();
 $(document).ready(function() {
-    $("#employeeSave").on("click",function(e){
+    $("#employeeSave").on("click", function(e) {
         empCostCodeController.onBeforeSave();
     });
+    if(! $("#empUpdate").attr("class").indexOf("hide")>-1){
+        empCostCodeController.getAllCostCodeForEmp();
+        adminSidebarController.populateOptions({selectedName:$("#hiddenGroupName").val(), alwaysShow:true,url:"/admin/group/listAsJson",optionsContainer:"#groupName"});
+    }
 
 });
-
