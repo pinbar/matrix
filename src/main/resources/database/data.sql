@@ -42,8 +42,8 @@ INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (2, 'PTO');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (3, 'HOL');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (3, 'CCL');
 
---INSERT INTO timesheets (id, week_ending, status, employee_id) VALUES (1, '2012-12-30', 'PENDING', 1111);
---INSERT INTO timesheets (id, week_ending, status, employee_id) VALUES (2, '2012-12-23', 'APPROVED', 1111);
+--INSERT INTO timesheets (id, week_ending, status, employee_id) VALUES (1, '2012-12-30', 'pending', 1111);
+--INSERT INTO timesheets (id, week_ending, status, employee_id) VALUES (2, '2012-12-23', 'approved', 1111);
 
 --INSERT INTO timesheet_items (id, item_date, cost_code, hours) VALUES (1, '2012-12-23','PTO', 8);
 --INSERT INTO timesheet_items (id, item_date, cost_code, hours) VALUES (2, '2012-12-24','HOL', 8);

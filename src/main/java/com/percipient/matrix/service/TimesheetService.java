@@ -27,6 +27,7 @@ import com.percipient.matrix.domain.TimesheetItem;
 import com.percipient.matrix.session.UserInfo;
 import com.percipient.matrix.util.DateUtil;
 import com.percipient.matrix.util.HibernateUtil;
+import com.percipient.matrix.view.HrTimesheetView;
 import com.percipient.matrix.view.TSCostCenterView;
 import com.percipient.matrix.view.TimesheetItemView;
 import com.percipient.matrix.view.TimesheetView;
@@ -50,6 +51,10 @@ public interface TimesheetService {
     public void deleteCostCodeRow(Integer timesheetId, String costCode);
 
     public TimesheetView getTimesheet(Integer timesheetId);
+    
+    // HR Timesheet Management functions
+    
+    public List<HrTimesheetView> getTimesheetsByStatus(String status);
 
 }
 
@@ -70,6 +75,43 @@ class TimesheetServiceImpl implements TimesheetService {
 
     @Autowired
     HibernateUtil hibernateUtil;
+    
+    @Transactional
+    public List<HrTimesheetView> getTimesheetsByStatus(String status) {
+        
+        List<Timesheet> timesheets = timesheetRepository.getTimesheetsByStatus(status);
+        List<HrTimesheetView> hrTimesheets = getHrTimesheetViewListFromTimesheetList(timesheets);
+        return hrTimesheets;
+    }
+
+    private List<HrTimesheetView> getHrTimesheetViewListFromTimesheetList(
+            List<Timesheet> timesheets) {
+        List<HrTimesheetView> hrTimesheetViewList = new ArrayList<HrTimesheetView>();
+        HrTimesheetView hrTimesheetView;
+        for (Timesheet timesheet : timesheets) {
+            hrTimesheetView = new HrTimesheetView();
+            hrTimesheetView.setTimesheetId(timesheet.getId());
+            hrTimesheetView.setStatus(StringUtils.capitalize(timesheet
+                    .getStatus()));
+            hrTimesheetView.setHours(getTotalHours(timesheet));
+            hrTimesheetView.setWeekEnding(dateUtil.getAsString(timesheet
+                    .getWeekEnding()));
+            Employee employee = employeeRepository.getEmployee(timesheet
+                    .getEmployeeId());
+            hrTimesheetView.setEmployeeName(employee.getFirstName() + " "
+                    + employee.getLastName());
+            hrTimesheetViewList.add(hrTimesheetView);
+        }
+        return hrTimesheetViewList;
+    }
+
+    private Double getTotalHours(Timesheet timesheet) {
+        Double totalHours = 0.0;
+        for (TimesheetItem item : timesheet.getTimesheetItems()) {
+            totalHours += item.getHours();
+        }
+        return totalHours;
+    }
 
     @Transactional
     public List<TimesheetView> getTimesheetPreview() {
@@ -178,7 +220,7 @@ class TimesheetServiceImpl implements TimesheetService {
     public TimesheetView createTimesheet(Date weekEndingDate) {
         TimesheetView timesheetView = new TimesheetView();
         timesheetView.setWeekEnding(dateUtil.getAsString(weekEndingDate));
-        timesheetView.setStatus("PENDING");
+        timesheetView.setStatus("pending");
 
         List<TSCostCenterView> tsCCViews = new ArrayList<TSCostCenterView>();
         TSCostCenterView blankTSCCView = addTSCostCenterView(weekEndingDate);
@@ -238,7 +280,7 @@ class TimesheetServiceImpl implements TimesheetService {
             Employee employee = employeeRepository
                     .getEmployeeByUserName(userInfo.getUserName());
             timesheet.setEmployeeId(employee.getId());
-            timesheet.setStatus("PENDING");
+            timesheet.setStatus("pending");
             timesheet.setWeekEnding(dateUtil.getAsDate(timesheetView
                     .getWeekEnding()));
         }
@@ -370,7 +412,7 @@ class TimesheetServiceImpl implements TimesheetService {
         }
     }
 
-    public static Comparator<Timesheet> DateComparator = new Comparator<Timesheet>() {
+    private static Comparator<Timesheet> DateComparator = new Comparator<Timesheet>() {
         // reverse chronological
         @Override
         public int compare(Timesheet o1, Timesheet o2) {
@@ -379,7 +421,7 @@ class TimesheetServiceImpl implements TimesheetService {
 
     };
 
-    public static Comparator<TSCostCenterView> TSItemCostCodeComparator = new Comparator<TSCostCenterView>() {
+    private static Comparator<TSCostCenterView> TSItemCostCodeComparator = new Comparator<TSCostCenterView>() {
         // ascending order
         @Override
         public int compare(TSCostCenterView o1, TSCostCenterView o2) {

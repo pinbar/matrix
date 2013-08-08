@@ -14,6 +14,8 @@ import com.percipient.matrix.domain.TimesheetItem;
 
 public interface TimesheetRepository {
 
+    public List<Timesheet> getTimesheetsByStatus(String status);
+    
     public Timesheet getTimesheet(Integer id);
 
     public Timesheet getTimesheet(Employee employee, Date weekEnding);
@@ -37,6 +39,14 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
     @Autowired
     private SessionFactory sessionFactory;
 
+    @Override
+    public List<Timesheet> getTimesheetsByStatus(String status) {
+        String query = "from Timesheet as timesheet where timesheet.status = :status";
+        return (List<Timesheet>) sessionFactory.getCurrentSession()
+                .createQuery(query)
+                .setParameter("status", status).list();
+    }
+    
     @Override
     public Timesheet getTimesheet(Integer id) {
         return (Timesheet) sessionFactory.getCurrentSession().get(

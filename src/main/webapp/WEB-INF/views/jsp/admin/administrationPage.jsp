@@ -8,7 +8,6 @@
 <jsp:include page="../common/commonIncludes.jsp" />
 <link rel="stylesheet"
     href="${pageContext.request.contextPath}/resources/jquery/css/jqueryui-bootstrap.css">
-<
 <link rel="stylesheet"
     href="${pageContext.request.contextPath}/resources/jquery-ui-multiselect/css/jquery.multiselect.css">
 <link rel="stylesheet"

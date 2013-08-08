@@ -21,6 +21,10 @@
                     </li>
                     <li class="divider-vertical"></li>
                     <li><a
+                        href="${pageContext.request.contextPath}/hr/timesheets"><i
+                            class="icon-lock"></i> HR Timesheets</a>
+                    </li>
+                    <li><a
                         href="${pageContext.request.contextPath}/database/"><i
                             class="icon-hdd"></i> DB Tables</a>
                     </li>
