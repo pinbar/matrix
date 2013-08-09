@@ -13,6 +13,8 @@
     src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/datepicker/js/bootstrap-datepicker.js"></script>
+<script src="${pageContext.request.contextPath}/resources/bootstrap/js/respond.js"></script>
+
 <script src="${pageContext.request.contextPath}/resources/js/common.js"></script>
 
 <script>var contextPath = "${pageContext.request.contextPath}"</script>

@@ -12,6 +12,7 @@
     src="${pageContext.request.contextPath}/resources/jquery/js/jquery-1.9.1.min.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/bootstrap/js/respond.js"></script>
 </head>
 <body>
     <div class="container">
