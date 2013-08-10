@@ -6,12 +6,12 @@
 </head>
 <body>
     <jsp:include page="../common/header.jsp" />
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span2">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
                 <jsp:include page="landingSideBar.jsp" />
             </div>
-            <div class="span9">
+            <div class="col-10">
                 <div class="well">
                     <h4>Holiday Party</h4>
                     <p>All employees and contractors are invited to

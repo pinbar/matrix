@@ -11,7 +11,7 @@
             <div class="controls">
                 <form:hidden path="userName" />
                 <form:input path="userName" disabled="true" />
-                <form:errors class="text-error" path="userName"></form:errors>
+                <form:errors class="error" path="userName"></form:errors>
             </div>
         </div>
         <div class="control-group">
@@ -19,7 +19,7 @@
             </label>
             <div class="controls">
                 <form:password path="password" />
-                <form:errors class="text-error" path="password"></form:errors>
+                <form:errors class="error" path="password"></form:errors>
             </div>
         </div>
         <div class="control-group">
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="control-group">
-            <div id="errorMessages" class="text-error">${error}</div>
+            <div id="errorMessages" class="error">${error}</div>
             <div id="infoMessages" class="text-success">${info}</div>
         </div>
     </form:form>

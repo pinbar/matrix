@@ -1,10 +1,65 @@
 .spacer {
-    margin-top: 5px; 
+    margin-top: 5px;
 }
-hide {
+
+.hide {
     display: none;
 }
 
+.error {
+    color: red;
+}
+
+/*
+nav-list for sidebar
+*/
+.nav-list {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-bottom: 0;
+}
+
+.nav-list>li>a,.nav-list .nav-header {
+    margin-right: -15px;
+    margin-left: -15px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.nav-list>li>a {
+    padding: 3px 15px;
+}
+
+.nav-list>.active>a,.nav-list>.active>a:hover {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+    background-color: #0088cc;
+}
+
+.nav-list [class^="icon-"],.nav-list [class*=" icon-"] {
+    margin-right: 2px;
+}
+
+.nav-list .divider {
+    *width: 100%;
+    height: 1px;
+    margin: 9px 1px;
+    *margin: -5px 0 5px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+    border-bottom: 1px solid #ffffff;
+}
+
+.nav-header {
+    display: block;
+    padding: 3px 15px;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 20px;
+    color: #999999;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+}
+/* end nav-list */
 ul#users-inner,ul#groups-inner {
     height: 0px;
 }
@@ -62,18 +117,17 @@ div.dataTables_paginate {
     background: green;
 }
 
-ul.ui-multiselect-checkboxes  input[type="checkbox"], 
-ul.ui-multiselect-checkboxes  span
-{
+ul.ui-multiselect-checkboxes  input[type="checkbox"],ul.ui-multiselect-checkboxes  span
+    {
     width: auto;
-    vertical-align: top; 
+    vertical-align: top;
 }
-ul.ui-multiselect-checkboxes  span
-{
+
+ul.ui-multiselect-checkboxes  span {
     margin-left: 3px;
-    
 }
-button.ui-multiselect{
+
+button.ui-multiselect {
     line-height: 24px;
-    font-size : 14px;
+    font-size: 14px;
 }

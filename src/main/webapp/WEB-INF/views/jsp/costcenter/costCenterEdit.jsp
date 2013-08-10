@@ -11,7 +11,7 @@
                 Code</label>
             <div class="controls">
                 <form:input path="costCode" />
-                <form:errors class="text-error" path="costCode"></form:errors>
+                <form:errors class="error" path="costCode"></form:errors>
             </div>
         </div>
         <div class="control-group">
@@ -19,7 +19,7 @@
                 Name</label>
             <div class="controls">
                 <form:input path="name" />
-                <form:errors class="text-error" path="name"></form:errors>
+                <form:errors class="error" path="name"></form:errors>
             </div>
         </div>
         <div class="control-group">

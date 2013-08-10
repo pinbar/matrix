@@ -1,80 +1,79 @@
-$(document).ready(
-        function() {
-            var grpTableArgs = {
-                sourceUrl : contextPath + '/admin/group/listAsJson',
-                tableId : 'grpListTable',
-                filterInputId : 'grpListTable_filter',
-                columnConfig : [ {
-                    mData : 'id',
-                    sTitle : 'Group Id'
-                }, {
-                    mData : 'name',
-                    sTitle : 'Group Name'
-                }, {
-                    mData : 'authority',
-                    sTitle : 'Group Authority'
-                } ]
-            }, empTableArgs = {
-                sourceUrl : contextPath + '/admin/employee/listAsJson',
-                tableId : 'empListTable',
-                filterInputId : 'empListTable_filter',
-                columnConfig : [ {
-                    mData : 'id',
-                    sTitle : 'Employee Id'
-                }, {
-                    mData : 'userName',
-                    sTitle : 'User Name'
-                }, {
-                    mData : 'firstName',
-                    sTitle : 'First Name'
-                }, {
-                    mData : 'lastName',
-                    sTitle : 'Last Name'
-                }, {
-                    mData : 'groupName',
-                    sTitle : 'Group Name'
-                }, {
-                    mData : 'active',
-                    sTitle : 'Active'
-                } ]
-            }, costCenterTableArgs = {
-                sourceUrl : contextPath + '/admin/costCenter/listAsJson',
-                tableId : 'costCenterListTable',
-                filterInputId : 'costCenterListTable_filter',
-                columnConfig : [ {
-                    mData : 'id',
-                    sTitle : 'Id'
-                }, {
-                    mData : 'costCode',
-                    sTitle : 'Cost Code'
-                }, {
-                    mData : 'name',
-                    sTitle : 'Name'
-                }, {
-                    mData : 'clientName',
-                    sTitle : 'Client'
-                } ]
-            }, clientTableArgs = {
-                sourceUrl : contextPath + '/admin/client/listAsJson',
-                tableId : 'clientListTable',
-                filterInputId : 'clientListTable_filter',
-                columnConfig : [ {
-                    mData : 'id',
-                    sTitle : 'Client Id'
-                }, {
-                    mData : 'name',
-                    sTitle : 'Name'
-                } ]
-            };
+$(document).ready(function() {
+    var grpTableArgs = {
+        sourceUrl : contextPath + '/admin/group/listAsJson',
+        tableId : 'grpListTable',
+        filterInputId : 'grpListTable_filter',
+        columnConfig : [ {
+            mData : 'id',
+            sTitle : 'Group Id'
+        }, {
+            mData : 'name',
+            sTitle : 'Group Name'
+        }, {
+            mData : 'authority',
+            sTitle : 'Group Authority'
+        } ]
+    }, empTableArgs = {
+        sourceUrl : contextPath + '/admin/employee/listAsJson',
+        tableId : 'empListTable',
+        filterInputId : 'empListTable_filter',
+        columnConfig : [ {
+            mData : 'id',
+            sTitle : 'Employee Id'
+        }, {
+            mData : 'userName',
+            sTitle : 'User Name'
+        }, {
+            mData : 'firstName',
+            sTitle : 'First Name'
+        }, {
+            mData : 'lastName',
+            sTitle : 'Last Name'
+        }, {
+            mData : 'groupName',
+            sTitle : 'Group Name'
+        }, {
+            mData : 'active',
+            sTitle : 'Active'
+        } ]
+    }, costCenterTableArgs = {
+        sourceUrl : contextPath + '/admin/costCenter/listAsJson',
+        tableId : 'costCenterListTable',
+        filterInputId : 'costCenterListTable_filter',
+        columnConfig : [ {
+            mData : 'id',
+            sTitle : 'Id'
+        }, {
+            mData : 'costCode',
+            sTitle : 'Cost Code'
+        }, {
+            mData : 'name',
+            sTitle : 'Name'
+        }, {
+            mData : 'clientName',
+            sTitle : 'Client'
+        } ]
+    }, clientTableArgs = {
+        sourceUrl : contextPath + '/admin/client/listAsJson',
+        tableId : 'clientListTable',
+        filterInputId : 'clientListTable_filter',
+        columnConfig : [ {
+            mData : 'id',
+            sTitle : 'Client Id'
+        }, {
+            mData : 'name',
+            sTitle : 'Name'
+        } ]
+    };
 
-            initTable(empTableArgs);
-            initTable(grpTableArgs);
-            initTable(costCenterTableArgs);
-            initTable(clientTableArgs);
-            bindEmpResetPassword();
-            bindUpdateRows();
-            bindDeleteRows();
-        });
+    initTable(empTableArgs);
+    initTable(grpTableArgs);
+    initTable(costCenterTableArgs);
+    initTable(clientTableArgs);
+    bindEmpResetPassword();
+    bindUpdateRows();
+    bindDeleteRows();
+});
 function bindUpdateRows() {
     $("table")
             .on(
@@ -193,20 +192,20 @@ function initTable(args) {
             .push({
                 bSortable : false,
                 mData : null,
-                sDefaultContent : '<a class=\"updateRow\" href=\"javascript:;\" > <i class=\"icon-pencil\"></i> </a>'
+                sDefaultContent : '<a class=\"updateRow\" href=\"javascript:;\" > <i class=\"glyphicon glyphicon-pencil\"></i> </a>'
             });
     columns
             .push({
                 bSortable : false,
                 mData : null,
-                sDefaultContent : '<a class=\"deleteRow\" href=\"javascript:;\"><i class=\"icon-trash\" ></i> </a>'
+                sDefaultContent : '<a class=\"deleteRow\" href=\"javascript:;\"><i class=\"glyphicon glyphicon-trash\" ></i> </a>'
             });
     if (args.tableId === "empListTable") {
         columns
                 .push({
                     bSortable : false,
                     mData : null,
-                    sDefaultContent : '<a class=\"resetEmp\" href=\"javascript:;\"><i class=\"icon-lock\" ></i> </a>'
+                    sDefaultContent : '<a class=\"resetEmp\" href=\"javascript:;\"><i class=\"glyphicon  glyphicon-lock\" ></i> </a>'
                 });
     }
 
@@ -247,7 +246,7 @@ function populate(container, data) {
                 $('[id=' + key + ']', container).val(value);
                 var checkBox = $('[type= "checkbox"]' + '[name=' + key + ']',
                         container);
-                if (checkBox) 
+                if (checkBox)
                     // TODO check if value is a list if a list loop through
                     checkBox.attr('checked', value);
                 if (key === "groupName") {
@@ -258,11 +257,22 @@ function populate(container, data) {
                 }
             });
     if (container.attr("id") == "empUpdate") {
-        adminSidebarController.populateOptions({selectedName:selectedGroupName, alwaysShow:true,url:"/admin/group/listAsJson",optionsContainer:"#groupName"});
+        adminSidebarController.populateOptions({
+            selectedName : selectedGroupName,
+            alwaysShow : true,
+            url : "/admin/group/listAsJson",
+            optionsContainer : "#groupName"
+        });
         empCostCodeController.getAllCostCodeForEmp();
     }
     if (container.attr("id") == "costCenterUpdate") {
-        adminSidebarController.populateOptions({selectedName:selectedClientName,alwaysShow:true,url:"/admin/client/listAsJson",optionsContainer:"#clientName"});;
+        adminSidebarController.populateOptions({
+            selectedName : selectedClientName,
+            alwaysShow : true,
+            url : "/admin/client/listAsJson",
+            optionsContainer : "#clientName"
+        });
+        ;
     }
     $("#errorMessages").empty();
 }

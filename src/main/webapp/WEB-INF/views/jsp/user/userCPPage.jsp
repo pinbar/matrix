@@ -8,12 +8,12 @@
 </head>
 <body>
     <jsp:include page="../common/header.jsp" />
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span3">
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
                 <jsp:include page="userCPSideBar.jsp" />
             </div>
-            <div class="span8">
+            <div class="col-9">
                 <c:if test="${changePass != null}">
                     <jsp:include page="changePassword.jsp" />
                 </c:if>

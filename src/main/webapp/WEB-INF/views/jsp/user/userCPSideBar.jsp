@@ -4,11 +4,11 @@
         <li class="nav-header">User Control Panel</li>
         <li><a
             href="${pageContext.request.contextPath}/usercp/changepassword"><i
-                class="icon-pencil"></i> Change Password</a>
+                class="glyphicon glyphicon-pencil"></i> Change Password</a>
         </li>
         <li><a
             href="${pageContext.request.contextPath}/usercp/empcontactinfo"><i
-                class="icon-envelope"></i> Contact Information</a>
-        </li>
+                class="glyphicon glyphicon-envelope"></i> Contact
+                Information</a></li>
     </ul>
 </div>

@@ -13,14 +13,14 @@
 
 <body>
     <jsp:include page="../common/header.jsp" />
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span2">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
                 <jsp:include page="timesheetSideBar.jsp" />
             </div>
 
-            <div class="span10">
-                <div id="errorMessages" class="text-error">${error}</div>
+            <div class="col-10">
+                <div id="errorMessages" class="error">${error}</div>
                 <form:form id="timeSheet" class="form-horizontal"
                     method="post" modelAttribute="timesheet"
                     action="${pageContext.request.contextPath}/timesheet/save">
@@ -74,8 +74,7 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].costCode"></form:errors>
-                                            </div>
-                                        </td>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].monday.hours"
                                                 type="text"
@@ -90,8 +89,7 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].monday.hours"></form:errors>
-                                            </div>
-                                        </td>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].tuesday.hours"
                                                 type="text"
@@ -106,8 +104,7 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].tuesday.hours"></form:errors>
-                                            </div>
-                                        </td>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].wednesday.hours"
                                                 type="text"
@@ -122,8 +119,7 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].wednesday.hours"></form:errors>
-                                            </div>
-                                        </td>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].thursday.hours"
                                                 type="text"
@@ -138,8 +134,7 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].thursday.hours"></form:errors>
-                                            </div>
-                                        </td>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].friday.hours"
                                                 type="text"
@@ -154,8 +149,7 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].friday.hours"></form:errors>
-                                            </div>
-                                        </td>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].saturday.hours"
                                                 type="text"
@@ -170,8 +164,7 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].saturday.hours"></form:errors>
-                                            </div>
-                                        </td>
+                                            </div></td>
                                         <td><form:input
                                                 path="tsCostCenters[${status.index}].sunday.hours"
                                                 type="text"
@@ -186,13 +179,11 @@
                                                 <form:errors
                                                     class="text-error"
                                                     path="tsCostCenters[${status.index}].sunday.hours"></form:errors>
-                                            </div>
-                                        </td>
+                                            </div></td>
                                         <td><a
                                             href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}&weekEnding=${timesheet.weekEnding}"><span
                                                 class="icon-trash"></span>
-                                        </a>
-                                        </td>
+                                        </a></td>
                                     </tr>
                                 </c:forEach>
                             </c:if>

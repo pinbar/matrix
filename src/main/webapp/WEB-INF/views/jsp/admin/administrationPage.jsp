@@ -16,12 +16,12 @@
 </head>
 <body>
     <jsp:include page="../common/header.jsp" />
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div id="sidebar" class="span2">
+    <div class="container">
+        <div class="row">
+            <div id="sidebar" class="col-3">
                 <jsp:include page="adminSideBar.jsp" />
             </div>
-            <div id="content" class="span10">
+            <div id="content" class="col-9">
                 <div id="adminMsgs"
                     class="${form !='admin' ? 'hide' : ''}">
                     <ul>

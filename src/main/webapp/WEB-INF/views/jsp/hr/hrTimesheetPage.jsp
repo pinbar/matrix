@@ -13,13 +13,13 @@
 
 <body>
     <jsp:include page="../common/header.jsp" />
-    <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span2">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
                 <jsp:include page="hrTimesheetSideBar.jsp" />
             </div>
 
-            <div class="span10 well">
+            <div class="col-10 well">
                 <div id="errorMessages" class="text-error">${error}</div>
                 <table class="table table-bordered table-condensed">
                     <thead>
