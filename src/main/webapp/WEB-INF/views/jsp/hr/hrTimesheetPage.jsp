@@ -37,29 +37,40 @@
                     <tbody>
                         <c:forEach items="${hrTimesheetList}"
                             var="hrTimesheet">
-                            <tr data-employeeid="${hrTimesheet.employeeId}" data-id="${hrTimesheet.timesheetId}">
-                                <td class=checkBoxRow><input type="checkbox" id="${hrTimesheet.employeeId}"></td>
+                            <tr
+                                data-employeeid="${hrTimesheet.employeeId}"
+                                data-id="${hrTimesheet.timesheetId}">
+                                <td class=checkBoxRow><input
+                                    type="checkbox"
+                                    id="${hrTimesheet.employeeId}"></td>
                                 <td>${hrTimesheet.weekEnding}</td>
-                                <td >${hrTimesheet.employeeName}</td>
+                                <td>${hrTimesheet.employeeName}</td>
                                 <td>${hrTimesheet.status}</td>
                                 <td>${hrTimesheet.hours}</td>
-                                <td><a class="timesheetEdit" href="javascript:;"> <i class="glyphicon glyphicon-pencil"></i> </a></td>
-                                <td> <a class="timesheetApprove" href="javascript:;"><i class="glyphicon glyphicon-ok" ></i> </a></td>
-                                <td> <a class="timesheetReject" href="javascript:;"><i class="glyphicon glyphicon-remove" ></i> </a></td>
-                                
+                                <td><a class="timesheetEdit"
+                                    href="javascript:;"> <i
+                                        class="glyphicon glyphicon-pencil"></i>
+                                </a></td>
+                                <td><a class="timesheetApprove"
+                                    href="javascript:;"><i
+                                        class="glyphicon glyphicon-ok"></i>
+                                </a></td>
+                                <td><a class="timesheetReject"
+                                    href="javascript:;"><i
+                                        class="glyphicon glyphicon-remove"></i>
+                                </a></td>
+
                             </tr>
 
                         </c:forEach>
                     </tbody>
                 </table>
-                <jsp:include page="timesheetDialog.jsp"/>
+                <jsp:include page="timesheetDialog.jsp" />
             </div>
         </div>
     </div>
-     <script
+    <script
         src="${pageContext.request.contextPath}/resources/js/hrTimesheet.js"></script>
-     <script
-        src="${pageContext.request.contextPath}/resources/jquery/js/jquery-ui-1.10.3.custom.min.js"></script>
 
 </body>
 </html>

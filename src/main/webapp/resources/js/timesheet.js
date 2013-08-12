@@ -1,7 +1,7 @@
 var timeSheetFileUpload = function() {
     "use strict";
     var init = function() {
-         $('#fileupload')
+        $('#fileupload')
                 .fileupload(
                         {
                             maxFileSize : 5000000,
@@ -112,56 +112,92 @@ var timeSheetFileUpload = function() {
                                 return rows;
                             }
                         });
-    },
-    removeFileErrorRow = function (node){
+    }, removeFileErrorRow = function(node) {
         node.closest("tr").remove();
     };
-    
+
     return ({
         init : init,
-        removeFileErrorRow: removeFileErrorRow
+        removeFileErrorRow : removeFileErrorRow
     });
 }();
 
-$(document).ready(function() {
-    timeSheetFileUpload.init();
-    $('#dp').datepicker({
-        format : 'mm-dd-yyyy'
-    });
-
-    $('#tsCreateBtn').click(function() {
-        var tsCreateDate = $('#dp').val();
-        window.location = contextPath + "/timesheet/new/" + tsCreateDate;
-    });
-
-    $(function() {
-        $('#toggleAttachments').click(function(e) {
-            // TODO check for timesheetId
-            if (!$("#timesheetId").val()) {
-                $("#errorMessages").empty().append('You must save the timesheet before adding attachments.');
-                return;
-            }
-            $('div#attachments').collapse("toggle");
-            if ($('div#attachments').attr('class').indexOf('in') >= 0) {
-                // TODO check for content
-                if ($("table#filePresentation tr").length > 0 ) {
-                      return;
-                } else {
-                    $.ajax({
-                        url : contextPath + '/attachment/timesheet/all?timesheetId='+$("#timesheetId").val(),
-                        type : "GET",
-                        dataType : "json",
-                        context: $('#fileupload')[0]
-                    }).done(function(response) {
-                        $(this).fileupload('option', 'done')
-                        .call(this, null, {result: response});
-                    }).fail( // TODO : error styling and error stuff
-                    function(response, textStatus, jqXHR) {
-                        alert("error");
+$(document)
+        .ready(
+                function() {
+                    timeSheetFileUpload.init();
+                    $('#dp').datepicker({
+                        format : 'mm-dd-yyyy'
                     });
-                }
-            }
-        });
 
-    });
-});
+                    $('#tsCreateBtn').click(
+                            function() {
+                                var tsCreateDate = $('#dp').val();
+                                window.location = contextPath
+                                        + "/timesheet/new/" + tsCreateDate;
+                            });
+
+                    $(function() {
+                        $('#toggleAttachments')
+                                .click(
+                                        function(e) {
+                                            // TODO check for timesheetId
+                                            if (!$("#timesheetId").val()) {
+                                                $("#errorMessages")
+                                                        .empty()
+                                                        .append(
+                                                                'You must save the timesheet before adding attachments.');
+                                                return;
+                                            }
+                                            $('div#attachments').collapse(
+                                                    "toggle");
+                                            if ($('div#attachments').attr(
+                                                    'class').indexOf('in') >= 0) {
+                                                // TODO check for content
+                                                if ($("table#filePresentation tr").length > 0) {
+                                                    return;
+                                                } else {
+                                                    $
+                                                            .ajax(
+                                                                    {
+                                                                        url : contextPath
+                                                                                + '/attachment/timesheet/all?timesheetId='
+                                                                                + $(
+                                                                                        "#timesheetId")
+                                                                                        .val(),
+                                                                        type : "GET",
+                                                                        dataType : "json",
+                                                                        context : $('#fileupload')[0]
+                                                                    })
+                                                            .done(
+                                                                    function(
+                                                                            response) {
+                                                                        $(this)
+                                                                                .fileupload(
+                                                                                        'option',
+                                                                                        'done')
+                                                                                .call(
+                                                                                        this,
+                                                                                        null,
+                                                                                        {
+                                                                                            result : response
+                                                                                        });
+                                                                    })
+                                                            .fail(
+                                                                    // TODO :
+                                                                    // error
+                                                                    // styling
+                                                                    // and error
+                                                                    // stuff
+                                                                    function(
+                                                                            response,
+                                                                            textStatus,
+                                                                            jqXHR) {
+                                                                        alert("error");
+                                                                    });
+                                                }
+                                            }
+                                        });
+
+                    });
+                });
