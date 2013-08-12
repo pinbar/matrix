@@ -6,6 +6,8 @@ public class HrTimesheetView {
     private String weekEnding;
     private String status;
     private String employeeName;
+    private Integer employeeId;
+
     private Double hours;
 
     public Integer getTimesheetId() {
@@ -38,6 +40,14 @@ public class HrTimesheetView {
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
+    }
+
+    public Integer getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
     }
 
     public Double getHours() {

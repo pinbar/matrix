@@ -55,7 +55,20 @@ public class TimesheetController {
         return "timesheet/timesheetPage";
     }
 
-    @RequestMapping(value = "/{weekEnding}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String getTimesheetById(@PathVariable Integer id,
+            @RequestParam(value = "employee") Integer employeeId, Model model) {
+
+        TimesheetView timesheet = timesheetService.getTimesheet(id);
+
+        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheet);
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(employeeId);
+        model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
+        return "timesheet/timesheetContent";
+    }
+
+    @RequestMapping(value = "weekendings/{weekEnding}", method = RequestMethod.GET)
     public String getTimesheetByWeekEnding(@PathVariable String weekEnding,
             Model model) {
 

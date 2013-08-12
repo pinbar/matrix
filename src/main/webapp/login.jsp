@@ -19,7 +19,7 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-offset-4 well">
+            <div class="col-lg-4 col-lg-offset-4  well">
                 <legend>Please Sign In</legend>
                 <c:if test="${not empty param.error}">
                     <div class="error">

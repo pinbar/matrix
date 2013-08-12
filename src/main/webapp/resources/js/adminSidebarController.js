@@ -102,11 +102,11 @@ var adminSidebarController = function() {
                                             response,
                                             function(key, value) {
                                                 var grpName = value.name, grpVal;
-                                                grpVal= value.costCode ? value.costCode
+                                                grpVal = value.costCode ? value.costCode
                                                         : value.name;
                                                 html = html
                                                         + "<option value=\""
-                                                        + grpVal 
+                                                        + grpVal
                                                         + "\""
                                                         + (args.selectedName
                                                                 && (grpName === args.selectedName)
@@ -122,7 +122,7 @@ var adminSidebarController = function() {
                         }
                     });
         }
-    }
+    };
     return ({
         costcenterAddLinkClicked : _onCostcenterAdd,
         costcenterListLinkClicked : _onCostcenterList,

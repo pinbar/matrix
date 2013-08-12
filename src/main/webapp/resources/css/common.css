@@ -116,6 +116,9 @@ div.dataTables_paginate {
     height: 18px;
     background: green;
 }
+.checkBoxRow {
+   vertical-align: middle;
+}
 
 ul.ui-multiselect-checkboxes  input[type="checkbox"],ul.ui-multiselect-checkboxes  span
     {

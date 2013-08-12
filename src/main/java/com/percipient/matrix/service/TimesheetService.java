@@ -51,9 +51,9 @@ public interface TimesheetService {
     public void deleteCostCodeRow(Integer timesheetId, String costCode);
 
     public TimesheetView getTimesheet(Integer timesheetId);
-    
+
     // HR Timesheet Management functions
-    
+
     public List<HrTimesheetView> getTimesheetsByStatus(String status);
 
 }
@@ -75,11 +75,12 @@ class TimesheetServiceImpl implements TimesheetService {
 
     @Autowired
     HibernateUtil hibernateUtil;
-    
+
     @Transactional
     public List<HrTimesheetView> getTimesheetsByStatus(String status) {
-        
-        List<Timesheet> timesheets = timesheetRepository.getTimesheetsByStatus(status);
+
+        List<Timesheet> timesheets = timesheetRepository
+                .getTimesheetsByStatus(status);
         List<HrTimesheetView> hrTimesheets = getHrTimesheetViewListFromTimesheetList(timesheets);
         return hrTimesheets;
     }
@@ -98,6 +99,7 @@ class TimesheetServiceImpl implements TimesheetService {
                     .getWeekEnding()));
             Employee employee = employeeRepository.getEmployee(timesheet
                     .getEmployeeId());
+            hrTimesheetView.setEmployeeId(timesheet.getEmployeeId());
             hrTimesheetView.setEmployeeName(employee.getFirstName() + " "
                     + employee.getLastName());
             hrTimesheetViewList.add(hrTimesheetView);
