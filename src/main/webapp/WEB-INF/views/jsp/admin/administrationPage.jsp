@@ -18,10 +18,10 @@
     <jsp:include page="../common/header.jsp" />
     <div class="container">
         <div class="row">
-            <div id="sidebar" class="col-3">
+            <div class="col-sm-4 col-3  nav-collapse collapse sidebar-collapse">
                 <jsp:include page="adminSideBar.jsp" />
             </div>
-            <div id="content" class="col-9">
+            <div id="content" class="col-sm-8 col-9">
                 <div id="adminMsgs"
                     class="${form !='admin' ? 'hide' : ''}">
                     <ul>

@@ -15,11 +15,11 @@
     <jsp:include page="../common/header.jsp" />
     <div class="container">
         <div class="row">
-            <div class="col-2">
+            <div
+                class="col-5 col-sm-3 col-lg-2 nav-collapse collapse sidebar-collapse">
                 <jsp:include page="hrTimesheetSideBar.jsp" />
             </div>
-
-            <div class="col-10 well">
+            <div class="col-12 col-sm-9 col-lg-10 well">
                 <div id="errorMessages" class="text-error">${error}</div>
                 <table class="table table-bordered table-condensed">
                     <thead>
@@ -46,28 +46,27 @@
                                 <td>${hrTimesheet.weekEnding}</td>
                                 <td>${hrTimesheet.employeeName}</td>
                                 <td>${hrTimesheet.status}</td>
-                                <td>${hrTimesheet.hours}</td>
-                                <td><a class="timesheetEdit"
+                                <td class="hours">${hrTimesheet.hours}</td>
+                                <td class="timesheetEdit"><a
                                     href="javascript:;"> <i
                                         class="glyphicon glyphicon-pencil"></i>
                                 </a></td>
-                                <td><a class="timesheetApprove"
+                                <td class="timesheetReject"><a
                                     href="javascript:;"><i
                                         class="glyphicon glyphicon-ok"></i>
                                 </a></td>
-                                <td><a class="timesheetReject"
+                                <td class="timesheetReject"><a
                                     href="javascript:;"><i
                                         class="glyphicon glyphicon-remove"></i>
                                 </a></td>
-
                             </tr>
-
                         </c:forEach>
                     </tbody>
                 </table>
                 <jsp:include page="timesheetDialog.jsp" />
             </div>
         </div>
+
     </div>
     <script
         src="${pageContext.request.contextPath}/resources/js/hrTimesheet.js"></script>

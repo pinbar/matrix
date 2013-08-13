@@ -45,7 +45,7 @@
                         type="checkbox" /> Remember Me
                     </label>
                     <button type="submit" name="submit"
-                        class="btn btn-info btn-block">Sign in</button>
+                        class="form-control btn btn-info btn-block">Sign in</button>
                 </form>
             </div>
         </div>

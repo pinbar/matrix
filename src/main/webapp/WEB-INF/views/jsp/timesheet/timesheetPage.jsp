@@ -14,16 +14,15 @@
     <jsp:include page="../common/header.jsp" />
     <div class="container">
         <div class="row">
-            <div class="col-2">
+            <div
+                class="col-4 col-sm-3 col-lg-2 nav-collapse collapse sidebar-collapse">
                 <jsp:include page="timesheetSideBar.jsp" />
             </div>
 
-         <div class="col-10">
-           <div id="errorMessages" class="error">${error}</div>
-              
-            <jsp:include page="timesheetContent.jsp" />  
+            <div class="col-8 col-sm-9 col-lg-10">
+                <div id="errorMessages" class="error">${error}</div>
+                <jsp:include page="timesheetContent.jsp" />
+            </div>
         </div>
-    </div>
-
-    </body>
+</body>
 </html>

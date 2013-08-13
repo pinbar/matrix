@@ -35,7 +35,7 @@
                                                     test="${not empty costCenters}">
                                                     <form:select
                                                         path="tsCostCenters[${status.index}].costCode"
-                                                        class="input-small">
+                                                        class="form-control form-inline input-lg">
                                                         <form:option
                                                             value=""
                                                             label="Please select.."
@@ -197,7 +197,8 @@
                         <input type="hidden" name="timesheetId"
                             id="timesheetId" value="${timesheet.id}" />
                         <div class="fileupload-buttonbar">
-                            <div class="span10">
+                        <div class="spacer"> </div>
+                            <div class="col-12 col-sm-10 col-lg-10">
                                 <!-- The fileinput-button span is used to style the file input field as button -->
                                 <span
                                     class="btn btn-success fileinput-button">
@@ -227,7 +228,7 @@
                                 <span class="fileupload-loading"></span>
                             </div>
                             <!-- The global progress information -->
-                            <div class="span5 fileupload-progress fade">
+                            <div class="col-5 fileupload-progress fade">
                                 <!-- The global progress bar -->
                                 <div
                                     class="progress progress-success progress-striped active"

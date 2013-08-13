@@ -3,12 +3,17 @@
 <div class="navbar">
     <div class="container">
         <button type="button" class="navbar-toggle"
+            data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="icon-bar"><span>SideBar</span></span> <span
+                class="icon-bar"></span> <span class="icon-bar"></span>
+        </button>
+        <button type="button" class="navbar-toggle"
             data-toggle="collapse"
             data-target=".navbar-responsive-collapse">
             <span class="icon-bar"></span> <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="brand" href="#" name="top">Web Matrix</a>
+        <a class="navbar-brand" href="#" name="top">Web Matrix</a>
         <div class="nav-collapse collapse  navbar-responsive-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/"><i
@@ -23,7 +28,7 @@
                     href="${pageContext.request.contextPath}/hr/timesheets"><i
                         class="glyphicon glyphicon-lock"></i> HR
                         Timesheets</a></li>
-                <li><a
+                <li class="visible-md"><a
                     href="${pageContext.request.contextPath}/database/"><i
                         class="glyphicon glyphicon-hdd"></i> DB Tables</a></li>
                 <sec:authorize access="hasRole('ROLE_ADMIN')">

@@ -11,14 +11,6 @@
                 <!-- TODO change the title in js -->
             </div>
             <div class="modal-body">
-                <!--  <jsp:include
-                        page="../timesheet/timesheetContent.jsp" /> -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                    data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save
-                    changes</button>
             </div>
         </div>
         <!-- /.modal-content -->

@@ -8,10 +8,10 @@
     <jsp:include page="../common/header.jsp" />
     <div class="container">
         <div class="row">
-            <div class="col-sm-6 col-2">
+            <div class="col-sm-4 col-3 nav-collapse collapse sidebar-collapse">
                 <jsp:include page="landingSideBar.jsp" />
             </div>
-            <div class="col-sm-8 col-10">
+            <div class="col-sm-8 col-9">
                 <div class="well">
                     <h4>Holiday Party</h4>
                     <p>All employees and contractors are invited to

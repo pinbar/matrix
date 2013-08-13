@@ -1,3 +1,12 @@
+IMP!!!
+TODO 
+-- hover for tablets 
+-- graceful folding for tables and controls
+ 
+
+
+
+
 To Do:
 ======
 1. UI change from drop-down to "feeder" for employee/ costocde <br>
