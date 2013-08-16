@@ -1,8 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<div class="well">
+<div>
     <table id="empListTable"
-        class="table table-striped table-bordered table-condensed">
+        class="table table-striped table-bordered table-condensed rt">
         <thead>
             <tr>
                 <th>Employee Id</th>

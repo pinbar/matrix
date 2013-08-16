@@ -107,37 +107,53 @@ ul#users-inner,ul#groups-inner {
 .rt th {
     text-align: left;
     background: #fff2b2;
+     cursor: pointer;
+    font-weight: bold;
+    background-repeat: no-repeat;
+    background-position: center right;
+    padding-left: 20px;
+    border-right: 1px solid #dad9c7;
+    margin-left: -1px;
 }
 
 @media only screen and (max-width: 40em) { /*640*/
-    #rt1 {
+    #rt1,#empListTable {
         display: block;
         position: relative;
         width: 100%;
     }
-    #rt1 thead {
+    #rt1 thead,#empListTable thead {
         display: block;
         float: left;
     }
-    #rt1 tbody {
+    #rt1 tbody,#empListTable tbody {
         display: block;
         width: auto;
         position: relative;
         overflow-x: auto;
         white-space: nowrap;
     }
-    #rt1 thead tr {
+    #rt1 thead tr,#empListTable thead tr {
         display: block;
     }
     #rt1 th {
         display: block;
         line-height: 3.333333em;
     }
-    #rt1 tbody tr {
+    #empListTable th {
+        display: block;
+        background-repeat: no-repeat;
+        background-position: center right;
+        padding-left: 20px;
+        border-right: 1px solid #dad9c7;
+        margin-left: -1px;
+        width: auto;
+    }
+    #rt1 tbody tr,#empListTable tbody tr {
         display: inline-block;
         vertical-align: top;
     }
-    #rt1 td {
+    #rt1 td,#empListTable td {
         display: block;
         min-height: 1.25em;
     }
@@ -171,7 +187,7 @@ th {
     background-position: center right;
     padding-left: 20px;
     border-right: 1px solid #dad9c7;
-    margin-left: -1px;;
+    margin-left: -1px;
 }
 
 th.sorting {

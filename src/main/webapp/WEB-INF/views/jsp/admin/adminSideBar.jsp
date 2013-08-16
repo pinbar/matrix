@@ -12,35 +12,32 @@
 
 <div class="sidebar-nav visible-sm">
     <ul class="nav nav-list-sm nav navbar-nav" id="admin-sidebar-nav">
-        <jsp:include page="adminSideBarMenu.jsp" />
+        <li class="nav-header">Admin Menu</li>
+        <li class="divider"></li>
+        <li><a id="adminHome" href="#"><i
+                class="glyphicon glyphicon-home"></i> Admin Home</a></li>
+        <li class="divider"></li>
+        <li><a id="emplist" href="#"><i
+                class="glyphicon glyphicon-list-alt"></i> Employee List</a></li>
+        <li><a id="empadd" href="#"><i
+                class="glyphicon glyphicon-plus"></i> Add Employee</a></li>
+        <li class="divider"></li>
+        <li><a id="grouplist" href="#"><i
+                class="glyphicon glyphicon-list-alt"></i> Group List</a></li>
+        <li><a id="groupadd" href="#"><i
+                class="glyphicon glyphicon-plus"></i> Add Group</a></li>
+        <li class="divider"></li>
+        <li><a id="clientlist" href="#"><i
+                class="glyphicon glyphicon-list-alt"></i> Client List</a></li>
+        <li><a id="clientadd" href="#"><i
+                class="glyphicon glyphicon-plus"></i> Add Client</a></li>
+        <li class="divider"></li>
+        <li><a id="costcenterlist" href="#"><i
+                class="glyphicon glyphicon-list-alt"></i> Cost Center
+                List</a></li>
+        <li><a id="costcenteradd" href="#"><i
+                class="glyphicon glyphicon-plus"></i> Add Cost Center</a></li>
     </ul>
 </div>
 
 
-<!-- different menu styles -->
-<!-- 
-<div class="sidebar-nav">
-	<div class="well">
-		<ul class="nav nav-list">
-			<li class="nav-header">Admin Menu</li>
-			<li class="active"><a
-				href="${pageContext.request.contextPath}/admin/"><i
-					class="icon-home"></i> Dashboard</a></li>
-			<li><a
-				href="${pageContext.request.contextPath}/admin/groups/new"><i
-					class="icon-edit"></i> Add Group</a></li>
-			<li><a
-				href="${pageContext.request.contextPath}/admin/groups/tab"><i
-					class="icon-user"></i> Group List</a></li>
-
-			<li class="dropdown-submenu"><a tabindex="-1" href="#">Group
-					Options</a>
-				<ul class="dropdown-menu well"
-					style="width: 150px; padding: 8px 0;">
-					<li><a href="#"><i class="icon-add"></i>Add Group</a></li>
-					<li><a href="#"><i class="icon-delete"></i>Group List</a></li>
-				</ul></li>
-		</ul>
-	</div>
-</div>
-			 -->
