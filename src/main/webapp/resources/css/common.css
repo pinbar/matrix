@@ -9,8 +9,9 @@
 .error {
     color: red;
 }
+
 .clear {
-    clear : both;
+    clear: both;
 }
 
 /*
@@ -22,20 +23,19 @@ nav-list for sidebar
     margin-bottom: 0;
 }
 
-.nav-list>li>a,.nav-list .nav-header,
-.nav-list-sm>li>a, .nav-list-sm .nav-header {
+.nav-list>li>a,.nav-list .nav-header,.nav-list-sm>li>a,.nav-list-sm .nav-header
+    {
     margin-right: -15px;
     margin-left: -15px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-.nav-list>li>a,
-.nav-list-sm>li>a {
+.nav-list>li>a,.nav-list-sm>li>a {
     padding: 3px 15px;
 }
 
-.nav-list>.active>a,.nav-list>.active>a:hover,
-.nav-list-sm>.active>a, .nav-list-sm>.active>a:hover {
+.nav-list>.active>a,.nav-list>.active>a:hover,.nav-list-sm>.active>a,.nav-list-sm>.active>a:hover
+    {
     color: #ffffff;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
     background-color: #0088cc;
@@ -70,6 +70,96 @@ ul#users-inner,ul#groups-inner {
     height: 0px;
 }
 
+/*responsive table*/
+.cf:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+* html .cf {
+    zoom: 1;
+}
+
+*:first-child+html .cf {
+    zoom: 1;
+}
+
+.rt {
+    width: 100%;
+    font-size: 0.75em; /*12*/
+    line-height: 1.25em; /*15*/
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.rt th,.rt td {
+    margin: 0;
+    padding: 0.4166em; /*10*/
+    vertical-align: top;
+    border: 1px solid #babcbf;
+    background: #fff;
+}
+
+.rt th {
+    text-align: left;
+    background: #fff2b2;
+}
+
+@media only screen and (max-width: 40em) { /*640*/
+    #rt1 {
+        display: block;
+        position: relative;
+        width: 100%;
+    }
+    #rt1 thead {
+        display: block;
+        float: left;
+    }
+    #rt1 tbody {
+        display: block;
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    #rt1 thead tr {
+        display: block;
+    }
+    #rt1 th {
+        display: block;
+        line-height: 3.333333em;
+    }
+    #rt1 tbody tr {
+        display: inline-block;
+        vertical-align: top;
+    }
+    #rt1 td {
+        display: block;
+        min-height: 1.25em;
+    }
+
+    /* sort out borders */
+    .rt th {
+        border-bottom: 0;
+    }
+    .rt td {
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 0;
+    }
+    .rt tbody tr {
+        border-right: 1px solid #babcbf;
+    }
+    .rt th:last-child,.rt td:last-child {
+        border-bottom: 1px solid #babcbf;
+    }
+}
+
+/*end responsive table*/
 .table-auto {
     width: auto;
 }
@@ -122,8 +212,9 @@ div.dataTables_paginate {
     height: 18px;
     background: green;
 }
+
 .checkBoxRow {
-   vertical-align: middle;
+    vertical-align: middle;
 }
 
 ul.ui-multiselect-checkboxes  input[type="checkbox"],ul.ui-multiselect-checkboxes  span

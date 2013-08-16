@@ -7,7 +7,6 @@
 <jsp:include page="../common/commonIncludes.jsp" />
 <link rel="stylesheet"
     href="${pageContext.request.contextPath}/resources/jQuery-File-Upload/css/jquery.fileupload-ui.css">
-
 </head>
 
 <body>
@@ -15,14 +14,15 @@
     <div class="container">
         <div class="row">
             <div
-                class="col-4 col-sm-3 col-lg-2 nav-collapse collapse sidebar-collapse">
+                class="col-pull-4 col-sm-3 col-lg-2 nav-collapse collapse sidebar-collapse">
                 <jsp:include page="timesheetSideBar.jsp" />
             </div>
 
-            <div class="col-8 col-sm-9 col-lg-10">
+            <div class="col-push-8 col-sm-9 col-lg-10">
                 <div id="errorMessages" class="error">${error}</div>
                 <jsp:include page="timesheetContent.jsp" />
             </div>
         </div>
+     </div>   
 </body>
 </html>

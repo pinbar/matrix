@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class TSCostCenterView {
@@ -90,6 +91,7 @@ public class TSCostCenterView {
         this.sunday = sunday;
     }
 
+    @JsonIgnore
     public List<TimesheetItemView> getTimesheetItems() {
         List<TimesheetItemView> tsItems = new ArrayList<TimesheetItemView>();
         tsItems.add(getMonday());

@@ -122,10 +122,20 @@ var timeSheetFileUpload = function() {
     });
 }();
 
+var timesheetTableController = function() {
+    var init = function() {
+    };
+    return ({
+        init : init,
+    // timesheetTable: timesheetTable
+    });
+}();
+
 $(document)
         .ready(
                 function() {
                     timeSheetFileUpload.init();
+                    // timesheetTableController.init();
                     $('#dp').datepicker({
                         format : 'mm-dd-yyyy'
                     });
@@ -189,6 +199,7 @@ $(document)
                                                                     // styling
                                                                     // and error
                                                                     // stuff
+
                                                                     function(
                                                                             response,
                                                                             textStatus,

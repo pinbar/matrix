@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.percipient.matrix.service.EmployeeCostCenterService;
 import com.percipient.matrix.service.TimesheetService;
@@ -53,6 +54,14 @@ public class TimesheetController {
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
         return "timesheet/timesheetPage";
+    }
+
+    @RequestMapping(value = "/getAsJson/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public TimesheetView getTimesheetByIdAsJson(@PathVariable Integer id,
+            @RequestParam(value = "employee") Integer employeeId) {
+        TimesheetView timesheet = timesheetService.getTimesheet(id);
+        return timesheet;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
