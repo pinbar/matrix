@@ -93,8 +93,7 @@ public class HrTimesheetController {
             return "timesheet/timesheetContent";
         }
         timesheetService.saveTimesheet(timesheetView);
-        timesheetView = timesheetService.getTimesheet(dateUtil
-                .getAsDate(timesheetView.getWeekEnding()));
+        timesheetView = timesheetService.getTimesheet(timesheetView.getId());
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
                 timesheetView);
         return getTimesheetByStatus(timesheetView.getStatus(), model);

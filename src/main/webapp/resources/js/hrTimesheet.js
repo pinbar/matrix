@@ -20,6 +20,7 @@ var hrTimesheetController = function() {
 
     _setupAddCostCodeRowAction = function() {
         $('#addRow').attr('href', 'javascript:;');
+        $('#addRow').off('click', '**');
         $('#addRow').on('click', function() {
             _addCostCodeRow();
         });
@@ -27,45 +28,47 @@ var hrTimesheetController = function() {
 
     _setupSaveTimesheetAction = function() {
         $('#saveTimesheet').attr('type', 'button');
+        $('#saveTimesheet').off('click', '**');
         $('#saveTimesheet').on('click', function() {
             _saveTimesheet();
         });
     },
 
     _saveTimesheet = function() {
-        $
-                .ajax({
-                    url : contextPath + '/hr/timesheets/save?employee='
-                            + employeeId,
-                    type : "POST",
-                    dataType : "html",
-                    data : $("#timesheet").serialize(),
-                    success : function(response, textStatus, jqXHR) {
-                        var errNode = null;
-                        errNode = $.parseHTML(response).filter(
-                                function(node, index) {
-                                    return node.id == "errorMessages";
-                                })[0];
+        $.ajax({
+            url : contextPath + '/hr/timesheets/save?employee=' + employeeId,
+            type : "POST",
+            dataType : "html",
+            data : $("#timesheet").serialize(),
+            success : function(response, textStatus, jqXHR) {
+                var errNode = null;
+                errNode = $.parseHTML(response).filter(function(node, index) {
+                    return node.id == "errorMessages";
+                })[0];
 
-                        var err = errNode ? errNodeerrNode.innerHTML.length > 0
-                                : false;
+                var err = errNode ? errNode.innerHTML.length > 0 : false;
 
-                        if (err) {
-                            $("#errorMessages").show();
-                            $(".modal-body").html(response);
-                            _setupAddCostCodeRowAction();
-                            _setupSaveTimesheetAction();
-                        } else {
-                            $('#timesheetModal').modal('hide');
-                        }
-                    },
-                    // TODO : error styling and error stuff
-                    error : function(response, textStatus, jqXHR) {
-                        $(".modal-body").html(response);
-                        _setupAddCostCodeRowAction();
-                        _setupSaveTimesheetAction();
-                    }
-                });
+                if (err) {
+                    $("#errorMessages").show();
+                    $(".modal-body").html(response);
+                    _setupAddCostCodeRowAction();
+                    _setupSaveTimesheetAction();
+                } else {
+                    var hours = 0.00;
+                    $('.timesheetHours').each(function(i) {
+                        hours = hours + parseFloat(this.value);
+                    });
+                    $(row).find('.hours').text(hours.toFixed(2));
+                    $('#timesheetModal').modal('hide');
+                }
+            },
+            // TODO : error styling and error stuff
+            error : function(response, textStatus, jqXHR) {
+                $(".modal-body").html(response);
+                _setupAddCostCodeRowAction();
+                _setupSaveTimesheetAction();
+            }
+        });
     },
 
     _addCostCodeRow = function() {
