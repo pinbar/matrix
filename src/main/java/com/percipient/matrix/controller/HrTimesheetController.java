@@ -107,10 +107,6 @@ public class HrTimesheetController {
         if (timesheetId == null) {
             model.addAttribute("error",
                     "You must save the timesheet before adding rows.");
-            TimesheetView timesheetView = timesheetService
-                    .getTimesheet(timesheetId);
-            model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
-                    timesheetView);
             List<CostCenterView> costCenters = employeeCostCenterService
                     .getCostCenterViewListForEmployees(employeeId);
             model.addAttribute(
@@ -128,6 +124,32 @@ public class HrTimesheetController {
                 TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
                 costCenters);
         return "timesheet/timesheetContent";
+    }
+
+    @RequestMapping(value = "/deleteCostCodeRow", method = RequestMethod.GET)
+    public String deleteTimesheetCostCodeRow(Model model,
+            @RequestParam(value = "timesheetId") Integer timesheetId,
+            @RequestParam(value = "employee") Integer employeeId,
+            @RequestParam(value = "costCode", required = false) String costCode) {
+
+        if (timesheetId == null) {
+            model.addAttribute("error",
+                    "You must save the timesheet before deleting rows.");
+            List<CostCenterView> costCenters = employeeCostCenterService
+                    .getCostCenterViewListForEmployees(employeeId);
+            model.addAttribute(
+                    TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
+                    costCenters);
+            return "timesheet/timesheetContent";
+        }
+
+        timesheetService.deleteCostCodeRow(timesheetId, costCode);
+        TimesheetView timesheetView = timesheetService
+                .getTimesheet(timesheetId);
+        model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
+                timesheetView);
+        return "timesheet/timesheetContent";
+
     }
 
 }

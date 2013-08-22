@@ -117,26 +117,26 @@ ul#users-inner,ul#groups-inner {
 }
 
 @media only screen and (max-width: 40em) { /*640*/
-    #rt1,#empListTable {
+    #timesheetTable,#empListTable {
         display: block;
         position: relative;
         width: 100%;
     }
-    #rt1 thead,#empListTable thead {
+    #timesheetTable thead,#empListTable thead {
         display: block;
         float: left;
     }
-    #rt1 tbody,#empListTable tbody {
+    #timesheetTable tbody,#empListTable tbody {
         display: block;
         width: auto;
         position: relative;
         overflow-x: auto;
         white-space: nowrap;
     }
-    #rt1 thead tr,#empListTable thead tr {
+    #timesheetTable thead tr,#empListTable thead tr {
         display: block;
     }
-    #rt1 th {
+    #timesheetTable th {
         display: block;
         line-height: 3.333333em;
     }
@@ -149,11 +149,11 @@ ul#users-inner,ul#groups-inner {
         margin-left: -1px;
         width: auto;
     }
-    #rt1 tbody tr,#empListTable tbody tr {
+    #timesheetTable tbody tr,#empListTable tbody tr {
         display: inline-block;
         vertical-align: top;
     }
-    #rt1 td,#empListTable td {
+    #timesheetTable td,#empListTable td {
         display: block;
         min-height: 1.25em;
     }

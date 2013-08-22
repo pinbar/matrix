@@ -4,7 +4,7 @@
 <form:form id="timesheet" class="form-horizontal" method="post"
     modelAttribute="timesheet"
     action="${pageContext.request.contextPath}/timesheet/save">
-    <table id="rt1"class="table table-bordered table-striped cf rt">
+    <table id="timesheetTable" class="table table-bordered table-striped cf rt">
         <thead>
             <tr>
                 <th>Cost Center</th>
@@ -28,7 +28,7 @@
 
                 <c:forEach items="${timesheet.tsCostCenters}"
                     varStatus="status" var="tsCostCenters">
-                    <tr>
+                    <tr data-costcode= "${timesheet.tsCostCenters[status.index].costCode}">
                         <td><c:choose>
                                 <c:when test="${not empty costCenters}">
                                     <form:select
@@ -135,7 +135,7 @@
                                 <form:errors class="error"
                                     path="tsCostCenters[${status.index}].sunday.hours"></form:errors>
                             </div></td>
-                        <td><a
+                        <td><a class="delCostCodeRow"
                             href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}&weekEnding=${timesheet.weekEnding}"><span
                                 class="glyphicon glyphicon-trash"></span>
                         </a></td>

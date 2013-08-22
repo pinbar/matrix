@@ -13,8 +13,7 @@ var hrTimesheetController = function() {
             });
         });
         $('#timesheetModal').on('shown.bs.modal', function() {
-            _setupAddCostCodeRowAction();
-            _setupSaveTimesheetAction();
+            _setupActionControls();
         });
     },
 
@@ -26,12 +25,43 @@ var hrTimesheetController = function() {
         });
     },
 
+    _setupDeleteCostCodeRowAction = function() {
+        $('.delCostCodeRow').each(function() {
+            $(this).attr('href', 'javascript:;');
+            $(this).off('click', '**');
+            $(this).on('click', function(e) {
+                _deleteCostCodeRow(e);
+            });
+        });
+
+    },
+
     _setupSaveTimesheetAction = function() {
         $('#saveTimesheet').attr('type', 'button');
         $('#saveTimesheet').off('click', '**');
         $('#saveTimesheet').on('click', function() {
             _saveTimesheet();
         });
+    },
+
+    _deleteCostCodeRow = function(e) {
+        var costCode = $(e.target).closest('tr').data('costcode');
+        $.ajax({
+            url : contextPath + '/hr/timesheets/deleteCostCodeRow?timesheetId='
+                    + id + '&employee=' + employeeId + '&costCode=' + costCode,
+            type : "GET",
+            dataType : "html",
+            success : function(response, textStatus, jqXHR) {
+                $(".modal-body").html(response);
+                _setupActionControls();
+            },
+            // TODO : error styling and error stuff
+            error : function(response, textStatus, jqXHR) {
+                $(".modal-body").html(response);
+                _setupActionControls();
+            }
+        });
+
     },
 
     _saveTimesheet = function() {
@@ -51,8 +81,7 @@ var hrTimesheetController = function() {
                 if (err) {
                     $("#errorMessages").show();
                     $(".modal-body").html(response);
-                    _setupAddCostCodeRowAction();
-                    _setupSaveTimesheetAction();
+                    _setupActionControls();
                 } else {
                     var hours = 0.00;
                     $('.timesheetHours').each(function(i) {
@@ -65,8 +94,7 @@ var hrTimesheetController = function() {
             // TODO : error styling and error stuff
             error : function(response, textStatus, jqXHR) {
                 $(".modal-body").html(response);
-                _setupAddCostCodeRowAction();
-                _setupSaveTimesheetAction();
+                _setupActionControls();
             }
         });
     },
@@ -79,17 +107,17 @@ var hrTimesheetController = function() {
             // dataType : "html",
             success : function(response, textStatus, jqXHR) {
                 $(".modal-body").html(response);
-                _setupAddCostCodeRowAction();
-                _setupSaveTimesheetAction();
+                _setupActionControls();
             },
             // TODO : error styling and error stuff
             error : function(response, textStatus, jqXHR) {
                 $(".modal-body").html(response);
-                _setupAddCostCodeRowAction();
-                _setupSaveTimesheetAction();
+                _setupActionControls();
             }
         });
-    }, _onTimeSheetEdit = function(e) {
+    },
+
+    _onTimeSheetEdit = function(e) {
         row = $(e.target).closest('tr');
         id = $(row).data('id');
         status = $(row).data('status');
@@ -101,6 +129,12 @@ var hrTimesheetController = function() {
                     'remote' : contextPath + '/hr/timesheets/' + status + '/'
                             + id + '?employee=' + employeeId
                 });
+    },
+
+    _setupActionControls = function() {
+        _setupAddCostCodeRowAction();
+        _setupSaveTimesheetAction();
+        _setupDeleteCostCodeRowAction();
     };
 
     return ({
