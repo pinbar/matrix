@@ -19,7 +19,6 @@
             </div>
 
             <div class="col-push-8 col-sm-9 col-lg-10">
-                <div id="errorMessages" class="error">${error}</div>
                 <jsp:include page="timesheetContent.jsp" />
             </div>
         </div>

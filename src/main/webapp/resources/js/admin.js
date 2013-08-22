@@ -73,7 +73,14 @@ $(document).ready(function() {
     bindEmpResetPassword();
     bindUpdateRows();
     bindDeleteRows();
+    /* override width = 0  for responsive style */
+    updateTableHeaderStyle();
 });
+
+function updateTableHeaderStyle(){
+    $('.rt th').width('auto');
+}
+
 function bindUpdateRows() {
     $("table")
             .on(

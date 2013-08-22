@@ -19,7 +19,7 @@
                 class="col-5 col-sm-3 col-lg-2 nav-collapse collapse sidebar-collapse">
                 <jsp:include page="hrTimesheetSideBar.jsp" />
             </div>
-            <div class="col-12 col-sm-9 col-lg-10 well">
+            <div class="col-12 col-sm-9 col-lg-10">
                 <div id="errorMessages" class="text-error">${error}</div>
                 <table class="table table-bordered table-condensed">
                     <thead>
@@ -39,7 +39,8 @@
                             var="hrTimesheet">
                             <tr
                                 data-employeeid="${hrTimesheet.employeeId}"
-                                data-id="${hrTimesheet.timesheetId}">
+                                data-id="${hrTimesheet.timesheetId}"
+                                data-status="${hrTimesheet.status}">
                                 <td class=checkBoxRow><input
                                     type="checkbox"
                                     id="${hrTimesheet.employeeId}"></td>

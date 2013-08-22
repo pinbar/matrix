@@ -5,7 +5,7 @@
         class="table table-striped table-bordered table-condensed rt">
         <thead>
             <tr>
-                <th>Employee Id</th>
+                <th >Employee Id</th>
                 <th>User Name</th>
                 <th>First Name</th>
                 <th>Last Name</th>

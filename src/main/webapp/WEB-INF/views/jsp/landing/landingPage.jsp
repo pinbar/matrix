@@ -8,10 +8,10 @@
     <jsp:include page="../common/header.jsp" />
     <div class="container">
         <div class="row">
-            <div class="col-sm-4 col-3 nav-collapse collapse sidebar-collapse">
+            <div class="col-sm-4 col-lg-3 col-3 nav-collapse collapse sidebar-collapse">
                 <jsp:include page="landingSideBar.jsp" />
             </div>
-            <div class="col-sm-8 col-9">
+            <div class="col-sm-8 col-lg-9 col-9">
                 <div class="well">
                     <h4>Holiday Party</h4>
                     <p>All employees and contractors are invited to
@@ -23,10 +23,10 @@
                         <span class="badge badge-info">Posted
                             2012-10-02 20:47:04</span>
                         <div class="pull-right">
-                            <span class="label">holiday</span> <span
-                                class="label">party</span> <span
-                                class="label">casino</span> <span
-                                class="label">money</span>
+                            <span class="badge">holiday</span> <span
+                                class="badge">party</span> <span
+                                class="badge">casino</span> <span
+                                class="b">money</span>
                         </div>
                     </div>
                     <hr>
@@ -39,10 +39,10 @@
                         <span class="badge badge-info">Posted
                             2012-08-02 20:47:04</span>
                         <div class="pull-right">
-                            <span class="label">health</span> <span
-                                class="label">insurance</span> <span
-                                class="label">save</span> <span
-                                class="label">money</span>
+                            <span class="badge">health</span> <span
+                                class="badge">insurance</span> <span
+                                class="badge">save</span> <span
+                                class="badge">money</span>
                         </div>
                     </div>
                     <hr>

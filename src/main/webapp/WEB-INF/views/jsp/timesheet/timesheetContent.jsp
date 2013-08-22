@@ -1,7 +1,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div id="errorMessages" class="error">${error}</div>
-<form:form id="timeSheet" class="form-horizontal" method="post"
+<form:form id="timesheet" class="form-horizontal" method="post"
     modelAttribute="timesheet"
     action="${pageContext.request.contextPath}/timesheet/save">
     <table id="rt1"class="table table-bordered table-striped cf rt">
@@ -146,12 +146,11 @@
 
     </table>
     <div class="control-group">
-        <a
-                            href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&weekEnding=${timesheet.weekEnding}">
-        <input id="addCostCodeBtn" type="button" class="btn btn-info"
-            value="Add Row">
-        </a>
-        <input type="submit" id="saveTimesheet" class="btn btn-success"
+        <a id="addRow"
+            href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&weekEnding=${timesheet.weekEnding}">
+            <input id="addCostCodeBtn" type="button"
+            class="btn btn-info" value="Add Row">
+        </a> <input type="submit" id="saveTimesheet" class="btn btn-success"
             value="Save"> <input type="reset" id="cancel"
             name="cancel" class="btn btn-warning" value="Cancel">
         <input type="button" id="submitTimesheet" class="btn btn-danger"
