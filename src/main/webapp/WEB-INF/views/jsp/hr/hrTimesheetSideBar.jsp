@@ -1,5 +1,5 @@
 
-<div class="sidebar-nav well well-lg visible-lg">
+<div class="sidebar-nav visible-lg visible-md">
     <ul class="nav nav-list">
         <li class="nav-header">Status</li>
         <li><a
@@ -9,18 +9,8 @@
     </ul>
 </div>
 
-<div class="visible-md sidebar-nav well well-sm">
-    <ul class="nav nav-list">
-        <li class="nav-header">Status</li>
-        <li><a
-            href="${pageContext.request.contextPath}/hr/timesheets/pending">Pending</a></li>
-        <li><a href="#">Submitted</a></li>
-        <li><a href="#">Approved</a></li>
-    </ul>
-</div>
-
-<div class="visible-sm">
-    <ul class="nav-list-sm nav navbar-nav">
+<div class="sidebar-nav visible-sm visible-xs pull-left">
+    <ul class="nav-list-sm nav ">
         <li class="nav-header">Status</li>
         <li><a
             href="${pageContext.request.contextPath}/hr/timesheets/pending">Pending</a></li>

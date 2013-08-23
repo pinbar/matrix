@@ -1,4 +1,4 @@
-<div class="sidebar-nav visible-lg visible-md ">
+<div class="sidebar-nav visible-lg visible-md "> 
     <ul class="nav nav-list">
         <li class="nav-header">Announcements</li>
         <li><a href="#">Holiday Party</a></li>
@@ -12,7 +12,7 @@
 </div>
 
 <div class="sidebar-nav visible-sm visible-xs pull-left">
-    <ul class="nav nav-list-sm navbar-nav">
+    <ul class=" nav nav-list-sm ">
         <li class="nav-header">Announcements</li>
         <li><a href="#">Holiday Party</a></li>
         <li><a href="#">Open Enrollment - Hea ...</a></li>

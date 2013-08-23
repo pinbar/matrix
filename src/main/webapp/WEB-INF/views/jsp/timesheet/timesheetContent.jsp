@@ -1,7 +1,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div id="errorMessages" class="error">${error}</div>
-<form:form id="timesheet" class="form-horizontal" method="post"
+<form:form data-status="${timesheet.status}" id="timesheet" class="form-horizontal" method="post"
     modelAttribute="timesheet"
     action="${pageContext.request.contextPath}/timesheet/save">
     <table id="timesheetTable" class="table table-bordered table-striped cf rt">
@@ -136,8 +136,9 @@
                                     path="tsCostCenters[${status.index}].sunday.hours"></form:errors>
                             </div></td>
                         <td><a class="delCostCodeRow"
-                            href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}&weekEnding=${timesheet.weekEnding}"><span
-                                class="glyphicon glyphicon-trash"></span>
+                            href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}&weekEnding=${timesheet.weekEnding}">
+                            <span
+                                class="glyphicon glyphicon-trash"></span> 
                         </a></td>
                     </tr>
                 </c:forEach>
@@ -214,6 +215,24 @@
         </table>
 
     </form:form>
+</div>
+
+<div id="statusEdit"  class="modal fade"role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Modal title</h4>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div>
 <!-- The template to display files available for upload -->
 <script

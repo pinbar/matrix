@@ -16,10 +16,11 @@
     <div class="container">
         <div class="row">
             <div
-                class="col-5 col-sm-3 col-lg-2 nav-collapse collapse sidebar-collapse">
+                class="col-5 col-sm-3 col-lg-2 navbar-collapse collapse sidebar-collapse">
                 <jsp:include page="hrTimesheetSideBar.jsp" />
             </div>
             <div class="col-12 col-sm-9 col-lg-10">
+                <div class="well">
                 <div id="errorMessages" class="text-error">${error}</div>
                 <table class="table table-bordered table-condensed">
                     <thead>
@@ -67,7 +68,7 @@
                 <jsp:include page="timesheetDialog.jsp" />
             </div>
         </div>
-
+</div>
     </div>
     <script
         src="${pageContext.request.contextPath}/resources/js/hrTimesheet.js"></script>

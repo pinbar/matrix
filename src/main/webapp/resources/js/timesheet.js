@@ -122,36 +122,38 @@ var timeSheetFileUpload = function() {
     });
 }();
 
-var timesheetTableController = function() {
-    var init = function() {
-    };
-    return ({
-        init : init,
-    // timesheetTable: timesheetTable
+function disableTimesheet(){
+    var status = $('#timesheet').data('status').toUpperCase();
+    if (status !== 'PENDING'){
+        $("form#timesheet").find("input, select ,textarea").attr("disabled","disabled");
+        $("form#timesheet").find('a').attr('class','hide');
+        
+    }
+}
+
+function initializeDatePicker(){
+    $('#dp').datepicker({
+        format : 'mm-dd-yyyy'
     });
-}();
+
+    $('#tsCreateBtn').click(
+            function() {
+                var tsCreateDate = $('#dp').val();
+                window.location = contextPath
+                        + "/timesheet/new/" + tsCreateDate;
+            });
+}
 
 $(document)
         .ready(
                 function() {
+                    disableTimesheet();
                     timeSheetFileUpload.init();
-                    // timesheetTableController.init();
-                    $('#dp').datepicker({
-                        format : 'mm-dd-yyyy'
-                    });
-
-                    $('#tsCreateBtn').click(
-                            function() {
-                                var tsCreateDate = $('#dp').val();
-                                window.location = contextPath
-                                        + "/timesheet/new/" + tsCreateDate;
-                            });
-
+                    initializeDatePicker();
                     $(function() {
                         $('#toggleAttachments')
                                 .click(
                                         function(e) {
-                                            // TODO check for timesheetId
                                             if (!$("#timesheetId").val()) {
                                                 $("#errorMessages")
                                                         .empty()

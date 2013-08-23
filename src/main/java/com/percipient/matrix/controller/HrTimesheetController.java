@@ -78,25 +78,23 @@ public class HrTimesheetController {
             @Valid @ModelAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET) TimesheetView timesheetView,
             BindingResult result, Model model,
             @RequestParam(value = "employee") Integer employeeId) {
-
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(employeeId);
+        model.addAttribute(
+                TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
+                costCenters);
         if (result.hasErrors()) {
             model.addAttribute("error",
                     "Please input correct values where indicated .....");
             model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
                     timesheetView);
-
-            List<CostCenterView> costCenters = employeeCostCenterService
-                    .getCostCenterViewListForEmployees(employeeId);
-            model.addAttribute(
-                    TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
-                    costCenters);
             return "timesheet/timesheetContent";
         }
         timesheetService.saveTimesheet(timesheetView);
         timesheetView = timesheetService.getTimesheet(timesheetView.getId());
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
                 timesheetView);
-        return getTimesheetByStatus(timesheetView.getStatus(), model);
+        return "timesheet/timesheetContent";
     }
 
     @RequestMapping(value = "/addCostCodeRow", method = RequestMethod.POST)
@@ -104,25 +102,23 @@ public class HrTimesheetController {
             @RequestParam(value = "timesheetId") Integer timesheetId,
             @RequestParam(value = "employee") Integer employeeId, Model model) {
 
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(employeeId);
+        model.addAttribute(
+                TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
+                costCenters);
+
         if (timesheetId == null) {
             model.addAttribute("error",
                     "You must save the timesheet before adding rows.");
-            List<CostCenterView> costCenters = employeeCostCenterService
-                    .getCostCenterViewListForEmployees(employeeId);
-            model.addAttribute(
-                    TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
-                    costCenters);
+
             return "timesheet/timesheetContent";
         }
         TimesheetView timesheetView = timesheetService
                 .addCostCodeRow(timesheetId);
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
                 timesheetView);
-        List<CostCenterView> costCenters = employeeCostCenterService
-                .getCostCenterViewListForEmployees(employeeId);
-        model.addAttribute(
-                TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
-                costCenters);
+
         return "timesheet/timesheetContent";
     }
 
@@ -132,14 +128,15 @@ public class HrTimesheetController {
             @RequestParam(value = "employee") Integer employeeId,
             @RequestParam(value = "costCode", required = false) String costCode) {
 
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(employeeId);
+        model.addAttribute(
+                TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
+                costCenters);
+
         if (timesheetId == null) {
             model.addAttribute("error",
                     "You must save the timesheet before deleting rows.");
-            List<CostCenterView> costCenters = employeeCostCenterService
-                    .getCostCenterViewListForEmployees(employeeId);
-            model.addAttribute(
-                    TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
-                    costCenters);
             return "timesheet/timesheetContent";
         }
 

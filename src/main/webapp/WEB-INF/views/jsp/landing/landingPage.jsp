@@ -8,7 +8,7 @@
     <jsp:include page="../common/header.jsp" />
     <div class="container">
         <div class="row">
-            <div class="col-sm-4 col-lg-3 col-3 nav-collapse collapse sidebar-collapse">
+            <div class="col-sm-4 col-lg-3 col-3 navbar-collapse collapse sidebar-collapse">
                 <jsp:include page="landingSideBar.jsp" />
             </div>
             <div class="col-sm-8 col-lg-9 col-9">

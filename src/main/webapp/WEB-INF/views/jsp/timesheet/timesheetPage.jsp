@@ -14,11 +14,11 @@
     <div class="container">
         <div class="row">
             <div
-                class="col-pull-4 col-sm-3 col-lg-2 nav-collapse collapse sidebar-collapse">
+                class="col-4 col-sm-3 col-lg-2 navbar-collapse collapse sidebar-collapse">
                 <jsp:include page="timesheetSideBar.jsp" />
             </div>
 
-            <div class="col-push-8 col-sm-9 col-lg-10">
+            <div class="col-8 col-sm-9 col-lg-10">
                 <jsp:include page="timesheetContent.jsp" />
             </div>
         </div>

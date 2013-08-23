@@ -54,6 +54,7 @@ var hrTimesheetController = function() {
             success : function(response, textStatus, jqXHR) {
                 $(".modal-body").html(response);
                 _setupActionControls();
+                _updateTotalHours();
             },
             // TODO : error styling and error stuff
             error : function(response, textStatus, jqXHR) {
@@ -62,6 +63,20 @@ var hrTimesheetController = function() {
             }
         });
 
+    },
+
+    _clearErrorsMsg = function() {
+        $(".error").each(function() {
+            $(this).empty();
+        });
+    },
+
+    _updateTotalHours = function(){
+        var hours = 0.00;
+        $('.timesheetHours').each(function(i) {
+            hours = hours + parseFloat(this.value);
+        });
+        $(row).find('.hours').text(hours.toFixed(2));
     },
 
     _saveTimesheet = function() {
@@ -83,11 +98,8 @@ var hrTimesheetController = function() {
                     $(".modal-body").html(response);
                     _setupActionControls();
                 } else {
-                    var hours = 0.00;
-                    $('.timesheetHours').each(function(i) {
-                        hours = hours + parseFloat(this.value);
-                    });
-                    $(row).find('.hours').text(hours.toFixed(2));
+                    $(".modal-body").html(response);
+                    _updateTotalHours();
                     $('#timesheetModal').modal('hide');
                 }
             },
@@ -122,7 +134,7 @@ var hrTimesheetController = function() {
         id = $(row).data('id');
         status = $(row).data('status');
         employeeId = $(row).data('employeeid');
-
+        _clearErrorsMsg();
         $('#timesheetModal').modal(
                 {
                     'show' : true,

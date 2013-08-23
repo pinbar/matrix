@@ -1,12 +1,14 @@
 package com.percipient.matrix.view;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
 public class TimesheetItemView {
 
     private Integer id;
 
-    @Max(8)
+    @Max(24)
+    @NotNull
     private Double hours;
     private String date;
     private String costCode;

@@ -1,7 +1,8 @@
 <%@ taglib uri="http://www.springframework.org/security/tags"
     prefix="sec"%>
-<div class="navbar">
+<div class="navbar navbar-default" role="navigation">
     <div class="container">
+    <div class="navbar-header">
         <button type="button" class="navbar-toggle"
             data-toggle="collapse" data-target=".sidebar-collapse">
             <span class="icon-bar"><span>SideBar</span></span> <span
@@ -9,12 +10,13 @@
         </button>
         <button type="button" class="navbar-toggle"
             data-toggle="collapse"
-            data-target=".navbar-responsive-collapse">
+            data-target=".navbar-main-collapse">
             <span class="icon-bar"></span> <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#" name="top">Web Matrix</a>
-        <div class="nav-collapse collapse  navbar-responsive-collapse">
+        <a class="navbar-brand" href="#">Web Matrix</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-main-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/"><i
                         class="glyphicon glyphicon-home active"></i>

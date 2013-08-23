@@ -2,10 +2,12 @@
 <link
     href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css"
     rel="stylesheet" media="screen">
-<link
+<!-- <link
     href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-glyphicons.css"
+    rel="stylesheet" media="screen"> -->
+<link
+    href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-theme.min.css"
     rel="stylesheet" media="screen">
-
 <link
     href="${pageContext.request.contextPath}/resources/datepicker/css/datepicker.css"
     rel="stylesheet" media="screen">
