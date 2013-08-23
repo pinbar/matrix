@@ -122,26 +122,28 @@ var timeSheetFileUpload = function() {
     });
 }();
 
-function disableTimesheet(){
+function disableTimesheet() {
     var status = $('#timesheet').data('status').toUpperCase();
-    if (status !== 'PENDING'){
-        $("form#timesheet").find("input, select ,textarea").attr("disabled","disabled");
-        $("form#timesheet").find('a').attr('class','hide');
-        
+    if (status !== 'PENDING') {
+        $("form#timesheet").find("input, select ,textarea").attr("disabled",
+                "disabled");
+        $("form#timesheet").find('a').attr('class', 'hide');
+        // only allow edit status on unapproved timesheets ?
+        if (status !== 'APPROVED') {
+            $('#statusEdit').modal('show');
+        }
     }
 }
 
-function initializeDatePicker(){
+function initializeDatePicker() {
     $('#dp').datepicker({
         format : 'mm-dd-yyyy'
     });
 
-    $('#tsCreateBtn').click(
-            function() {
-                var tsCreateDate = $('#dp').val();
-                window.location = contextPath
-                        + "/timesheet/new/" + tsCreateDate;
-            });
+    $('#tsCreateBtn').click(function() {
+        var tsCreateDate = $('#dp').val();
+        window.location = contextPath + "/timesheet/new/" + tsCreateDate;
+    });
 }
 
 $(document)
