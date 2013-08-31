@@ -23,3 +23,11 @@
     </c:choose>
 </c:forEach>
 
+    <div class="input-group ">
+        <input id="dp" type="text" class="input-sm"
+            value="01-01-2013" data-date-format="mm-dd-yyyy"><input
+            id="tsCreateBtn" type="button" class="btn btn-info"
+            value="create">
+    </div>
+
+

@@ -1,11 +1,3 @@
-IMP!!!
-TODO 
--- hover for tablets 
--- graceful folding for tables and controls
- 
-
-
-
 
 To Do:
 ======
@@ -32,7 +24,6 @@ Validations
 
 Nice to have:
 =============
-1. investigate hover on side bar (especially admin->group) <br>
 2. look into this and other maven issues reported on jetty startup: <br>
    2013-04-19 23:14:09.498:INFO:oejs.Server:jetty-8.1.10.v20130312 
    2013-04-19 23:14:11.706:INFO:oejpw.PlusConfiguration:No Transaction manager found - if your webapp requires one, please configure one.
