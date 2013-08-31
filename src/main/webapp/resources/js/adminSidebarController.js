@@ -94,32 +94,35 @@ var adminSidebarController = function() {
                     .ajax({
                         url : contextPath + args.url,
                         type : "GET",
-                        dataType : "json",
-                        success : function(response, textStatus, jqXHR) {
-                            var html = "";
-                            $
-                                    .each(
-                                            response,
-                                            function(key, value) {
-                                                var grpName = value.name, grpVal;
-                                                grpVal = value.costCode ? value.costCode
-                                                        : value.name;
-                                                html = html
-                                                        + "<option value=\""
-                                                        + grpVal
-                                                        + "\""
-                                                        + (args.selectedName
-                                                                && (grpName === args.selectedName)
-                                                                || (grpVal === args.selectedName) ? " selected "
-                                                                : "") + " >"
-                                                        + grpName + "</option>";
+                        dataType : "json"
+                    })
+                    .done(
+                            function(response, textStatus, jqXHR) {
+                                var html = "";
+                                $
+                                        .each(
+                                                response,
+                                                function(key, value) {
+                                                    var grpName = value.name, grpVal;
+                                                    grpVal = value.costCode ? value.costCode
+                                                            : value.name;
+                                                    html = html
+                                                            + "<option value=\""
+                                                            + grpVal
+                                                            + "\""
+                                                            + (args.selectedName
+                                                                    && (grpName === args.selectedName)
+                                                                    || (grpVal === args.selectedName) ? " selected "
+                                                                    : "")
+                                                            + " >" + grpName
+                                                            + "</option>";
 
-                                            });
-                            $(args.optionsContainer).empty().append(html);
-                        },
-                        error : function(response, textStatus, jqXHR) {
-                            alert("error");
-                        }
+                                                });
+                                $(args.optionsContainer).empty().append(html);
+                            }).
+
+                    fail(function(response, textStatus, jqXHR) {
+                        alert("error");
                     });
         }
     };

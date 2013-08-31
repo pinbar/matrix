@@ -71,23 +71,29 @@ var hrTimesheetController = function() {
         });
     },
 
+    _doFail = function(response) {
+        $(".modal-body").html(response);
+        _setupActionControls();
+
+    }
     _deleteCostCodeRow = function(e) {
         var costCode = $(e.target).closest('tr').data('costcode');
-        $.ajax({
-            url : contextPath + '/hr/timesheets/deleteCostCodeRow?timesheetId='
-                    + id + '&employee=' + employeeId + '&costCode=' + costCode,
-            type : "GET",
-            dataType : "html",
-            success : function(response, textStatus, jqXHR) {
-                $(".modal-body").html(response);
-                _setupActionControls();
-                _updateTotalHours();
-            },
-            // TODO : error styling and error stuff
-            error : function(response, textStatus, jqXHR) {
-                $(".modal-body").html(response);
-                _setupActionControls();
-            }
+        $.ajax(
+                {
+                    url : contextPath
+                            + '/hr/timesheets/deleteCostCodeRow?timesheetId='
+                            + id + '&employee=' + employeeId + '&costCode='
+                            + costCode,
+                    type : "GET",
+                    dataType : "html"
+                }).done(function(response, textStatus, jqXHR) {
+            $(".modal-body").html(response);
+            _setupActionControls();
+            _updateTotalHours();
+        }).
+        // TODO : error styling and error stuff
+        fail(function(response, textStatus, jqXHR) {
+            _doFail(response);
         });
 
     },
@@ -111,32 +117,32 @@ var hrTimesheetController = function() {
             url : contextPath + '/hr/timesheets/save?employee=' + employeeId,
             type : "POST",
             dataType : "html",
-            data : $("#timesheet").serialize(),
-            success : function(response, textStatus, jqXHR) {
-                var errNode = null;
-                errNode = $.parseHTML(response).filter(function(node, index) {
-                    return node.id == "errorMessages";
-                })[0];
+            data : $("#timesheet").serialize()
+        }).done(function(response, textStatus, jqXHR) {
+            var errNode = null;
+            errNode = $.parseHTML(response).filter(function(node, index) {
+                return node.id == "errorMessages";
+            })[0];
 
-                var err = errNode ? errNode.innerHTML.length > 0 : false;
+            var err = errNode ? errNode.innerHTML.length > 0 : false;
 
-                if (err) {
-                    $("#errorMessages").show();
-                    $(".modal-body").html(response);
-                    _setupActionControls();
-                } else {
-                    $(".modal-body").html(response); // do this line or this
-                    // +2
-                    _updateTotalHours();
-                    $('#timesheetModal').modal('hide');
-                }
-            },
-            // TODO : error styling and error stuff
-            error : function(response, textStatus, jqXHR) {
+            if (err) {
+                $("#errorMessages").show();
                 $(".modal-body").html(response);
                 _setupActionControls();
+            } else {
+                $(".modal-body").html(response); // do this line or this
+                // +2
+                _updateTotalHours();
+                $('#timesheetModal').modal('hide');
             }
+        }).
+        // TODO : error styling and error stuff
+        fail(function(response, textStatus, jqXHR) {
+            $(".modal-body").html(response);
+            _setupActionControls();
         });
+
     },
 
     _submitTimesheet = function() {
@@ -144,70 +150,67 @@ var hrTimesheetController = function() {
             url : contextPath + '/hr/timesheets/submit?employee=' + employeeId,
             type : "POST",
             dataType : "html",
-            data : $("#timesheet").serialize(),
-            success : function(response, textStatus, jqXHR) {
-                var errNode = null;
-                errNode = $.parseHTML(response).filter(function(node, index) {
-                    return node.id == "errorMessages";
-                })[0];
+            data : $("#timesheet").serialize()
+        }).done(function(response, textStatus, jqXHR) {
+            var errNode = null;
+            errNode = $.parseHTML(response).filter(function(node, index) {
+                return node.id == "errorMessages";
+            })[0];
 
-                var err = errNode ? errNode.innerHTML.length > 0 : false;
+            var err = errNode ? errNode.innerHTML.length > 0 : false;
 
-                if (err) {
-                    $("#errorMessages").show();
-                    $(".modal-body").html(response);
-                    _setupActionControls();
-                } else {
-                    // $(".modal-body").html(response);
-                    // $('body').load(contextPath + '/hr/timesheets/' + status);
-                    statusChanged = true;
-                    $('#timesheetModal').modal('hide');
-                }
-            },
-            // TODO : error styling and error stuff
-            error : function(response, textStatus, jqXHR) {
+            if (err) {
+                $("#errorMessages").show();
                 $(".modal-body").html(response);
                 _setupActionControls();
+            } else {
+                // $(".modal-body").html(response);
+                // $('body').load(contextPath + '/hr/timesheets/' + status);
+                statusChanged = true;
+                $('#timesheetModal').modal('hide');
             }
+        }).
+        // TODO : error styling and error stuff
+        fail(function(response, textStatus, jqXHR) {
+            _doFail(response);
         });
     },
 
     _activateTimesheet = function() {
-        $.ajax({
-            url : contextPath + '/hr/timesheets/activate?&employee='
-                    + employeeId + '&status=' + status,
-            type : "POST",
-            dataType : "html",
-            data : $("form#timesheet").find("input, select ,textarea")
-                    .removeAttr("disabled", "disabled").serialize(),
-            success : function(response, textStatus, jqXHR) {
-                $(".modal-body").html(response);
-                statusChanged = true;
-                _setupActionControls();
-            },
-            // TODO : error styling and error stuff
-            error : function(response, textStatus, jqXHR) {
-                $(".modal-body").html(response);
-                _setupActionControls();
-            }
+        $.ajax(
+                {
+                    url : contextPath + '/hr/timesheets/activate?&employee='
+                            + employeeId + '&status=' + status,
+                    type : "POST",
+                    dataType : "html",
+                    data : $("form#timesheet").find("input, select ,textarea")
+                            .removeAttr("disabled", "disabled").serialize()
+                }).done(function(response, textStatus, jqXHR) {
+            $(".modal-body").html(response);
+            statusChanged = true;
+            _setupActionControls();
+        })
+        // TODO : error styling and error stuff
+        .fail(function(response, textStatus, jqXHR) {
+            _doFail(response);
         });
     },
 
     _addCostCodeRow = function() {
-        $.ajax({
-            url : contextPath + '/hr/timesheets/addCostCodeRow?timesheetId='
-                    + id + '&employee=' + employeeId,
-            type : "POST",
-            // dataType : "html",
-            success : function(response, textStatus, jqXHR) {
-                $(".modal-body").html(response);
-                _setupActionControls();
-            },
-            // TODO : error styling and error stuff
-            error : function(response, textStatus, jqXHR) {
-                $(".modal-body").html(response);
-                _setupActionControls();
-            }
+        $.ajax(
+                {
+                    url : contextPath
+                            + '/hr/timesheets/addCostCodeRow?timesheetId=' + id
+                            + '&employee=' + employeeId,
+                    type : "POST",
+                    dataType : "html"
+                }).done(function(response, textStatus, jqXHR) {
+            $(".modal-body").html(response);
+            _setupActionControls();
+        }).
+        // TODO : error styling and error stuff
+        fail(function(response, textStatus, jqXHR) {
+            _doFail(response);
         });
     },
 

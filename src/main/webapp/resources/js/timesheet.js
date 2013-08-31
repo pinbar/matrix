@@ -138,26 +138,28 @@ function setUpActivateTimesheet() {
     $("#activateTimesheet").on(
             "click",
             function() {
-                $.ajax({
-                    url : contextPath + '/timesheet/activate/'
-                            + $('#timesheet').data('id'),
-                    type : "GET",
-                    dataType : "html",
-                    success : function(response) {
-                        var errNode = null;
-                        errNode = $.parseHTML(response).filter(
-                                function(node, index) {
-                                    return node.id == "errorMessages";
-                                })[0];
-                        var err = errNode ? errNode.innerHTML.length > 0
-                                : false;
-                        if (err) {
-                            $("#errorMessages").show();
-                        }
-                        $("#timesheetContent").html(response);
-                        $("#activateTimesheet").attr("disabled", "disabled");
-                    }
-                });
+                $.ajax(
+                        {
+                            url : contextPath + '/timesheet/activate/'
+                                    + $('#timesheet').data('id'),
+                            type : "GET",
+                            dataType : "html"
+                        }).done(
+                        function(response) {
+                            var errNode = null;
+                            errNode = $.parseHTML(response).filter(
+                                    function(node, index) {
+                                        return node.id == "errorMessages";
+                                    })[0];
+                            var err = errNode ? errNode.innerHTML.length > 0
+                                    : false;
+                            if (err) {
+                                $("#errorMessages").show();
+                            }
+                            $("#timesheetContent").html(response);
+                            $("#activateTimesheet")
+                                    .attr("disabled", "disabled");
+                        });
 
             });
 }
@@ -179,19 +181,17 @@ function setUpSubmitTimesheet() {
             url : contextPath + '/timesheet/submit',
             type : "POST",
             dataType : "html",
-            data : $("#timesheet").serialize(),
-            success : function(response) {
-                var errNode = null;
-                errNode = $.parseHTML(response).filter(function(node, index) {
-                    return node.id == "errorMessages";
-                })[0];
-                var err = errNode ? errNode.innerHTML.length > 0 : false;
-                if (err) {
-                    $("#errorMessages").show();
-                }
-                $("#timesheetContent").html(response);
-
+            data : $("#timesheet").serialize()
+        }).done(function(response) {
+            var errNode = null;
+            errNode = $.parseHTML(response).filter(function(node, index) {
+                return node.id == "errorMessages";
+            })[0];
+            var err = errNode ? errNode.innerHTML.length > 0 : false;
+            if (err) {
+                $("#errorMessages").show();
             }
+            $("#timesheetContent").html(response);
         });
     });
 }

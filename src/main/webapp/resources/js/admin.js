@@ -73,11 +73,11 @@ $(document).ready(function() {
     bindEmpResetPassword();
     bindUpdateRows();
     bindDeleteRows();
-    /* override width = 0  for responsive style */
+    /* override width = 0 for responsive style */
     updateTableHeaderStyle();
 });
 
-function updateTableHeaderStyle(){
+function updateTableHeaderStyle() {
     $('.rt th').width('auto');
 }
 
@@ -94,27 +94,27 @@ function bindUpdateRows() {
                                 .ajax({
                                     url : url,
                                     type : "get",
-                                    dataType : "json",
-                                    success : function(response, textStatus,
-                                            jqXHR) {
-                                        $("div#adminMsgs").addClass('hide');
-                                        $("div#empList").addClass('hide');
-                                        $("div#grpList").addClass('hide');
-                                        $("div#costCenterList")
-                                                .addClass('hide');
-                                        $("div#clientList").addClass('hide');
-                                        populate($("div#" + divToShow),
-                                                response);
-                                        $("div#" + divToShow
-                                                + " input[type='submit']").value = "Save";
-                                        $("div#" + divToShow).removeClass(
-                                                'hide');
-                                    },
-                                    // TODO : error styling and error stuff
-                                    error : function(response, textStatus,
-                                            jqXHR) {
-                                        alert("error");
-                                    }
+                                    dataType : "json"
+                                })
+                                .done(
+                                        function(response, textStatus, jqXHR) {
+                                            $("div#adminMsgs").addClass('hide');
+                                            $("div#empList").addClass('hide');
+                                            $("div#grpList").addClass('hide');
+                                            $("div#costCenterList").addClass(
+                                                    'hide');
+                                            $("div#clientList")
+                                                    .addClass('hide');
+                                            populate($("div#" + divToShow),
+                                                    response);
+                                            $("div#" + divToShow
+                                                    + " input[type='submit']").value = "Save";
+                                            $("div#" + divToShow).removeClass(
+                                                    'hide');
+                                        }).
+                                // TODO : error styling and error stuff
+                                fail(function(response, textStatus, jqXHR) {
+                                    alert("error");
                                 });
                     });
 }
@@ -131,16 +131,15 @@ function bindDeleteRows() {
                         $.ajax({
                             url : url,
                             type : "POST",
-                            dataType : "json",// "html",
-                            success : function(response, textStatus, jqXHR) {
-                                if (table.length > 0) {
-                                    $(table).dataTable().fnReloadAjax();
-                                }
-                            },
-                            // TODO : error styling and error stuff
-                            error : function(response, textStatus, jqXHR) {
-                                alert("error");
+                            dataType : "json"
+                        }).done(function(response, textStatus, jqXHR) {
+                            if (table.length > 0) {
+                                $(table).dataTable().fnReloadAjax();
                             }
+                        }).
+                        // TODO : error styling and error stuff
+                        fail(function(response, textStatus, jqXHR) {
+                            alert("error");
                         });
                     });
 }

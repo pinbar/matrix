@@ -9,9 +9,11 @@ var empCostCodeController = function() {
                 + "<div class=\"controls\">"
                 + "<select multiple=\"multiple\" class=\"ccSelect\" id =\"costCodeListSelect\"></select>"
                 + "</div>";
-    }, getAllCostCodeForEmp = function(e) {
+    },
+
+    getAllCostCodeForEmp = function(e) {
         var employeeId = $('#employeeForm #id').val();
-        //from error condition 
+        // from error condition
         var prePopulatedCostCodes = $("#costCodes").val().split(',');
         if (!employeeId || prePopulatedCostCodes) {
             populateContainer(prePopulatedCostCodes || []);
@@ -20,20 +22,19 @@ var empCostCodeController = function() {
         var url = contextPath
                 + "/admin/employee/costCenters/listAsJson?employeeId="
                 + employeeId;
-        $.ajax(
-            {
-                url : url,
-                type : "GET",
-                dataType : "json",
-                contentType : 'application/json',
-                success : function(response, textStatus, jqXHR) {
-                    populateContainer(response);
-                },
-                error : function(response, textStatus, jqXHR) {
-                    alert("error");
-                }
-            });
-    }, buildGroupedOptions = function(args, selected) {
+        $.ajax({
+            url : url,
+            type : "GET",
+            dataType : "json",
+            contentType : 'application/json'
+        }).done(function(response, textStatus, jqXHR) {
+            populateContainer(response);
+        }).fail(function(response, textStatus, jqXHR) {
+            alert("error");
+        });
+    },
+
+    buildGroupedOptions = function(args, selected) {
         var html = "";
         $
                 .each(
@@ -61,60 +62,63 @@ var empCostCodeController = function() {
                         });
         return html;
 
-    }, populateContainer = function(response) {
+    },
+
+    populateContainer = function(response) {
         var selected = [];
         container.empty().html(getHtmlTemplate());
         $.each(response, function(key, value) {
             selected.push(value);
         });
-        populateOptions(
-            {
-                selectedName : selected,
-                alwaysShow : true,
-                url : costCenterUrl,
-                optionsContainer : "#costCodeListSelect"
-            });
-    }, onBeforeSave = function() {
+        populateOptions({
+            selectedName : selected,
+            alwaysShow : true,
+            url : costCenterUrl,
+            optionsContainer : "#costCodeListSelect"
+        });
+    },
+
+    onBeforeSave = function() {
         var selected = [];
         $(".ui-multiselect-menu input[aria-selected='true' ]").each(
                 function(index, node) {
                     selected.push(($(node).attr("value")));
                 });
         $("#costCodes").val(selected.join(','));
-    }, populateOptions = function(args) {
-        $
-                .ajax(
-                    {
-                        url : contextPath + args.url,
-                        type : "GET",
-                        dataType : "json",
-                        success : function(response, textStatus, jqXHR) {
-                            var html = buildGroupedOptions(response,
-                                    args.selectedName);
-                            $(args.optionsContainer).empty().append(html);
-                            $("#costCodeListSelect").multiselect()
-                                    .multiselectfilter();
-                        },
-                        error : function(response, textStatus, jqXHR) {
-                            alert("error");
-                        }
-                    });
+    },
+
+    populateOptions = function(args) {
+        $.ajax({
+            url : contextPath + args.url,
+            type : "GET",
+            dataType : "json"
+        }).done(function(response, textStatus, jqXHR) {
+            var html = buildGroupedOptions(response, args.selectedName);
+            $(args.optionsContainer).empty().append(html);
+            $("#costCodeListSelect").multiselect().multiselectfilter();
+        }).fail(function(response, textStatus, jqXHR) {
+            alert("error");
+        });
     };
 
-    return (
-        {
-            onBeforeSave : onBeforeSave,
-            getAllCostCodeForEmp : getAllCostCodeForEmp,
-            container : container
-        });
+    return ({
+        onBeforeSave : onBeforeSave,
+        getAllCostCodeForEmp : getAllCostCodeForEmp,
+        container : container
+    });
 }();
 $(document).ready(function() {
     $("#employeeSave").on("click", function(e) {
         empCostCodeController.onBeforeSave();
     });
-    if(! $("#empUpdate").attr("class").indexOf("hide")>-1){
+    if (!$("#empUpdate").attr("class").indexOf("hide") > -1) {
         empCostCodeController.getAllCostCodeForEmp();
-        adminSidebarController.populateOptions({selectedName:$("#hiddenGroupName").val(), alwaysShow:true,url:"/admin/group/listAsJson",optionsContainer:"#groupName"});
+        adminSidebarController.populateOptions({
+            selectedName : $("#hiddenGroupName").val(),
+            alwaysShow : true,
+            url : "/admin/group/listAsJson",
+            optionsContainer : "#groupName"
+        });
     }
 
 });
