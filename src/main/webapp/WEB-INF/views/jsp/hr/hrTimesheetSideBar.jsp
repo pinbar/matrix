@@ -4,8 +4,12 @@
         <li class="nav-header">Status</li>
         <li><a
             href="${pageContext.request.contextPath}/hr/timesheets/pending">Pending</a></li>
-        <li><a href="#">Submitted</a></li>
-        <li><a href="#">Approved</a></li>
+        <li><a
+            href="${pageContext.request.contextPath}/hr/timesheets/submitted">Submitted</a></li>
+        <li><a
+            href="${pageContext.request.contextPath}/hr/timesheets/approved">Approved</a></li>
+        <li><a
+            href="${pageContext.request.contextPath}/hr/timesheets/rejected">Rejected</a></li>
     </ul>
 </div>
 
@@ -15,10 +19,10 @@
         <li><a
             href="${pageContext.request.contextPath}/hr/timesheets/pending">Pending</a></li>
         <li><a
-            href="${pageContext.request.contextPath}/hr/timesheets/pending">Submitted</a></li>
+            href="${pageContext.request.contextPath}/hr/timesheets/submitted">Submitted</a></li>
         <li><a
-            href="${pageContext.request.contextPath}/hr/timesheets/pending">Approved</a>
-        </li>
-
+            href="${pageContext.request.contextPath}/hr/timesheets/approved">Approved</a></li>
+        <li><a
+            href="${pageContext.request.contextPath}/hr/timesheets/rejected">Rejected</a></li>
     </ul>
 </div>

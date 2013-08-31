@@ -1,7 +1,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div id="errorMessages" class="error">${error}</div>
-<form:form data-status="${timesheet.status}" id="timesheet" class="form-horizontal" method="post"
+<form:form data-id="${timesheet.id}" data-status="${timesheet.status}" id="timesheet" class="form-vertical" method="post"
     modelAttribute="timesheet"
     action="${pageContext.request.contextPath}/timesheet/save">
     <table id="timesheetTable" class="table table-bordered table-striped cf rt">
@@ -152,11 +152,12 @@
             <input id="addCostCodeBtn" type="button"
             class="btn btn-info" value="Add Row">
         </a> <input type="submit" id="saveTimesheet" class="btn btn-success"
-            value="Save"> <input type="reset" id="cancel"
-            name="cancel" class="btn btn-warning" value="Cancel">
+            value="Save">
         <input type="button" id="submitTimesheet" class="btn btn-danger"
             value="Submit Timesheet">
+         <button id="activateTimesheet" type="button" class="btn btn-primary">Edit Timesheet </button>    
         <div>
+        
             <br> <input type="button" value="Show/Hide Attachments"
                 class="btn btn-default" id="toggleAttachments" />
         </div>
@@ -217,21 +218,6 @@
     </form:form>
 </div>
 
-<div id="statusEdit"  class="modal fade"role="dialog" aria-labelledby="statusEdit" aria-hidden="true">
- <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Change Timesheet Status</h4>
-        </div>
-        <div class="modal-body">
-           <p>Do u want to edit this submitted timessheet?</p>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Edit Timesheet </button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
 <!-- The template to display files available for upload -->
 <script
     src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>

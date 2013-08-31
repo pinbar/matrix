@@ -64,8 +64,6 @@ public class TimesheetController {
         return timesheet;
     }
 
-  
-
     @RequestMapping(value = "weekendings/{weekEnding}", method = RequestMethod.GET)
     public String getTimesheetByWeekEnding(@PathVariable String weekEnding,
             Model model) {
@@ -110,32 +108,6 @@ public class TimesheetController {
         return gotoTimesheetPage(model);
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveTimesheet(
-            @Valid @ModelAttribute(MODEL_ATTRIBUTE_TIMESHEET) TimesheetView timesheetView,
-            BindingResult result, Model model) {
-
-        if (result.hasErrors()) {
-            return gotoTimesheetPage(model);
-        }
-        timesheetService.saveTimesheet(timesheetView);
-        timesheetView = timesheetService.getTimesheet(dateUtil
-                .getAsDate(timesheetView.getWeekEnding()));
-        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
-        return gotoTimesheetPage(model);
-    }
-
-    private String gotoTimesheetPage(Model model) {
-
-        List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
-        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
-        List<CostCenterView> costCenters = employeeCostCenterService
-                .getCostCenterViewListForEmployees(userInfo.getEmployeeId());
-        model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
-
-        return "timesheet/timesheetPage";
-    }
-
     @RequestMapping(value = "/deleteCostCodeRow", method = RequestMethod.GET)
     public String deleteTimesheetCostCodeRow(
             Model model,
@@ -157,6 +129,47 @@ public class TimesheetController {
 
     }
 
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public String saveTimesheet(
+            @Valid @ModelAttribute(MODEL_ATTRIBUTE_TIMESHEET) TimesheetView timesheetView,
+            BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            return gotoTimesheetPage(model);
+        }
+        timesheetService.saveTimesheet(timesheetView);
+        timesheetView = timesheetService.getTimesheet(dateUtil
+                .getAsDate(timesheetView.getWeekEnding()));
+        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
+        return gotoTimesheetPage(model);
+    }
+
+    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    public String submitTimesheet(
+            @Valid @ModelAttribute(MODEL_ATTRIBUTE_TIMESHEET) TimesheetView timesheetView,
+            BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            return gotoTimesheetContent(model);
+        }
+        timesheetView.setStatus("Submitted");
+        timesheetService.saveTimesheet(timesheetView);
+        timesheetView = timesheetService.getTimesheet(dateUtil
+                .getAsDate(timesheetView.getWeekEnding()));
+        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
+        return gotoTimesheetContent(model);
+    }
+
+    @RequestMapping(value = "/activate/{timesheetId}", method = RequestMethod.GET)
+    public String activateTimesheet(Model model, @PathVariable Integer timesheetId) {
+
+        TimesheetView timesheetView = timesheetService.getTimesheet(timesheetId);
+        timesheetView.setStatus("pending");
+        timesheetService.saveTimesheet(timesheetView);
+        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
+        return gotoTimesheetContent(model);
+    }
+
     @RequestMapping(value = "/delete/{timesheetId}", method = RequestMethod.GET)
     public String deleteTimesheet(Model model, @PathVariable Integer timesheetId) {
 
@@ -164,4 +177,23 @@ public class TimesheetController {
         return getTimesheetPreview(model);
     }
 
+    private String gotoTimesheetPage(Model model) {
+
+        List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
+        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(userInfo.getEmployeeId());
+        model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
+
+        return "timesheet/timesheetPage";
+    }
+
+    private String gotoTimesheetContent(Model model) {
+
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(userInfo.getEmployeeId());
+        model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
+
+        return "timesheet/timesheetContent";
+    }
 }

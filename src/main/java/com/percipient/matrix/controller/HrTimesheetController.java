@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,6 +74,31 @@ public class HrTimesheetController {
         return "timesheet/timesheetContent";
     }
 
+    @RequestMapping(value = "/{status}/{timesheetId}/{action}", method = RequestMethod.GET)
+    public String approveRejectTimesheet(Model model,
+            @PathVariable String status, @PathVariable Integer timesheetId,
+            @PathVariable String action) {
+
+        if (timesheetId == null) {
+            model.addAttribute("error", "Timesheet id is required");
+            return "timesheet/timesheetContent";
+        }
+
+        TimesheetView timesheetView = timesheetService
+                .getTimesheet(timesheetId);
+        if (action.equalsIgnoreCase("approve")) {
+            timesheetView.setStatus("approved");
+        } else if (action.equalsIgnoreCase("reject")) {
+            timesheetView.setStatus("rejected");
+        }
+        timesheetService.saveTimesheet(timesheetView);
+        List<HrTimesheetView> hrTimesheetViewList = timesheetService
+                .getTimesheetsByStatus(status.toLowerCase());
+        model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST,
+                hrTimesheetViewList);
+        return "hr/hrTimesheetPage";
+    }
+
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String saveTimesheet(
             @Valid @ModelAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET) TimesheetView timesheetView,
@@ -90,6 +116,65 @@ public class HrTimesheetController {
                     timesheetView);
             return "timesheet/timesheetContent";
         }
+        timesheetService.saveTimesheet(timesheetView);
+        timesheetView = timesheetService.getTimesheet(timesheetView.getId());
+        model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
+                timesheetView);
+        return "timesheet/timesheetContent";
+    }
+
+    @RequestMapping(value = "/activate", method = RequestMethod.POST)
+    public String activateTimesheet(
+            @Valid @ModelAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET) TimesheetView timesheetView,
+            BindingResult result, Model model,
+            @RequestParam(value = "employee") Integer employeeId,
+            @RequestParam(value = "status") String status) {
+
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(employeeId);
+        model.addAttribute(
+                TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
+                costCenters);
+        if ("Approved".equalsIgnoreCase(status)) {
+            ObjectError error = new ObjectError("error",
+                    "Approved Timesheet cannot be activated");
+            result.addError(error);
+        }// TODO supervisors may be able to activate ? && employee not
+         // supervisor)
+        if (result.hasErrors()) {
+            model.addAttribute("error",
+                    "Please input correct values where indicated .....");
+            model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
+                    timesheetView);
+            return "timesheet/timesheetContent";
+        }
+        timesheetView.setStatus("Pending");
+        timesheetService.saveTimesheet(timesheetView);
+        timesheetView = timesheetService.getTimesheet(timesheetView.getId());
+        model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
+                timesheetView);
+        return "timesheet/timesheetContent";
+    }
+
+    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    public String submitTimesheet(
+            @Valid @ModelAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET) TimesheetView timesheetView,
+            BindingResult result, Model model,
+            @RequestParam(value = "employee") Integer employeeId) {
+
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(employeeId);
+        model.addAttribute(
+                TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
+                costCenters);
+        if (result.hasErrors()) {
+            model.addAttribute("error",
+                    "Please input correct values where indicated .....");
+            model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
+                    timesheetView);
+            return "timesheet/timesheetContent";
+        }
+        timesheetView.setStatus("Submitted");
         timesheetService.saveTimesheet(timesheetView);
         timesheetView = timesheetService.getTimesheet(timesheetView.getId());
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,

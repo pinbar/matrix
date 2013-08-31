@@ -275,17 +275,22 @@ class TimesheetServiceImpl implements TimesheetService {
     private Timesheet getTimesheetFromView(TimesheetView timesheetView) {
 
         Timesheet timesheet;
+        String status = "pending";
         if (timesheetView.getId() != null) {
             timesheet = timesheetRepository.getTimesheet(timesheetView.getId());
+            if (StringUtils.isNotBlank(timesheetView.getStatus())) {
+                status = timesheetView.getStatus();
+            }
+            
         } else {
             timesheet = new Timesheet();
             Employee employee = employeeRepository
                     .getEmployeeByUserName(userInfo.getUserName());
             timesheet.setEmployeeId(employee.getId());
-            timesheet.setStatus("pending");
             timesheet.setWeekEnding(dateUtil.getAsDate(timesheetView
                     .getWeekEnding()));
         }
+        timesheet.setStatus(status.toLowerCase());
         timesheet
                 .setTimesheetItems(getTimesheetItems(timesheetView, timesheet));
 

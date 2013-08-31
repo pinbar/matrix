@@ -18,7 +18,7 @@
                 <jsp:include page="timesheetSideBar.jsp" />
             </div>
 
-            <div class="col-8 col-sm-9 col-lg-10">
+            <div id="timesheetContent" class="col-8 col-sm-9 col-lg-10">
                 <jsp:include page="timesheetContent.jsp" />
             </div>
         </div>

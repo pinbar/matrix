@@ -53,12 +53,12 @@
                                     href="javascript:;"> <i
                                         class="glyphicon glyphicon-pencil"></i>
                                 </a></td>
-                                <td class="timesheetReject"><a
-                                    href="javascript:;"><i
+                                <td class="timesheetApprove"><a
+                                    href="${pageContext.request.contextPath}/hr/timesheets/${hrTimesheet.status}/${hrTimesheet.timesheetId}/approve"><i
                                         class="glyphicon glyphicon-ok"></i>
                                 </a></td>
                                 <td class="timesheetReject"><a
-                                    href="javascript:;"><i
+                                    href="${pageContext.request.contextPath}/hr/timesheets/${hrTimesheet.status}/${hrTimesheet.timesheetId}/reject"><i
                                         class="glyphicon glyphicon-remove"></i>
                                 </a></td>
                             </tr>
