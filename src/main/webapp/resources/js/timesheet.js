@@ -123,13 +123,14 @@ var timeSheetFileUpload = function() {
 }();
 
 function disableTimesheet() {
-    var status = $('#timesheet').data('status').toUpperCase();
-    if (status !== 'PENDING') {
+    var status = $('#timesheet').data('status');
+    status = status ? status.toUpperCase() : null;
+    if (status && status !== 'PENDING') {
         $("form#timesheet").find("input, select ,textarea").attr("disabled",
                 "disabled");
         $("form#timesheet").find('a').attr('class', 'hide');
     } else {
-        $("#activateTimesheet").attr('disabled', 'disabled');
+        $("#activateTimesheet").removeAttr('disabled', 'disabled');
     }
 }
 

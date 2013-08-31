@@ -8,7 +8,8 @@
 <jsp:include page="../common/commonIncludes.jsp" />
 <link rel="stylesheet"
     href="${pageContext.request.contextPath}/resources/jQuery-File-Upload/css/jquery.fileupload-ui.css">
-
+    <script
+        src="${pageContext.request.contextPath}/resources/js/hrTimesheet.js"></script>
 </head>
 
 <body>
@@ -22,7 +23,7 @@
             <div class="col-12 col-sm-9 col-lg-10">
                 <div class="well">
                 <div id="errorMessages" class="text-error">${error}</div>
-                <table class="table table-bordered table-condensed">
+                <table id = "hrTimesheetTable" class="table table-bordered table-condensed">
                     <thead>
                         <tr>
                             <th></th>
@@ -70,8 +71,5 @@
         </div>
 </div>
     </div>
-    <script
-        src="${pageContext.request.contextPath}/resources/js/hrTimesheet.js"></script>
-
 </body>
 </html>

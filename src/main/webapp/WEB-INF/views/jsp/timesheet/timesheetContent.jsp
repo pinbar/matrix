@@ -217,9 +217,9 @@
 
     </form:form>
 </div>
+<!-- end The template to display files available for upload -->
 
-<!-- The template to display files available for upload -->
-<script
+  <script
     src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>

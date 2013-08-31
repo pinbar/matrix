@@ -16,13 +16,13 @@
             <div
                 class="col-4 col-sm-3 col-lg-3 navbar-collapse collapse sidebar-collapse">
                 <jsp:include page="timesheetSideBar.jsp" />
-                <br/>
+                <br />
             </div>
 
             <div id="timesheetContent" class="col-8 col-sm-9 col-lg-9">
                 <jsp:include page="timesheetContent.jsp" />
             </div>
         </div>
-     </div>   
+    </div>
 </body>
 </html>

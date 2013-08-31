@@ -10,7 +10,7 @@
 <link rel="stylesheet"
     href="${pageContext.request.contextPath}/resources/css/common.css">
 <script
-    src="${pageContext.request.contextPath}/resources/jquery/js/jquery-1.9.1.min.js"></script>
+    src="${pageContext.request.contextPath}/resources/jquery/js/jquery-2.0.3.min.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 <script
