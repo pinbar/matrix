@@ -34,7 +34,8 @@
                         class="table table-bordered table-condensed">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th><input class="selectAll"
+                                    type="checkbox"></th>
                                 <th>TimeSheet Id</th>
                                 <th>Week Ending</th>
                                 <th>Employee</th>
@@ -46,35 +47,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!--    <c:forEach items="${hrTimesheetList}"
-                            var="hrTimesheet">
-                            <tr
-                                data-employeeid="${hrTimesheet.employeeId}"
-                                data-id="${hrTimesheet.timesheetId}"
-                                data-status="${hrTimesheet.status}">
-                                <td class=checkBoxRow><input
-                                    type="checkbox"
-                                    id="${hrTimesheet.employeeId}"></td>
-                                <td>${hrTimesheet.weekEnding}</td>
-                                <td>${hrTimesheet.employeeName}</td>
-                                <td>${hrTimesheet.status}</td>
-                                <td class="hours">${hrTimesheet.hours}</td>
-                                <td class="timesheetEdit"><a
-                                    href="javascript:;"> <i
-                                        class="glyphicon glyphicon-pencil"></i>
-                                </a></td>
-                                <td class="timesheetApprove"><a
-                                    href="${pageContext.request.contextPath}/hr/timesheets/${hrTimesheet.status}/${hrTimesheet.timesheetId}/approve"><i
-                                        class="glyphicon glyphicon-ok"></i>
-                                </a></td>
-                                <td class="timesheetReject"><a
-                                    href="${pageContext.request.contextPath}/hr/timesheets/${hrTimesheet.status}/${hrTimesheet.timesheetId}/reject"><i
-                                        class="glyphicon glyphicon-remove"></i>
-                                </a></td>
-                            </tr>
-                        </c:forEach> -->
                         </tbody>
                     </table>
+                    <div class="control-group">
+                        <input type="button" id="approveBtn"
+                            class="btn btn-success hrTimesheetControl" value="Approve">
+                        <input type="button" id="rejectBtn"
+                            class="btn btn-danger hrTimesheetControl"
+                            value="Reject">
+                       </div>
                     <jsp:include page="timesheetDialog.jsp" />
                 </div>
             </div>

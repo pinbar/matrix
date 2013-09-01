@@ -6,6 +6,44 @@ var hrTimesheetController = function() {
         timesheetEditClicked : ".timesheetEdit"
     }, row, id, status, employeeId, statusChanged, dataTable,
 
+    selections = {
+        all : false,
+        selectionArray : []
+    },
+
+    _setupSelections = function() {
+        $('.selectAll').on('click', function(e) {
+            $("input:checkbox").prop('checked', $(e.target).prop('checked'));
+            if ($(e.target).prop('checked')) {
+                selections.all = true;
+                selections.selectionArray.length = 0; // emptying out the
+                // selected ids since
+                // all are selected
+            }
+        });
+        $('table').on(
+                'click',
+                '.selections',
+                function(e) {
+                    var selectedRow = $(e.target).closest('tr');
+                    var data = $(dataTable).dataTable()._(selectedRow);
+                    selections.all = false;
+                    if ($(e.target).prop('checked')) {
+                        selections.selectionArray
+                                .push(id = data[0].timesheetId);
+                        selections.selectionArray = $
+                                .unique(selections.selectionArray);
+                    } else {
+                        selections.selectionArray = $.grep(
+                                selections.selectionArray, function(a) {
+                                    return a != data[0].timesheetId;
+                                });
+
+                    }
+
+                });
+    },
+
     _setCurrentStatus = function(timesheetStatus) {
         $('.sidebar-nav').find('a').removeClass('active');
         $('.sidebar-nav').find('a#' + timesheetStatus).addClass('active');
@@ -21,7 +59,7 @@ var hrTimesheetController = function() {
                     {
                         bSortable : false,
                         mData : null,
-                        sDefaultContent : '<input type="checkbox">'
+                        sDefaultContent : '<input class="selections" type="checkbox">'
                     },
                     {
                         mData : 'timesheetId',
@@ -91,9 +129,32 @@ var hrTimesheetController = function() {
                         });
     },
 
+    _setupGlobalApproveOrReject = function() {
+        $('.hrTimesheetControl').on('click', function(e) {
+            var action = $(e.target).attr('value').toLowerCase();
+            // var
+            $.ajax({
+                url : contextPath + '/hr/timesheets/' + status + '/' + action,
+                type : "POST",
+                contentType : 'application/json',
+                dataType : "html",
+                data : JSON.stringify(selections)
+            }).done(function(response, textStatus, jqXHR) {
+                $('body').html(response);
+            }).
+            // TODO : error styling and error stuff
+            fail(function(response, textStatus, jqXHR) {
+                $('body').html(response);
+            });
+        });
+    },
+
     _init = function(currentStatus) {
         _setCurrentStatus(currentStatus);
         dataTable = _setupHrTimeSheetTable();
+        _setupSelections();
+        _setupGlobalApproveOrReject();
+
         $('#timesheetModal').on(
                 'show.bs.modal',
                 function() {
@@ -197,7 +258,6 @@ var hrTimesheetController = function() {
         $('.timesheetHours').each(function(i) {
             hours = hours + parseFloat(this.value);
         });
-        // var data = $(dataTable).dataTable()._(row);
         $(row).find('.hours').text(hours.toFixed(2));
     },
 
@@ -258,6 +318,7 @@ var hrTimesheetController = function() {
                 statusChanged = true;
                 $('#timesheetModal').modal('hide');
             }
+            ;
         }).
         // TODO : error styling and error stuff
         fail(function(response, textStatus, jqXHR) {

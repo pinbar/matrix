@@ -56,6 +56,8 @@ public interface TimesheetService {
 
     public List<HrTimesheetView> getTimesheetsByStatus(String status);
 
+    public void saveTimesheets(List<HrTimesheetView> timesheetViews);
+
 }
 
 @Service
@@ -210,6 +212,13 @@ class TimesheetServiceImpl implements TimesheetService {
 
     @Override
     @Transactional
+    public void saveTimesheets(List<HrTimesheetView> hrTimesheetViews) {
+        List<Timesheet> tsList = getTimesheetsFromHRViews(hrTimesheetViews);
+        timesheetRepository.save(tsList);
+    }
+
+    @Override
+    @Transactional
     public void deleteTimesheet(Integer timesheetId) {
         Timesheet timesheet = timesheetRepository.getTimesheet(timesheetId);
 
@@ -272,6 +281,24 @@ class TimesheetServiceImpl implements TimesheetService {
         timesheetRepository.deleteTimesheetItems(tmpItemSet);
     }
 
+    private List<Timesheet> getTimesheetsFromHRViews(
+            List<HrTimesheetView> timesheetViews) {
+        List<Timesheet> timeSheetList = new ArrayList<Timesheet>();
+        for (HrTimesheetView view : timesheetViews) {
+            timeSheetList.add(getTimesheetFromHRView(view));
+        }
+
+        return timeSheetList;
+    }
+
+    private Timesheet getTimesheetFromHRView(HrTimesheetView view) {
+        Timesheet ts = timesheetRepository.getTimesheet(view.getTimesheetId());
+        ts.setStatus(view.getStatus());
+        ts.setEmployeeId(view.getEmployeeId());
+        ts.setWeekEnding(dateUtil.getAsDate(view.getWeekEnding()));
+        return ts;
+    }
+
     private Timesheet getTimesheetFromView(TimesheetView timesheetView) {
 
         Timesheet timesheet;
@@ -281,7 +308,7 @@ class TimesheetServiceImpl implements TimesheetService {
             if (StringUtils.isNotBlank(timesheetView.getStatus())) {
                 status = timesheetView.getStatus();
             }
-            
+
         } else {
             timesheet = new Timesheet();
             Employee employee = employeeRepository

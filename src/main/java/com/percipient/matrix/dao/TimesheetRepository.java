@@ -15,7 +15,7 @@ import com.percipient.matrix.domain.TimesheetItem;
 public interface TimesheetRepository {
 
     public List<Timesheet> getTimesheetsByStatus(String status);
-    
+
     public Timesheet getTimesheet(Integer id);
 
     public Timesheet getTimesheet(Employee employee, Date weekEnding);
@@ -31,6 +31,8 @@ public interface TimesheetRepository {
     public TimesheetItem getTimesheetItem(Integer id);
 
     public void deleteTimesheetItems(Set<TimesheetItem> tmpItemSet);
+
+    public void save(List<Timesheet> tsList);
 }
 
 @Repository
@@ -43,10 +45,9 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
     public List<Timesheet> getTimesheetsByStatus(String status) {
         String query = "from Timesheet as timesheet where timesheet.status = :status";
         return (List<Timesheet>) sessionFactory.getCurrentSession()
-                .createQuery(query)
-                .setParameter("status", status).list();
+                .createQuery(query).setParameter("status", status).list();
     }
-    
+
     @Override
     public Timesheet getTimesheet(Integer id) {
         return (Timesheet) sessionFactory.getCurrentSession().get(
@@ -100,5 +101,13 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
         for (TimesheetItem tsItem : timesheetItemList) {
             sessionFactory.getCurrentSession().delete(tsItem);
         }
+    }
+
+    @Override
+    public void save(List<Timesheet> tsList) {
+        for (Timesheet ts : tsList) {
+            sessionFactory.getCurrentSession().saveOrUpdate(ts);
+        }
+
     }
 }

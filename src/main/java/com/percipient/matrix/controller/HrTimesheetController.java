@@ -1,9 +1,17 @@
 package com.percipient.matrix.controller;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +38,30 @@ public class HrTimesheetController {
 
     public static final String MODEL_ATTRIBUTE_HR_TIMESHEET_LIST = "hrTimesheetList";
     public static final String MODEL_ATTRIBUTE_HR_TIMESHEET = "hrTimesheet";
+
+    private static enum Action {
+        APPROVED("approve"), REJECTED("reject");
+
+        private String actionVal;
+        private static final Map<String, Action> lookup = new HashMap<String, Action>();
+
+        static {
+            for (Action s : EnumSet.allOf(Action.class))
+                lookup.put(s.getVal(), s);
+        }
+
+        private Action(String val) {
+            actionVal = val;
+        }
+
+        public String getVal() {
+            return actionVal;
+        }
+
+        public static Action get(String val) {
+            return lookup.get(val);
+        }
+    };
 
     @Autowired
     TimesheetService timesheetService;
@@ -96,16 +129,52 @@ public class HrTimesheetController {
 
         TimesheetView timesheetView = timesheetService
                 .getTimesheet(timesheetId);
-        if (action.equalsIgnoreCase("approve")) {
-            timesheetView.setStatus("approved");
-        } else if (action.equalsIgnoreCase("reject")) {
-            timesheetView.setStatus("rejected");
+        if (!StringUtils.isEmpty(action)) {
+            timesheetView.setStatus(Action.get(action).name().toLowerCase());
         }
+
         timesheetService.saveTimesheet(timesheetView);
         List<HrTimesheetView> hrTimesheetViewList = timesheetService
                 .getTimesheetsByStatus(status.toLowerCase());
         model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST,
                 hrTimesheetViewList);
+        return "hr/hrTimesheetPage";
+    }
+
+    @RequestMapping(value = "/{status}/{action}", method = RequestMethod.POST)
+    public String approveRejectTimesheet(Model model,
+            @PathVariable String status, @PathVariable String action,
+            @RequestBody ObjectNode selections) {
+        if (StringUtils.isEmpty(action)) {
+            model.addAttribute("error", "Changing status is not allowed ");
+            return "hr/hrTimesheetPage";
+        }
+        List<HrTimesheetView> hrTimesheetViews = timesheetService
+                .getTimesheetsByStatus(status.toLowerCase());
+
+        if (selections.get("all").asBoolean()) {
+
+            for (HrTimesheetView view : hrTimesheetViews) {
+                view.setStatus(Action.get(action).name().toLowerCase());
+            }
+        } else if (null != selections.get("selectionArray")
+                && selections.get("selectionArray").isArray()) {
+            JsonNode selectionArray = selections.get("selectionArray");
+            List<Integer> selectedIds = new ArrayList<Integer>();
+            Iterator<JsonNode> ite = selectionArray.getElements();
+            while (ite.hasNext()) {
+                JsonNode temp = ite.next();
+                selectedIds.add(temp.asInt());
+            }
+            for (HrTimesheetView view : hrTimesheetViews) {
+                if (selectedIds
+                        .contains(Integer.valueOf(view.getTimesheetId())))
+                    view.setStatus(Action.get(action).name().toLowerCase());
+            }
+        }
+
+        timesheetService.saveTimesheets(hrTimesheetViews);
+        model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST, hrTimesheetViews);
         return "hr/hrTimesheetPage";
     }
 
