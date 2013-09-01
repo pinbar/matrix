@@ -4,9 +4,96 @@ var hrTimesheetController = function() {
         timeSheetRejectClicked : ".timesheetReject",
         timesheetApproveClicked : ".timesheetApprove",
         timesheetEditClicked : ".timesheetEdit"
-    }, row, id, status, employeeId, statusChanged,
+    }, row, id, status, employeeId, statusChanged, dataTable,
 
-    _init = function() {
+    _setCurrentStatus = function(timesheetStatus) {
+        $('.sidebar-nav').find('a').removeClass('active');
+        $('.sidebar-nav').find('a#' + timesheetStatus).addClass('active');
+        status = timesheetStatus;
+    },
+
+    _setupHrTimeSheetTable = function() {
+        var tableArgs = {
+            sourceUrl : contextPath + '/hr/timesheets/listAsJson/' + status,
+            tableId : 'hrTimesheetTable',
+            filterInputId : 'hrTimesheetTable_filter',
+            columnConfig : [
+                    {
+                        bSortable : false,
+                        mData : null,
+                        sDefaultContent : '<input type="checkbox">'
+                    },
+                    {
+                        mData : 'timesheetId',
+                        sTitle : 'TimeSheet Id',
+                        bSearchable : false,
+                        bVisible : false
+                    },
+                    {
+                        mData : 'weekEnding',
+                        sTitle : 'Week Ending'
+                    },
+                    {
+                        mData : 'employeeName',
+                        sTitle : 'Employee'
+                    },
+                    {
+                        mData : 'status',
+                        sTitle : 'Status'
+                    },
+                    {
+                        mData : 'hours',
+                        sTitle : 'Hours',
+                        sClass : 'hours'
+                    },
+                    {
+                        bSortable : false,
+                        mData : null,
+                        sDefaultContent : '<a class=\"timesheetEdit\" href=\"javascript:;\" > <i class=\"glyphicon glyphicon-pencil\"></i> </a>'
+                    },
+                    {
+                        bSortable : false,
+                        mData : null,
+                        sDefaultContent : '<a class=\"timesheetApprove\" href=\"javascript:;\" > <i class=\"glyphicon glyphicon-ok\"></i> </a>'
+                    },
+                    {
+                        bSortable : false,
+                        mData : null,
+                        sDefaultContent : '<a class=\"timesheetReject\" href=\"javascript:;\"><i class=\"glyphicon glyphicon-remove\" ></i> </a>'
+                    } ]
+        };
+        return $("#" + tableArgs.tableId)
+                .dataTable(
+                        {
+                            bLengthChange : false,
+                            bPaginate : true,
+                            bInfo : false,
+                            bFilter : true,
+                            // bDestroy: true,
+                            aaSorting : [],
+                            bServerSide : false,
+                            bProcessing : true,
+                            sPaginationType : "full_numbers",
+                            sAjaxDataProp : "",
+                            sAjaxSource : tableArgs.sourceUrl,
+                            fnInitComplete : function() {
+                                $("#" + tableArgs.filterInputId + " label")
+                                        .contents().filter(function() {
+                                            return this.nodeType != 1;
+                                        }).replaceWith("");
+                                $("#" + tableArgs.filterInputId).addClass(
+                                        "input-prepend");
+                                $("#" + tableArgs.filterInputId + " label")
+                                        .append(
+                                                "<span class=\"add-on\"> <span class=\"glyphicon glyphicon-search\"></span></span>");
+                            },
+                            aoColumns : tableArgs.columnConfig
+                        });
+    },
+
+    _init = function(currentStatus) {
+        _setCurrentStatus(currentStatus);
+        dataTable = _setupHrTimeSheetTable();
         $('#timesheetModal').on(
                 'show.bs.modal',
                 function() {
@@ -75,7 +162,8 @@ var hrTimesheetController = function() {
         $(".modal-body").html(response);
         _setupActionControls();
 
-    }
+    },
+
     _deleteCostCodeRow = function(e) {
         var costCode = $(e.target).closest('tr').data('costcode');
         $.ajax(
@@ -109,6 +197,7 @@ var hrTimesheetController = function() {
         $('.timesheetHours').each(function(i) {
             hours = hours + parseFloat(this.value);
         });
+        // var data = $(dataTable).dataTable()._(row);
         $(row).find('.hours').text(hours.toFixed(2));
     },
 
@@ -216,9 +305,10 @@ var hrTimesheetController = function() {
 
     _onTimeSheetEdit = function(e) {
         row = $(e.target).closest('tr');
-        id = $(row).data('id');
-        status = $(row).data('status');
-        employeeId = $(row).data('employeeid');
+        var data = $(dataTable).dataTable()._(row);
+
+        id = data[0].timesheetId;
+        employeeId = data[0].employeeId;
         _clearErrorsMsg();
         $('#timesheetModal').modal({
             'show' : true,
@@ -234,6 +324,7 @@ var hrTimesheetController = function() {
     };
 
     return ({
+        setCurrentStatus : _setCurrentStatus,
         // timesheetApproveClicked : _onTimeSheetApprove,
         // timeSheetRejectClicked : _onTimeSheetReject,
         timesheetEditClicked : _onTimeSheetEdit,
@@ -242,10 +333,48 @@ var hrTimesheetController = function() {
     });
 }();
 
-$(document).ready(function() {
-    hrTimesheetController.init();
-    $.each(hrTimesheetController.actiontoSelectorMap, function(key, value) {
-        $(value).on("click", hrTimesheetController[key]);
-    });
+var hrTimeSheetSideBarController = function() {
+    "use strict";
+    var actiontoLinkSelectorMap = {
+        pending : "a#pending",
+        submitted : "a#submitted",
+        accepted : "a#accepted",
+        rejected : "a#rejected"
+    }, currentStatus,
 
-});
+    _getCurrentStatus = function() {
+        return currentStatus;
+    },
+
+    _init = function() {
+        var status = $(location).attr('pathname').replace(
+                contextPath + '/hr/timesheets', '');
+        currentStatus = $.trim(status) === '' ? 'pending' : $.trim(status
+                .replace('/', ""));
+    };
+
+    return ({
+        actiontoLinkSelectorMap : actiontoLinkSelectorMap,
+        getCurrentStatus : _getCurrentStatus,
+        init : _init
+    });
+}();
+
+$(document).ready(
+        function() {
+            hrTimeSheetSideBarController.init();
+            hrTimesheetController.init(hrTimeSheetSideBarController
+                    .getCurrentStatus());
+            $.each(hrTimeSheetSideBarController.actiontoLinkSelectorMap,
+                    function(key, value) {
+                        $(value).on("click", function(e) {
+                            hrTimeSheetSideBarController.currentStatus = key;
+                            hrTimesheetController.setCurrentStatus(key);
+                        });
+                    });
+            $.each(hrTimesheetController.actiontoSelectorMap, function(key,
+                    value) {
+                $('table').on('click', value, hrTimesheetController[key]);
+            });
+
+        });

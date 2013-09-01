@@ -2,9 +2,6 @@
 <link
     href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css"
     rel="stylesheet" media="screen">
-<!-- <link
-    href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-glyphicons.css"
-    rel="stylesheet" media="screen"> -->
 <link
     href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-theme.min.css"
     rel="stylesheet" media="screen">
@@ -15,7 +12,7 @@
     href="${pageContext.request.contextPath}/resources/css/common.css">
 
 <script
-    src="${pageContext.request.contextPath}/resources/jquery/js/jquery-2.0.3.min.js"></script>
+    src="${pageContext.request.contextPath}/resources/jquery/js/jquery-2.0.3.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
 <script

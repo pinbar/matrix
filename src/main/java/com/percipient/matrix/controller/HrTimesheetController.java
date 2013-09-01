@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.percipient.matrix.service.EmployeeCostCenterService;
 import com.percipient.matrix.service.TimesheetService;
@@ -45,6 +46,15 @@ public class HrTimesheetController {
         model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST,
                 hrTimesheetViewList);
         return "hr/hrTimesheetPage";
+    }
+
+    @RequestMapping(value = "/listAsJson/{status}")
+    public @ResponseBody
+    List<HrTimesheetView> getEmployeeListAsJSON(@PathVariable String status,
+            Model model) {
+        List<HrTimesheetView> hrTimesheetViewList = timesheetService
+                .getTimesheetsByStatus(status.toLowerCase());
+        return hrTimesheetViewList;
     }
 
     @RequestMapping(value = "/{status}", method = RequestMethod.GET)

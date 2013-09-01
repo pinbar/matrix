@@ -237,8 +237,8 @@ function initTable(args) {
                             $("#" + args.filterInputId).addClass(
                                     "input-prepend");
                             $("#" + args.filterInputId + " label")
-                                    .prepend(
-                                            "<span class=\"add-on\"><span class=\"icon-search\"></span></span>");
+                                    .append(
+                                            "<span class=\"add-on\"> <span class=\"glyphicon glyphicon-search\"></span></span>");
                         },
                         aoColumns : columns
                     });

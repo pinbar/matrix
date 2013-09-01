@@ -8,8 +8,15 @@
 <jsp:include page="../common/commonIncludes.jsp" />
 <link rel="stylesheet"
     href="${pageContext.request.contextPath}/resources/jQuery-File-Upload/css/jquery.fileupload-ui.css">
-    <script
-        src="${pageContext.request.contextPath}/resources/js/hrTimesheet.js"></script>
+<script
+    src="${pageContext.request.contextPath}/resources/jquery/js/jquery.dataTables.min.js"></script>
+<script
+    src="${pageContext.request.contextPath}/resources/jquery/js/dataTables.fnReloadAjax.js"></script>
+<script
+    src="${pageContext.request.contextPath}/resources/jquery/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script
+    src="${pageContext.request.contextPath}/resources/js/hrTimesheet.js"></script>
+
 </head>
 
 <body>
@@ -22,22 +29,24 @@
             </div>
             <div class="col-12 col-sm-9 col-lg-10">
                 <div class="well">
-                <div id="errorMessages" class="text-error">${error}</div>
-                <table id = "hrTimesheetTable" class="table table-bordered table-condensed">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Week Ending</th>
-                            <th>Employee</th>
-                            <th>Status</th>
-                            <th>Hours</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${hrTimesheetList}"
+                    <div id="errorMessages" class="text-error">${error}</div>
+                    <table id="hrTimesheetTable"
+                        class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>TimeSheet Id</th>
+                                <th>Week Ending</th>
+                                <th>Employee</th>
+                                <th>Status</th>
+                                <th>Hours</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--    <c:forEach items="${hrTimesheetList}"
                             var="hrTimesheet">
                             <tr
                                 data-employeeid="${hrTimesheet.employeeId}"
@@ -63,13 +72,13 @@
                                         class="glyphicon glyphicon-remove"></i>
                                 </a></td>
                             </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-                <jsp:include page="timesheetDialog.jsp" />
+                        </c:forEach> -->
+                        </tbody>
+                    </table>
+                    <jsp:include page="timesheetDialog.jsp" />
+                </div>
             </div>
         </div>
-</div>
     </div>
 </body>
 </html>
