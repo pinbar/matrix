@@ -91,7 +91,7 @@ public class HrTimesheetController {
 
         if (timesheetId == null) {
             model.addAttribute("error", "Timesheet id is required");
-            return "timesheet/timesheetContent";
+            return "timesheet/hrTimesheetPage";
         }
 
         TimesheetView timesheetView = timesheetService

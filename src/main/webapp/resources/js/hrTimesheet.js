@@ -315,6 +315,22 @@ var hrTimesheetController = function() {
         });
     },
 
+    _onTimeSheetApproveReject = function(e) {
+        row = $(e.target).closest('tr');
+        var data = $(dataTable).dataTable()._(row);
+        var action = $(e.target).closest('a').attr('class').replace(
+                'timesheet', '').toLowerCase();
+
+        id = data[0].timesheetId;
+        employeeId = data[0].employeeId;
+        _clearErrorsMsg();
+        $.get(
+                contextPath + '/hr/timesheets/' + status + '/' + id + '/'
+                        + action).done(function(data) {
+            $('body').html(data);
+        });
+    },
+
     _setupActionControls = function() {
         _setupAddCostCodeRowAction();
         _setupSaveTimesheetAction();
@@ -325,8 +341,8 @@ var hrTimesheetController = function() {
 
     return ({
         setCurrentStatus : _setCurrentStatus,
-        // timesheetApproveClicked : _onTimeSheetApprove,
-        // timeSheetRejectClicked : _onTimeSheetReject,
+        timesheetApproveClicked : _onTimeSheetApproveReject,
+        timeSheetRejectClicked : _onTimeSheetApproveReject,
         timesheetEditClicked : _onTimeSheetEdit,
         actiontoSelectorMap : actiontoSelectorMap,
         init : _init
