@@ -107,7 +107,7 @@ ul#users-inner,ul#groups-inner {
 
 .rt th {
     text-align: left;
-    background: #fff2b2;
+    /* background: #fff2b2;*/
     cursor: pointer;
     font-weight: bold;
     background-repeat: no-repeat;
@@ -118,30 +118,34 @@ ul#users-inner,ul#groups-inner {
 }
 
 @media only screen and (max-width: 40em) { /*640*/
-    #timesheetTable,#empListTable {
+    #timesheetTable,#empListTable,#grpListTable,#costCenterListTable,#clientListTable
+        {
         display: block;
         position: relative;
         width: 100%;
     }
-    #timesheetTable thead,#empListTable thead {
+    #timesheetTable thead,#empListTable thead,#grpListTable thead,#costCenterListTable thead,#clientListTable thead
+        {
         display: block;
         float: left;
     }
-    #timesheetTable tbody,#empListTable tbody {
+    #timesheetTable tbody,#empListTable tbody,#grpListTable tbody #costCenterListTable tbody, #clientListTabletbody
+        {
         display: block;
         width: auto;
         position: relative;
         overflow-x: auto;
         white-space: nowrap;
     }
-    #timesheetTable thead tr,#empListTable thead tr {
+    #timesheetTable thead tr,#empListTable thead tr,#grpListTable thead tr #costCenterListTable thead tr #clientListTable thead tr
+        {
         display: block;
     }
     #timesheetTable th {
         display: block;
         line-height: 3.333333em;
     }
-    #empListTable th {
+    #empListTable th,#grpListTable th,#costCenterListTable th , #clientListTable th{
         display: block;
         background-repeat: no-repeat;
         background-position: center left;
@@ -150,11 +154,13 @@ ul#users-inner,ul#groups-inner {
         margin-left: -1px;
         width: auto;
     }
-    #timesheetTable tbody tr,#empListTable tbody tr {
+    #timesheetTable tbody tr,#empListTable tbody tr,#grpListTable tbody tr,#costCenterListTable tbody tr, #clientListTable tbody tr
+        {
         display: inline-block;
         vertical-align: top;
     }
-    #timesheetTable td,#empListTable td {
+    #timesheetTable td,#empListTable td,#grpListTable td,#costCenterListTable td,#clientListTable td
+        {
         display: block;
         min-height: 1.25em;
     }

@@ -1,6 +1,6 @@
-<div class="well">
+<div>
     <table id="costCenterListTable"
-        class="table table-striped table-bordered table-condensed">
+        class="table table-striped table-bordered table-condensed rt">
         <thead>
             <tr>
                 <th><u>Id</u></th>
