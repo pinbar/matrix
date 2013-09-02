@@ -1,13 +1,26 @@
-<beans:beans xmlns="http://www.springframework.org/schema/jdbc"
+<beans:beans xmlns:jdbc="http://www.springframework.org/schema/jdbc"
     xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
            http://www.springframework.org/schema/jdbc
            http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
 
-    <embedded-database id="dataSource">
-        <script location="classpath:/database/schema.sql" />
-        <script location="classpath:/database/data.sql" />
-    </embedded-database>
+    <jdbc:embedded-database id="dataSource">
+        <jdbc:script location="classpath:/database/schema.sql" />
+        <jdbc:script location="classpath:/database/data.sql" />
+    </jdbc:embedded-database>
 
+ <!-- 
+    <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <beans:property name="url" value="jdbc:mysql://localhost:3306/matrixdb" />
+        <beans:property name="username" value="root" />
+        <beans:property name="password" value=""/>
+    </beans:bean>
+    
+    <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
+        <jdbc:script location="classpath:/database/schema_mysql.sql" />
+        <jdbc:script location="classpath:/database/data.sql" />
+    </jdbc:initialize-database>
+ -->
 </beans:beans>
