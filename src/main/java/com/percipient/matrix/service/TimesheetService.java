@@ -293,7 +293,7 @@ class TimesheetServiceImpl implements TimesheetService {
 
     private Timesheet getTimesheetFromHRView(HrTimesheetView view) {
         Timesheet ts = timesheetRepository.getTimesheet(view.getTimesheetId());
-        ts.setStatus(view.getStatus());
+        ts.setStatus(view.getStatus().toLowerCase());
         ts.setEmployeeId(view.getEmployeeId());
         ts.setWeekEnding(dateUtil.getAsDate(view.getWeekEnding()));
         return ts;

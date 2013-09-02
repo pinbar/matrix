@@ -11,14 +11,20 @@ var hrTimesheetController = function() {
         selectionArray : []
     },
 
+    _resetSelections = function() {
+        selections.all = false;
+        selections.selectionArray.length = 0;
+    },
+
     _setupSelections = function() {
+        _resetSelections();
         $('.selectAll').on('click', function(e) {
             $("input:checkbox").prop('checked', $(e.target).prop('checked'));
             if ($(e.target).prop('checked')) {
                 selections.all = true;
-                selections.selectionArray.length = 0; // emptying out the
-                // selected ids since
-                // all are selected
+
+                // emptying out the selected ids since all are selected
+                selections.selectionArray.length = 0;
             }
         });
         $('table').on(
@@ -141,6 +147,7 @@ var hrTimesheetController = function() {
                 data : JSON.stringify(selections)
             }).done(function(response, textStatus, jqXHR) {
                 $('body').html(response);
+                _resetSelections();
             }).
             // TODO : error styling and error stuff
             fail(function(response, textStatus, jqXHR) {
