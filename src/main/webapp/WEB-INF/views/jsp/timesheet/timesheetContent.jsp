@@ -143,12 +143,8 @@
                     </tr>
                 </c:forEach>
             </c:if>
-        </tbody>
-        <tr>
-            <div class="clear"></div>
-            </tr>
-        
     </table>
+    <div class="clear"></div>
     <div class="control-group">
         <a id="addRow"
             href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&weekEnding=${timesheet.weekEnding}">
@@ -222,21 +218,4 @@
 </div>
 <!-- end The template to display files available for upload -->
 
-  <script
-    src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
-<script
-    src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
-<script
-    src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload.js"></script>
-<script
-    src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/load-image.min.js"></script>
-<script
-    src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload-process.js"></script>
-<script
-    src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload-resize.js"></script>
-<script
-    src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload-validate.js"></script>
-<script
-    src="${pageContext.request.contextPath}/resources/jQuery-File-Upload/js/jquery.fileupload-ui.js"></script>
-<script
-    src="${pageContext.request.contextPath}/resources/js/timesheet.js"></script>
+ 

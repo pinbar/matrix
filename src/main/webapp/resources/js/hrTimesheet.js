@@ -174,11 +174,15 @@ var hrTimesheetController = function() {
                     });
                 });
         $('#timesheetModal').on('shown.bs.modal', function() {
+            timesheetContentController.init();
+            timesheetContentController.setUpSubmitTimesheet();
+            timesheetContentController.setUpActivateTimesheet();
+            timesheetContentController.disableTimesheet();
             _setupActionControls();
         });
         $('#timesheetModal').on('hide.bs.modal', function() {
             if (statusChanged) {
-                $('body').load(contextPath + '/hr/timesheets/' + status);
+                $('window').load(contextPath + '/hr/timesheets/' + status);
             }
         });
 
@@ -319,8 +323,6 @@ var hrTimesheetController = function() {
                 $(".modal-body").html(response);
                 _setupActionControls();
             } else {
-                // $(".modal-body").html(response);
-                // $('body').load(contextPath + '/hr/timesheets/' + status);
                 statusChanged = true;
                 $('#timesheetModal').modal('hide');
             }

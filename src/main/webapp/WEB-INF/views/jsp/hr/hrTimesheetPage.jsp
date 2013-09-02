@@ -6,8 +6,7 @@
 <head>
 <title>Dashboard</title>
 <jsp:include page="../common/commonIncludes.jsp" />
-<link rel="stylesheet"
-    href="${pageContext.request.contextPath}/resources/jQuery-File-Upload/css/jquery.fileupload-ui.css">
+<jsp:include page="../common/attachmentIncludes.jsp" />
 <script
     src="${pageContext.request.contextPath}/resources/jquery/js/jquery.dataTables.min.js"></script>
 <script
@@ -15,8 +14,10 @@
 <script
     src="${pageContext.request.contextPath}/resources/jquery/js/jquery-ui-1.10.3.custom.min.js"></script>
 <script
-    src="${pageContext.request.contextPath}/resources/js/hrTimesheet.js"></script>
+    src="${pageContext.request.contextPath}/resources/js/timesheet.js"></script>
 
+<script
+    src="${pageContext.request.contextPath}/resources/js/hrTimesheet.js"></script>
 </head>
 
 <body>

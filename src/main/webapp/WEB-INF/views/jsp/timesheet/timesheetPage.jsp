@@ -5,8 +5,10 @@
 <head>
 <title>Dashboard</title>
 <jsp:include page="../common/commonIncludes.jsp" />
-<link rel="stylesheet"
-    href="${pageContext.request.contextPath}/resources/jQuery-File-Upload/css/jquery.fileupload-ui.css">
+<jsp:include page="../common/attachmentIncludes.jsp" />
+<script
+    src="${pageContext.request.contextPath}/resources/js/timesheet.js"></script>
+
 </head>
 
 <body>
