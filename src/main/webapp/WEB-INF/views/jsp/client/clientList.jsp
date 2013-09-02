@@ -1,12 +1,12 @@
 <div>
     <table id="clientListTable"
-        class="table table-striped table-bordered table-condensed rt">
+        class="table table-striped table-condensed rt border">
         <thead>
             <tr>
-                <th><u>Client Id</u></th>
-                <th><u>Name</u></th>
-                <th></th>
-                <th></th>
+                <th>Client Id</th>
+                <th>Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody id="clientListTableBody">

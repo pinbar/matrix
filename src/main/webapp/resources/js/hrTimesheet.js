@@ -138,7 +138,6 @@ var hrTimesheetController = function() {
     _setupGlobalApproveOrReject = function() {
         $('.hrTimesheetControl').on('click', function(e) {
             var action = $(e.target).attr('value').toLowerCase();
-            // var
             $.ajax({
                 url : contextPath + '/hr/timesheets/' + status + '/' + action,
                 type : "POST",

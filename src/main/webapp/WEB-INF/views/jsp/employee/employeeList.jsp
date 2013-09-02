@@ -2,7 +2,7 @@
 
 <div>
     <table id="empListTable"
-        class="table table-striped table-bordered table-condensed rt">
+        class="table table-striped table-table-condensed rt border">
         <thead>
             <tr>
                 <th >Employee Id</th>
@@ -11,9 +11,9 @@
                 <th>Last Name</th>
                 <th>Group Name</th>
                 <th>Active</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th>Edit</th>
+                <th>Delete</th>
+                <th>Reset</th>
             </tr>
         </thead>
         <tbody>

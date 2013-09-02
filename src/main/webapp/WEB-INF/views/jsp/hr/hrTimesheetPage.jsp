@@ -27,11 +27,11 @@
                 class="col-5 col-sm-3 col-lg-2 navbar-collapse collapse sidebar-collapse">
                 <jsp:include page="hrTimesheetSideBar.jsp" />
             </div>
-            <div class="col-12 col-sm-9 col-lg-10">
-                <div class="well">
+            <div class="col-12 col-sm-9 col-lg-10 border">
+                <div>
                     <div id="errorMessages" class="text-error">${error}</div>
                     <table id="hrTimesheetTable"
-                        class="table table-bordered table-condensed">
+                        class="table table-bordered table-condensed rt">
                         <thead>
                             <tr>
                                 <th><input class="selectAll"
@@ -41,9 +41,9 @@
                                 <th>Employee</th>
                                 <th>Status</th>
                                 <th>Hours</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th>Edit</th>
+                                <th>Approve</th>
+                                <th>Reject</th>
                             </tr>
                         </thead>
                         <tbody>

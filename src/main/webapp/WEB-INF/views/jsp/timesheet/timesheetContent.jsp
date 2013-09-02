@@ -4,7 +4,7 @@
 <form:form data-id="${timesheet.id}" data-status="${timesheet.status}" id="timesheet" class="form-vertical" method="post"
     modelAttribute="timesheet"
     action="${pageContext.request.contextPath}/timesheet/save">
-    <table id="timesheetTable" class="table table-bordered table-striped cf rt">
+    <table id="timesheetTable" class="table  table-striped cf rt border">
         <thead>
             <tr>
                 <th>Cost Center</th>
@@ -146,6 +146,7 @@
         </tbody>
 
     </table>
+    <div class="clear"></div>
     <div class="control-group">
         <a id="addRow"
             href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&weekEnding=${timesheet.weekEnding}">
