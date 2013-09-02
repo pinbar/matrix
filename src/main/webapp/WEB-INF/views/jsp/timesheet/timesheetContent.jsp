@@ -144,9 +144,11 @@
                 </c:forEach>
             </c:if>
         </tbody>
-
+        <tr>
+            <div class="clear"></div>
+            </tr>
+        
     </table>
-    <div class="clear"></div>
     <div class="control-group">
         <a id="addRow"
             href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&weekEnding=${timesheet.weekEnding}">

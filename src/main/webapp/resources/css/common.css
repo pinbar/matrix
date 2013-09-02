@@ -74,16 +74,17 @@ ul#users-inner,ul#groups-inner {
     border: 3px solid #808080;
     padding: 5px;
     -moz-border-radius: 15px;
-    -webkit-border-radius: 15px
+    -webkit-border-radius: 15px;
     border-radius: 15px;
 }
  
 #timesheetTable.border{
     border: 3px solid #808080;
-    padding: 8px;
+    padding: 2px;
     -moz-border-radius: 15px;
     -webkit-border-radius: 15px;
     border-radius: 15px;
+    border-bottom: 3px solid #808080;
 }
 /*responsive table*/
 .cf:after {
@@ -121,7 +122,7 @@ ul#users-inner,ul#groups-inner {
 
 .rt th {
     text-align: left;
-    background: #333;
+    background-color: #3092BE;
     color: white;  
     cursor: pointer;
     font-weight: bold;
@@ -242,23 +243,31 @@ div#clientListTable_paginate a,
 div#hrTimesheetTable_paginate a
     {
     border: 1px solid #aaa;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     padding: 2px 5px;
-    margin: 0 3px;
-    cursor: pointer;
-    *cursor: hand;
-    background-color: #ddd;
+    margin: 0 0 0 1px;
+    color: #ffffff;
+    background-color: #3092BE;
+    border-color: #46b8da;
 }
 
 div.dataTables_paginate a:hover {
-    background-color: #ccc;
+    color: #333333;
+    background-color: #ebebeb;
+     border-color: #adadad;
 }
 
 div.dataTables_paginate {
     float: right;
-    margin: -10px;
     line-height: 22px;
+}
+div.dataTables_filter input[type="text"] {
+     border: 1px solid #aaa;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
 }
 
 .progressBar {
