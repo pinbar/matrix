@@ -51,8 +51,9 @@ var hrTimesheetController = function() {
     },
 
     _setCurrentStatus = function(timesheetStatus) {
-        $('.sidebar-nav').find('a').removeClass('active');
-        $('.sidebar-nav').find('a#' + timesheetStatus).addClass('active');
+        $('.sidebar-nav').find('li').removeClass('active');
+        $('.sidebar-nav').find('a#' + timesheetStatus).parent().addClass(
+                'active');
         status = timesheetStatus;
     },
 
