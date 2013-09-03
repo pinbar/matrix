@@ -243,7 +243,7 @@ var timesheetContentController = function() {
             format : 'mm-dd-yyyy'
         });
 
-        $('#tsCreateBtn').click(function() {
+        $('#tsCreateBtn').on('click', function() {
             var tsCreateDate = $('#dp').val();
             window.location = contextPath + "/timesheet/new/" + tsCreateDate;
         });

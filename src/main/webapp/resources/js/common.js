@@ -1,6 +1,7 @@
 $(document).ready(
         function() {
-            $("#admin-sidebar-nav > li > a[data-target]").parent('li').click(
+            $("#admin-sidebar-nav > li > a[data-target]").parent('li').on(
+                    'click',
                     function() {
                         var target = $(this).children('a[data-target]').data(
                                 'target');
