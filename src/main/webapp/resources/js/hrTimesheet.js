@@ -4,7 +4,7 @@ var hrTimesheetController = function() {
         timeSheetRejectClicked : ".timesheetReject",
         timesheetApproveClicked : ".timesheetApprove",
         timesheetEditClicked : ".timesheetEdit"
-    }, row, id, status, employeeId, statusChanged, dataTable,
+    }, row, id, status, employeeId, statusChanged, dataTable, totalRecords = 0,
 
     selections = {
         all : false,
@@ -33,19 +33,28 @@ var hrTimesheetController = function() {
                 function(e) {
                     var selectedRow = $(e.target).closest('tr');
                     var data = $(dataTable).dataTable()._(selectedRow);
-                    selections.all = false;
                     if ($(e.target).prop('checked')) {
                         selections.selectionArray
                                 .push(id = data[0].timesheetId);
                         selections.selectionArray = $
                                 .unique(selections.selectionArray);
                     } else {
-                        selections.selectionArray = $.grep(
-                                selections.selectionArray, function(a) {
-                                    return a != data[0].timesheetId;
-                                });
-
+                        if (!selections.all) {
+                            selections.selectionArray = $.grep(
+                                    selections.selectionArray, function(a) {
+                                        return a != data[0].timesheetId;
+                                    });
+                        } else {
+                            selections.selectionArray = [];
+                            for ( var i = 0; i < totalRecords; i++) {
+                                selections.selectionArray.push(i + 1);
+                                if (i + 1 == data[0].timesheetId) {
+                                    selections.selectionArray.splice(i, 1);
+                                }
+                            }
+                        }
                     }
+                    selections.all = false;
 
                 });
     },
@@ -116,11 +125,18 @@ var hrTimesheetController = function() {
                             bFilter : true,
                             // bDestroy: true,
                             aaSorting : [],
+                            iDisplayLength : 25,
                             bServerSide : false,
                             bProcessing : true,
                             sPaginationType : "full_numbers",
-                            sAjaxDataProp : "",
+                            sAjaxDataProp : "timesheets",
                             sAjaxSource : tableArgs.sourceUrl,
+                            fnServerData : function(sSource, aoData, fnCallback) {
+                                $.getJSON(sSource, aoData, function(json) {
+                                    totalRecords = json.iTotalRecords;
+                                    fnCallback(json);
+                                });
+                            },
                             fnInitComplete : function() {
                                 $("#" + tableArgs.filterInputId + " label")
                                         .contents().filter(function() {
@@ -345,9 +361,22 @@ var hrTimesheetController = function() {
                     data : $("form#timesheet").find("input, select ,textarea")
                             .removeAttr("disabled", "disabled").serialize()
                 }).done(function(response, textStatus, jqXHR) {
+
+            var errNode = null;
+            errNode = $.parseHTML(response).filter(function(node, index) {
+                return node.id == "errorMessages";
+            })[0];
+
+            var err = errNode ? errNode.innerHTML.length > 0 : false;
             $(".modal-body").html(response);
-            statusChanged = true;
             _setupActionControls();
+
+            if (err) {
+                $("#errorMessages").show();
+                timesheetContentController.disableTimesheet();
+            } else {
+                statusChanged = true;
+            }
         })
         // TODO : error styling and error stuff
         .fail(function(response, textStatus, jqXHR) {
@@ -415,6 +444,7 @@ var hrTimesheetController = function() {
         timeSheetRejectClicked : _onTimeSheetApproveReject,
         timesheetEditClicked : _onTimeSheetEdit,
         actiontoSelectorMap : actiontoSelectorMap,
+        totalRecords : totalRecords,
         init : _init
     });
 }();

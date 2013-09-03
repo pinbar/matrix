@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,8 @@ public class HrTimesheetController {
 
     public static final String MODEL_ATTRIBUTE_HR_TIMESHEET_LIST = "hrTimesheetList";
     public static final String MODEL_ATTRIBUTE_HR_TIMESHEET = "hrTimesheet";
+    private static final String TOTAL_RECORDS_VIEW_PROP = "iTotalRecords";
+    private static final String TOTAL_DISPLAY_RECORDS_VIEW_PROP = "iTotalDisplayRecords";
 
     private static enum Action {
         APPROVED("approve"), REJECTED("reject");
@@ -83,20 +86,23 @@ public class HrTimesheetController {
 
     @RequestMapping(value = "/listAsJson/{status}")
     public @ResponseBody
-    List<HrTimesheetView> getEmployeeListAsJSON(@PathVariable String status,
-            Model model) {
+    ObjectNode getEmployeeListAsJSON(@PathVariable String status, Model model) {
         List<HrTimesheetView> hrTimesheetViewList = timesheetService
                 .getTimesheetsByStatus(status.toLowerCase());
-        return hrTimesheetViewList;
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode retObject = mapper.createObjectNode();
+        retObject.putPOJO("timesheets", hrTimesheetViewList);
+        retObject.put(TOTAL_RECORDS_VIEW_PROP, hrTimesheetViewList.size());
+        retObject.put(TOTAL_DISPLAY_RECORDS_VIEW_PROP,
+                hrTimesheetViewList.size());
+        return retObject;
     }
 
     @RequestMapping(value = "/{status}", method = RequestMethod.GET)
     public String getTimesheetByStatus(@PathVariable String status, Model model) {
 
-        List<HrTimesheetView> hrTimesheetViewList = timesheetService
-                .getTimesheetsByStatus(status.toLowerCase());
         model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST,
-                hrTimesheetViewList);
+                new ArrayList<HrTimesheetView>());
         return "hr/hrTimesheetPage";
     }
 
@@ -153,29 +159,42 @@ public class HrTimesheetController {
                 .getTimesheetsByStatus(status.toLowerCase());
 
         if (selections.get("all").asBoolean()) {
-
             for (HrTimesheetView view : hrTimesheetViews) {
                 view.setStatus(Action.get(action).name().toLowerCase());
             }
         } else if (null != selections.get("selectionArray")
                 && selections.get("selectionArray").isArray()) {
             JsonNode selectionArray = selections.get("selectionArray");
-            List<Integer> selectedIds = new ArrayList<Integer>();
-            Iterator<JsonNode> ite = selectionArray.getElements();
-            while (ite.hasNext()) {
-                JsonNode temp = ite.next();
-                selectedIds.add(temp.asInt());
-            }
-            for (HrTimesheetView view : hrTimesheetViews) {
-                if (selectedIds
-                        .contains(Integer.valueOf(view.getTimesheetId())))
-                    view.setStatus(Action.get(action).name().toLowerCase());
-            }
+            List<Integer> selectedIds = getSelectionFromSelectionJSONArray(selectionArray);
+            List<HrTimesheetView> selectedHrTimesheetViews = processSelectedViews(
+                    action, hrTimesheetViews, selectedIds);
+            hrTimesheetViews = selectedHrTimesheetViews;
         }
-
         timesheetService.saveTimesheets(hrTimesheetViews);
         model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST, hrTimesheetViews);
         return "hr/hrTimesheetPage";
+    }
+
+    private List<HrTimesheetView> processSelectedViews(String action,
+            List<HrTimesheetView> hrTimesheetViews, List<Integer> selectedIds) {
+        List<HrTimesheetView> filteredHrTimesheetViews = new ArrayList<HrTimesheetView>();
+        for (HrTimesheetView view : hrTimesheetViews) {
+            if (selectedIds.contains(Integer.valueOf(view.getTimesheetId())))
+                view.setStatus(Action.get(action).name().toLowerCase());
+            filteredHrTimesheetViews.add(view);
+        }
+        return filteredHrTimesheetViews;
+    }
+
+    private List<Integer> getSelectionFromSelectionJSONArray(
+            JsonNode selectionArray) {
+        List<Integer> selectedIds = new ArrayList<Integer>();
+        Iterator<JsonNode> ite = selectionArray.getElements();
+        while (ite.hasNext()) {
+            JsonNode temp = ite.next();
+            selectedIds.add(temp.asInt());
+        }
+        return selectedIds;
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -216,13 +235,18 @@ public class HrTimesheetController {
                 costCenters);
         if ("Approved".equalsIgnoreCase(status)) {
             ObjectError error = new ObjectError("error",
-                    "Approved Timesheet cannot be activated");
+                    "Approved Timesheet cannot be activated..");
             result.addError(error);
         }// TODO supervisors may be able to activate ? && employee not
          // supervisor)
         if (result.hasErrors()) {
-            model.addAttribute("error",
-                    "Please input correct values where indicated .....");
+            if (null == result.getGlobalError()) {
+                model.addAttribute("error",
+                        "Please input correct values where indicated .....");
+            } else {
+                model.addAttribute("error", result.getGlobalError()
+                        .getDefaultMessage());
+            }
             model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
                     timesheetView);
             return "timesheet/timesheetContent";
