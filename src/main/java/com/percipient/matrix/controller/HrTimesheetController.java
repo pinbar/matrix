@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.percipient.matrix.service.EmployeeCostCenterService;
 import com.percipient.matrix.service.TimesheetService;
 import com.percipient.matrix.util.DateUtil;
+import com.percipient.matrix.util.Logging.Loggable;
 import com.percipient.matrix.view.CostCenterView;
 import com.percipient.matrix.view.HrTimesheetView;
 import com.percipient.matrix.view.TimesheetView;
@@ -66,6 +68,9 @@ public class HrTimesheetController {
         }
     };
 
+    @Loggable
+    private Logger logger;
+
     @Autowired
     TimesheetService timesheetService;
 
@@ -81,12 +86,13 @@ public class HrTimesheetController {
                 .getTimesheetsByStatus("pending");
         model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST,
                 hrTimesheetViewList);
+        logger.info("TESTING ");
         return "hr/hrTimesheetPage";
     }
 
     @RequestMapping(value = "/listAsJson/{status}")
     public @ResponseBody
-    ObjectNode getEmployeeListAsJSON(@PathVariable String status, Model model) {
+    ObjectNode getTimesheetListAsJSON(@PathVariable String status, Model model) {
         List<HrTimesheetView> hrTimesheetViewList = timesheetService
                 .getTimesheetsByStatus(status.toLowerCase());
         ObjectMapper mapper = new ObjectMapper();

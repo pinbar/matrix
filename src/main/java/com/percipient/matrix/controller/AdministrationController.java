@@ -1,11 +1,9 @@
 package com.percipient.matrix.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.percipient.matrix.service.GroupService;
 import com.percipient.matrix.view.AdminEmpPasswordView;
 import com.percipient.matrix.view.ClientView;
 import com.percipient.matrix.view.CostCenterView;
@@ -20,9 +18,6 @@ public class AdministrationController {
     public static final String MODEL_ATTRIBUTE_GROUPS = "groups";
     public static final String ADMIN_PAGE = "admin/administrationPage";
 
-    @Autowired
-    GroupService groupService;
-
     @RequestMapping(value = "/")
     public String home(Model model) {
         model.addAttribute(GroupController.MODEL_ATTRIBUTE_GROUP,
@@ -36,6 +31,6 @@ public class AdministrationController {
         model.addAttribute(MODEL_ATTRIBUTE_DEFAULT_FORM, "admin");
         model.addAttribute(EmployeeController.MODEL_ATTRIBUTE_CHANGE_PASS,
                 new AdminEmpPasswordView());
-       return  AdministrationController.ADMIN_PAGE;
+        return AdministrationController.ADMIN_PAGE;
     }
 }

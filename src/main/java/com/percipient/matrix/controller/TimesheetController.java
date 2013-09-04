@@ -161,11 +161,18 @@ public class TimesheetController {
     }
 
     @RequestMapping(value = "/activate/{timesheetId}", method = RequestMethod.GET)
-    public String activateTimesheet(Model model, @PathVariable Integer timesheetId) {
+    public String activateTimesheet(Model model,
+            @PathVariable Integer timesheetId) {
 
-        TimesheetView timesheetView = timesheetService.getTimesheet(timesheetId);
-        timesheetView.setStatus("pending");
-        timesheetService.saveTimesheet(timesheetView);
+        TimesheetView timesheetView = timesheetService
+                .getTimesheet(timesheetId);
+        if ("Approved".equalsIgnoreCase(timesheetView.getStatus())) {
+            model.addAttribute("error",
+                    "Approved Timesheet cannot be activated..");
+        } else {
+            timesheetView.setStatus("pending");
+            timesheetService.saveTimesheet(timesheetView);
+        }
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
         return gotoTimesheetContent(model);
     }

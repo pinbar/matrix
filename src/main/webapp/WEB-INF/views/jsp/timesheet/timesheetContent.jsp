@@ -1,10 +1,11 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <div id="errorMessages" class="error">${error}</div>
 <form:form data-id="${timesheet.id}" data-status="${timesheet.status}" id="timesheet" class="form-vertical" method="post"
     modelAttribute="timesheet"
     action="${pageContext.request.contextPath}/timesheet/save">
-    <table id="timesheetTable" class="table  table-striped cf rt border">
+    <table id="timesheetTable" class="table  table-striped cf rt">
         <thead>
             <tr>
                 <th>Cost Center</th>
@@ -53,7 +54,7 @@
                             </div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].monday.hours"
-                                type="text" class="form-control timesheetHours" /> <form:hidden
+                                type="number" class="form-control timesheetHours" /> <form:hidden
                                 path="tsCostCenters[${status.index}].monday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].monday.id" />
@@ -65,7 +66,7 @@
                             </div> </td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].tuesday.hours"
-                                type="text" class="form-control timesheetHours" /> <form:hidden
+                                type="number" class="form-control timesheetHours" /> <form:hidden
                                 path="tsCostCenters[${status.index}].tuesday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].tuesday.id" />
@@ -77,7 +78,7 @@
                             </div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].wednesday.hours"
-                                type="text" class="form-control timesheetHours" /> <form:hidden
+                                type="number" class="form-control timesheetHours" /> <form:hidden
                                 path="tsCostCenters[${status.index}].wednesday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].wednesday.id" />
@@ -89,7 +90,7 @@
                             </div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].thursday.hours"
-                                type="text" class="form-control timesheetHours" /> <form:hidden
+                                type="number" class="form-control timesheetHours" /> <form:hidden
                                 path="tsCostCenters[${status.index}].thursday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].thursday.id" />
@@ -101,7 +102,7 @@
                             </div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].friday.hours"
-                                type="text" class="form-control timesheetHours" /> <form:hidden
+                                type="number" class="form-control timesheetHours" /> <form:hidden
                                 path="tsCostCenters[${status.index}].friday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].friday.id" />
@@ -113,7 +114,7 @@
                             </div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].saturday.hours"
-                                type="text" class="form-control timesheetHours" /> <form:hidden
+                                type="number" class="form-control timesheetHours" /> <form:hidden
                                 path="tsCostCenters[${status.index}].saturday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].saturday.id" />
@@ -125,7 +126,7 @@
                             </div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].sunday.hours"
-                                type="text" class="form-control timesheetHours" /> <form:hidden
+                                type="number" class="form-control timesheetHours" /> <form:hidden
                                 path="tsCostCenters[${status.index}].sunday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].sunday.id" />

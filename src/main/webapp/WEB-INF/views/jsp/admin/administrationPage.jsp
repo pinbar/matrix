@@ -12,7 +12,6 @@
     href="${pageContext.request.contextPath}/resources/jquery-ui-multiselect/css/jquery.multiselect.css">
 <link rel="stylesheet"
     href="${pageContext.request.contextPath}/resources/jquery-ui-multiselect/css/jquery.multiselect.filter.css">
-
 </head>
 <body>
     <jsp:include page="../common/header.jsp" />
