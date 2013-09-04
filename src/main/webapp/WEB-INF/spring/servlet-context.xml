@@ -30,6 +30,25 @@
         <property name="maxUploadSize" value="10000000" />
     </bean>
 
+    <!-- Message Source -->
+    <bean id="messageSource"
+        class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:messages/messages" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
+    <!-- Locale and I18N -->
+    <bean id="localeResolver"
+        class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="defaultLocale" value="de" />
+    </bean>
+    <mvc:interceptors>
+        <bean
+            class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang"></property>
+        </bean>
+    </mvc:interceptors>
+
     <bean id="sessionFactory"
         class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
