@@ -3,28 +3,17 @@ package com.percipient.matrix.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.hibernate.validator.constraints.NotBlank;
 
 public class TSCostCenterView {
 
-    @NotBlank
     private String costCode = "";// blank to keep the default on form
-    @Valid
     private TimesheetItemView monday;
-    @Valid
     private TimesheetItemView tuesday;
-    @Valid
     private TimesheetItemView wednesday;
-    @Valid
     private TimesheetItemView thursday;
-    @Valid
     private TimesheetItemView friday;
-    @Valid
     private TimesheetItemView saturday;
-    @Valid
     private TimesheetItemView sunday;
 
     public String getCostCode() {
@@ -101,7 +90,17 @@ public class TSCostCenterView {
         tsItems.add(getFriday());
         tsItems.add(getSaturday());
         tsItems.add(getSunday());
+
         return tsItems;
     }
 
+    @JsonIgnore
+    public Double getTotalHours() {
+        double totalHours = getMonday().getHours() + getTuesday().getHours()
+                + getWednesday().getHours() + getThursday().getHours()
+                + getFriday().getHours() + getSaturday().getHours()
+                + getSunday().getHours();
+
+        return totalHours;
+    }
 }
