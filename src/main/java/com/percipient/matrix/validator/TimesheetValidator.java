@@ -3,6 +3,8 @@ package com.percipient.matrix.validator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -12,6 +14,7 @@ import com.percipient.matrix.view.TSCostCenterView;
 import com.percipient.matrix.view.TimesheetView;
 
 @Component
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "prototype")
 public class TimesheetValidator implements Validator {
 
     private static final String TIMESHEET_TOTALHOURS_ERROR_CODE = "timesheet.totalhours.day";
