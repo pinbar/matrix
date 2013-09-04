@@ -14,6 +14,9 @@ import com.percipient.matrix.view.TimesheetView;
 @Component
 public class TimesheetValidator implements Validator {
 
+    private static final String TIMESHEET_TOTALHOURS_ERROR_CODE = "timesheet.totalhours.day";
+    private static final String TOTAL_HOURS_IN_A_DAY_EXCEEDED = "Total hours in a day cannot be more than 24";
+
     public boolean supports(Class<?> clazz) {
         return TimesheetView.class.equals(clazz);
     }
@@ -66,54 +69,39 @@ public class TimesheetValidator implements Validator {
             TSCostCenterView tsCCView = tsView.getTsCostCenters().get(i);
             mondayHours = mondayHours + tsCCView.getMonday().getHours();
             if (mondayHours > 24) {
-                errors.reject("timesheet.totalhours.day",
-                        new Object[] { "monday" },
-                        "Total hours in a day cannot be more than 24");
-                return;
+                populateTotalHoursErrorMesage(errors, "monday");
             }
             tuesdayHours = tuesdayHours + tsCCView.getTuesday().getHours();
             if (tuesdayHours > 24) {
-                errors.reject("timesheet.totalhours.day",
-                        new Object[] { "tuesday" },
-                        "Total hours in a day cannot be more than 24");
-                return;
+                populateTotalHoursErrorMesage(errors, "tuesday");
             }
             wednesdayHours = wednesdayHours
                     + tsCCView.getWednesday().getHours();
             if (wednesdayHours > 24) {
-                errors.reject("timesheet.totalhours.day",
-                        new Object[] { "wednesday" },
-                        "Total hours in a day cannot be more than 24");
-                return;
+                populateTotalHoursErrorMesage(errors, "wednesday");
             }
             thursdayHours = thursdayHours + tsCCView.getThursday().getHours();
             if (thursdayHours > 24) {
-                errors.reject("timesheet.totalhours.day",
-                        new Object[] { "thursday" },
-                        "Total hours in a day cannot be more than 24");
-                return;
+                populateTotalHoursErrorMesage(errors, "thursday");
             }
             fridayHours = fridayHours + tsCCView.getFriday().getHours();
             if (fridayHours > 24) {
-                errors.reject("timesheet.totalhours.day",
-                        new Object[] { "friday" },
-                        "Total hours in a day cannot be more than 24");
-                return;
+                populateTotalHoursErrorMesage(errors, "friday");
             }
             saturdayHours = saturdayHours + tsCCView.getSaturday().getHours();
             if (saturdayHours > 24) {
-                errors.reject("timesheet.totalhours.day",
-                        new Object[] { "saturday" },
-                        "Total hours in a day cannot be more than 24");
-                return;
+                populateTotalHoursErrorMesage(errors, "saturday");
             }
             sundayHours = sundayHours + tsCCView.getSunday().getHours();
             if (sundayHours > 24) {
-                errors.reject("timesheet.totalhours.day",
-                        new Object[] { "sunday" },
-                        "Total hours in a day cannot be more than 24");
-                return;
+                populateTotalHoursErrorMesage(errors, "sunday");
             }
         }
     }
+
+    private void populateTotalHoursErrorMesage(Errors errors, String day) {
+        errors.reject(TIMESHEET_TOTALHOURS_ERROR_CODE, new Object[] { day },
+                TOTAL_HOURS_IN_A_DAY_EXCEEDED);
+    }
+
 }

@@ -6,6 +6,7 @@
     id="timesheet" class="form-vertical" method="post"
     modelAttribute="timesheet"
     action="${pageContext.request.contextPath}/timesheet/save">
+    <form:errors class="error"></form:errors>
     <table id="timesheetTable" class="table  table-striped cf rt">
         <thead>
             <tr>
