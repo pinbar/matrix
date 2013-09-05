@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LoggingAspect {
-    // @Loggable
     private static final Logger log = LoggerFactory
             .getLogger(LoggingAspect.class);
 
@@ -21,13 +20,13 @@ public class LoggingAspect {
     public void methodsToBeLogged() {
     }
 
-    @Before("methodsToBeLogged()")
+    @Before("execution(public * com.percipient.matrix..*(..))")
     public void displayBefore(JoinPoint jp) {
         log.info("Entering method : " + jp.getSignature().getName());
         log.info("With Arguments : " + jp.getArgs());
     }
 
-    @After("methodsToBeLogged()")
+    @After("execution(public * com.percipient.matrix..*(..))")
     public void displayAfter(JoinPoint jp) {
         log.info("Returning from : " + jp.getSignature().getName());
 

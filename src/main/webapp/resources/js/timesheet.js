@@ -58,6 +58,10 @@ var timesheetContentController = function() {
     },
 
     _init = function() {
+        _initializeDatePicker();
+        _setUpSubmitTimesheet();
+        _setUpActivateTimesheet();
+        _disableTimesheet();
         _setUpToggleAttachments();
         if ($("#fileupload").length > 0) {
             $('#fileupload')
@@ -231,6 +235,7 @@ var timesheetContentController = function() {
                                                 }
                                                 $("#timesheetContent").html(
                                                         response);
+                                                _init();
                                                 $("#activateTimesheet").attr(
                                                         "disabled", "disabled");
                                             });
@@ -250,9 +255,14 @@ var timesheetContentController = function() {
     },
 
     _setUpSubmitTimesheet = function() {
-        $('#submitTimesheet').on('click', function() {
+        $('.submitTimesheet').on('click', function(e) {
+           $("span.error").remove();
+           if(!_validateTimes()){
+               return false;
+           }
+           var urlFragment = $(e.target).val() === "Save" ? '/timesheet/save':'/timesheet/submit';
             $.ajax({
-                url : contextPath + '/timesheet/submit',
+                url : contextPath +urlFragment ,
                 type : "POST",
                 dataType : "html",
                 data : $("#timesheet").serialize()
@@ -266,29 +276,68 @@ var timesheetContentController = function() {
                     $("#errorMessages").show();
                 }
                 $("#timesheetContent").html(response);
+                _init();
+                _validateInvidualTimeInput();
+               
             });
         });
     },
 
     _removeFileErrorRow = function(node) {
         node.closest("tr").remove();
+    },
+
+    _validateInvidualTimeInput = function() {
+        var overTimenodes = $('input[type="number"]').filter(function() {
+            return $(this).val() > 8;
+        }), weekendNodes = $('input[type="number"]').filter(function() {
+            return $(this).hasClass("weekend") && $(this).val() > 0;
+        });
+        overTimenodes.each(function() {
+            $(this).siblings('.msg').text("Overtime hours entered")
+                    .removeClass('hide').addClass('error');
+            $(this).closest('td').addClass("warning");
+        });
+        weekendNodes.each(function() {
+            var text =$(this).siblings('.msg').removeClass('hide').addClass(
+                    'error').text();
+            $(this).siblings('.msg').removeClass('hide').addClass('error')
+                    .html($.trim(text) + "<br> Weekend hours entered");
+            $(this).closest('td').addClass("warning");
+        });
+
+    },
+    
+    _validateTimes= function(){
+      var list=[".monHrs",".tueHrs",".wedHrs",".thuHrs",".friHrs",".satHrs",".sunHrs"],
+       valid= true;
+      for(var i=0; i<list.length ; i++){
+       var  validDay= _validateTimeInputForDays(list[i],list[i]+'Th');  
+        valid = valid ? valid=validDay: valid; 
+      }
+      return valid;
+    },
+    _validateTimeInputForDays = function(inputClass, headerClass) {
+        var hrs=0.0; 
+        $(inputClass).each(function(i) {
+            hrs = hrs + parseFloat(this.value);
+        });
+        if (24<hrs){
+            $(headerClass).append('<span class="error" style="display: inline-block;">Hours can not be more than 24</span>').addClass("warning");
+           return (false);
+        }
+        return true;
     };
 
     return ({
         init : _init,
         removeFileErrorRow : _removeFileErrorRow,
         disableTimesheet : _disableTimesheet,
-        setUpActivateTimesheet : _setUpActivateTimesheet,
-        setUpSubmitTimesheet : _setUpSubmitTimesheet,
-        initializeDatePicker : _initializeDatePicker
+        setUpActivateTimesheet : _setUpActivateTimesheet
     });
 }();
 
 $(document).ready(function() {
     timesheetContentController.init();
-    timesheetContentController.initializeDatePicker();
-    timesheetContentController.setUpSubmitTimesheet();
-    timesheetContentController.setUpActivateTimesheet();
-    timesheetContentController.disableTimesheet();
 
 });

@@ -192,7 +192,6 @@ var hrTimesheetController = function() {
                 });
         $('#timesheetModal').on('shown.bs.modal', function() {
             timesheetContentController.init();
-            timesheetContentController.setUpSubmitTimesheet();
             timesheetContentController.setUpActivateTimesheet();
             timesheetContentController.disableTimesheet();
             _setupActionControls();
@@ -224,18 +223,10 @@ var hrTimesheetController = function() {
 
     },
 
-    _setupSaveTimesheetAction = function() {
-        $('#saveTimesheet').attr('type', 'button');
-        $('#saveTimesheet').off('click');
-        $('#saveTimesheet').on('click', function() {
-            _saveTimesheet();
-        });
-    },
-
     _setupSubmitTimesheetAction = function() {
-        $('#submitTimesheet').off('click');
-        $('#submitTimesheet').on('click', function() {
-            _submitTimesheet();
+        $('.submitTimesheet').off('click');
+        $('.submitTimesheet').on('click', function(e) {
+            _submitTimesheet(e);
         });
     },
 
@@ -288,9 +279,11 @@ var hrTimesheetController = function() {
         $(row).find('.hours').text(hours.toFixed(2));
     },
 
-    _saveTimesheet = function() {
+    _submitTimesheet = function(e) {
+        var urlFragment = $(e.target).val() === 'Save' ? '/hr/timesheets/save?employee='
+                : '/hr/timesheets/submit?employee=';
         $.ajax({
-            url : contextPath + '/hr/timesheets/save?employee=' + employeeId,
+            url : contextPath + urlFragment + employeeId,
             type : "POST",
             dataType : "html",
             data : $("#timesheet").serialize()
@@ -307,43 +300,9 @@ var hrTimesheetController = function() {
                 $(".modal-body").html(response);
                 _setupActionControls();
             } else {
-                $(".modal-body").html(response); // do this line or this
-                // +2
-                _updateTotalHours();
+                statusChanged = $(e.target).val() !== 'Save';
                 $('#timesheetModal').modal('hide');
-            }
-        }).
-        // TODO : error styling and error stuff
-        fail(function(response, textStatus, jqXHR) {
-            $(".modal-body").html(response);
-            _setupActionControls();
-        });
-
-    },
-
-    _submitTimesheet = function() {
-        $.ajax({
-            url : contextPath + '/hr/timesheets/submit?employee=' + employeeId,
-            type : "POST",
-            dataType : "html",
-            data : $("#timesheet").serialize()
-        }).done(function(response, textStatus, jqXHR) {
-            var errNode = null;
-            errNode = $.parseHTML(response).filter(function(node, index) {
-                return node.id == "errorMessages";
-            })[0];
-
-            var err = errNode ? errNode.innerHTML.length > 0 : false;
-
-            if (err) {
-                $("#errorMessages").show();
-                $(".modal-body").html(response);
-                _setupActionControls();
-            } else {
-                statusChanged = true;
-                $('#timesheetModal').modal('hide');
-            }
-            ;
+            };
         }).
         // TODO : error styling and error stuff
         fail(function(response, textStatus, jqXHR) {
@@ -432,7 +391,6 @@ var hrTimesheetController = function() {
 
     _setupActionControls = function() {
         _setupAddCostCodeRowAction();
-        _setupSaveTimesheetAction();
         _setupSubmitTimesheetAction();
         _setupDeleteCostCodeRowAction();
         _setupActivateTimesheetAction();

@@ -67,52 +67,45 @@ public class TimesheetValidator implements Validator {
         double fridayHours = 0.00;
         double saturdayHours = 0.00;
         double sundayHours = 0.00;
-        boolean mondayErrorSet = false;
-        boolean tuesdayErrorSet = false;
-        boolean wednesdayErrorSet = false;
-        boolean thursdayErrorSet = false;
-        boolean fridayErrorSet = false;
-        boolean saturdayErrorSet = false;
-        boolean sundayErrorSet = false;
-
+     
         int size = tsView.getTsCostCenters().size();
         for (int i = 0; i < size; i++) {
             TSCostCenterView tsCCView = tsView.getTsCostCenters().get(i);
             mondayHours = mondayHours + tsCCView.getMonday().getHours();
-            if (mondayHours > 24 && !mondayErrorSet) {
+            if (mondayHours > 24 ) {
                 populateTotalHoursErrorMesage(errors, "monday");
-                mondayErrorSet = true;
+                return;
             }
             tuesdayHours = tuesdayHours + tsCCView.getTuesday().getHours();
-            if (tuesdayHours > 24 && !tuesdayErrorSet) {
+            if (tuesdayHours > 24 ) {
                 populateTotalHoursErrorMesage(errors, "tuesday");
-                tuesdayErrorSet = true;
+                return;
             }
             wednesdayHours = wednesdayHours
                     + tsCCView.getWednesday().getHours();
-            if (wednesdayHours > 24 && !wednesdayErrorSet) {
+            if (wednesdayHours > 24 ) {
                 populateTotalHoursErrorMesage(errors, "wednesday");
-                wednesdayErrorSet = true;
+                return;
             }
             thursdayHours = thursdayHours + tsCCView.getThursday().getHours();
-            if (thursdayHours > 24 && !thursdayErrorSet) {
+            if (thursdayHours > 24 ) {
                 populateTotalHoursErrorMesage(errors, "thursday");
-                thursdayErrorSet = true;
+                return;
             }
             fridayHours = fridayHours + tsCCView.getFriday().getHours();
-            if (fridayHours > 24 && !fridayErrorSet) {
+            if (fridayHours > 24) {
                 populateTotalHoursErrorMesage(errors, "friday");
-                fridayErrorSet = true;
+                return;
             }
             saturdayHours = saturdayHours + tsCCView.getSaturday().getHours();
-            if (saturdayHours > 24 && !saturdayErrorSet) {
+            if (saturdayHours > 24 ) {
                 populateTotalHoursErrorMesage(errors, "saturday");
-                saturdayErrorSet = true;
+                return;
             }
             sundayHours = sundayHours + tsCCView.getSunday().getHours();
-            if (sundayHours > 24 && !sundayErrorSet) {
+            if (sundayHours > 24 ) {
                 populateTotalHoursErrorMesage(errors, "sunday");
-                sundayErrorSet = true;
+                return;
             }
         }
     }

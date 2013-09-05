@@ -7,17 +7,18 @@
     modelAttribute="timesheet"
     action="${pageContext.request.contextPath}/timesheet/save">
     <form:errors class="error"></form:errors>
+    <div id="errorPlaceHolder" class ="hide error"></div>
     <table id="timesheetTable" class="table  table-striped cf rt">
         <thead>
             <tr>
                 <th>Cost Center</th>
-                <th>Mon</th>
-                <th>Tue</th>
-                <th>Wed</th>
-                <th>Thu</th>
-                <th>Fri</th>
-                <th>Sat</th>
-                <th>Sun</th>
+                <th class="monHrsTh">Mon</th>
+                <th class="tueHrsTh">Tue</th>
+                <th class="wedHrsTh">Wed</th>
+                <th class="thuHrsTh">Thu</th>
+                <th class="friHrsTh">Fri</th>
+                <th class="satHrsTh">Sat</th>
+                <th class="sunHrsTh">Sun</th>
                 <th></th>
             </tr>
         </thead>
@@ -58,100 +59,80 @@
                         <td><form:input
                                 path="tsCostCenters[${status.index}].monday.hours"
                                 type="number"
-                                class="form-control timesheetHours" />
+                                class="form-control timesheetHours monHrs" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].monday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].monday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].monday.costCode" />
-                            <div>
-                                <form:errors class="error"
-                                    path="tsCostCenters[${status.index}].monday.hours"></form:errors>
-                            </div></td>
+                            <div class="msg hide"></div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].tuesday.hours"
                                 type="number"
-                                class="form-control timesheetHours" />
+                                class="form-control timesheetHours tueHrs" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].tuesday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].tuesday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].tuesday.costCode" />
-                            <div>
-                                <form:errors class="error"
-                                    path="tsCostCenters[${status.index}].tuesday.hours"></form:errors>
-                            </div></td>
+                             <div class="msg hide"></div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].wednesday.hours"
                                 type="number"
-                                class="form-control timesheetHours" />
+                                class="form-control timesheetHours wedHrs" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].wednesday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].wednesday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].wednesday.costCode" />
-                            <div>
-                                <form:errors class="error"
-                                    path="tsCostCenters[${status.index}].wednesday.hours"></form:errors>
-                            </div></td>
+                              <div class="msg hide"></div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].thursday.hours"
                                 type="number"
-                                class="form-control timesheetHours" />
+                                class="form-control timesheetHours thuHrs" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].thursday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].thursday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].thursday.costCode" />
-                            <div>
-                                <form:errors class="error"
-                                    path="tsCostCenters[${status.index}].thursday.hours"></form:errors>
-                            </div></td>
+                              <div class="msg hide"></div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].friday.hours"
                                 type="number"
-                                class="form-control timesheetHours" />
+                                class="form-control timesheetHours friHrs" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].friday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].friday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].friday.costCode" />
-                            <div>
-                                <form:errors class="error"
-                                    path="tsCostCenters[${status.index}].friday.hours"></form:errors>
-                            </div></td>
+                              <div class="msg hide"></div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].saturday.hours"
                                 type="number"
-                                class="form-control timesheetHours" /> <form:hidden
+                                class="form-control timesheetHours weekend satHrs" />
+                            <form:hidden
                                 path="tsCostCenters[${status.index}].saturday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].saturday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].saturday.costCode" />
-                            <div>
-                                <form:errors class="error"
-                                    path="tsCostCenters[${status.index}].saturday.hours"></form:errors>
-                            </div></td>
+                              <div class="msg hide"></div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].sunday.hours"
                                 type="number"
-                                class="form-control timesheetHours" />
+                                class="form-control timesheetHours weekend sunHrs" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].sunday.date" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].sunday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].sunday.costCode" />
-                            <div>
-                                <form:errors class="error"
-                                    path="tsCostCenters[${status.index}].sunday.hours"></form:errors>
-                            </div></td>
+                            <div class="msg hide"></div></td>
                         <td><a class="delCostCodeRow"
                             href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}&weekEnding=${timesheet.weekEnding}">
                                 <span class="glyphicon glyphicon-trash"></span>
@@ -166,9 +147,9 @@
             href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&weekEnding=${timesheet.weekEnding}">
             <input id="addCostCodeBtn" type="button"
             class="btn btn-info" value="Add Row">
-        </a> <input type="submit" id="saveTimesheet" class="btn btn-success"
+        </a> <input type="button" id="saveTimesheet" class="submitTimesheet btn btn-success"
             value="Save"> <input type="button"
-            id="submitTimesheet" class="btn btn-danger"
+            id="submitTimesheet" class="submitTimesheet btn btn-danger"
             value="Submit Timesheet">
         <button id="activateTimesheet" type="button"
             class="btn btn-primary">Edit Timesheet</button>
