@@ -251,12 +251,13 @@ div#hrTimesheetTable_paginate a
     color: #ffffff;
     background-color: #3092BE;
     border-color: #46b8da;
+     cursor: pointer;
 }
 
 div.dataTables_paginate a:hover {
     color: #333333;
     background-color: #ebebeb;
-     border-color: #adadad;
+    border-color: #adadad;
 }
 
 div.dataTables_paginate {
