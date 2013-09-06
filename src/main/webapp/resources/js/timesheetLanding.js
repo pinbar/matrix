@@ -21,29 +21,22 @@ var timesheetLandingController = function() {
 
     _bindEditTimeSheet = function() {
 
-        $(dataTable).on("click", ".updateRow", function(e) {
-            var row = $(e.target).closest('tr'),
+        $(dataTable).on(
+                "click",
+                ".updateRow",
+                function(e) {
+                    var row = $(e.target).closest('tr'),
 
-            data = $(dataTable).dataTable()._(row),
+                    data = $(dataTable).dataTable()._(row),
 
-            id = data[0].id;
+                    weekEnding = data[0].weekEnding,
 
-            window.location = contextPath + '/timesheet/' + id;
-            /*
-             * $.ajax({ url : contextPath + '/timesheet/' + id, type : "get",
-             * dataType : "json" }).done(function(response, textStatus, jqXHR) {
-             * $("div#adminMsgs").addClass('hide');
-             * $("div#empList").addClass('hide');
-             * $("div#grpList").addClass('hide');
-             * $("div#costCenterList").addClass('hide');
-             * $("div#clientList").addClass('hide'); populate($("div#" +
-             * divToShow), response); $("div#" + divToShow + "
-             * input[type='submit']").value = "Save"; $("div#" +
-             * divToShow).removeClass('hide'); }). // TODO : error styling and
-             * error stuff fail(function(response, textStatus, jqXHR) {
-             * alert("error"); })
-             */;
-        });
+                    id = data[0].id;
+
+                    id != null ? window.location = contextPath + '/timesheet/'
+                            + id : window.location = contextPath
+                            + '/timesheet/new/' + weekEnding;
+                });
     },
 
     _setupSummaryTable = function() {

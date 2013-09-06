@@ -89,6 +89,7 @@ public class TimesheetController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String getTimesheetByIdAsJson(@PathVariable Integer id, Model model) {
+
         TimesheetView timesheet = timesheetService.getTimesheet(id);
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheet);
         return gotoTimesheetContentWrapper(model);
