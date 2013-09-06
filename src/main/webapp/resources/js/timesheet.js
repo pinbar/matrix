@@ -280,6 +280,11 @@ var timesheetContentController = function() {
                                                 _init();
                                                 _validateInvidualTimeInput();
 
+                                            }).fail(function(response, textStatus, jqXHR) {
+                                                $("body").html(
+                                                        response.responseText);
+                                                _init();
+                                                _validateInvidualTimeInput();
                                             });
                         });
     },

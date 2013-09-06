@@ -6,12 +6,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <jsp:include page="../common/commonIncludes.jsp" />
+<link
+    href="${pageContext.request.contextPath}/resources/datepicker/css/datepicker.css"
+    rel="stylesheet" media="screen">
 <script
     src="${pageContext.request.contextPath}/resources/jquery/js/jquery.dataTables.min.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/jquery/js/dataTables.fnReloadAjax.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/jquery/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script
+    src="${pageContext.request.contextPath}/resources/datepicker/js/bootstrap-datepicker.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/js/timesheetLanding.js"></script>
 <title>Timesheet</title>
@@ -31,7 +36,8 @@
                         class="btn btn-info" value="create">
                 </div>
             </div>
-            <div class="col-5 col-sm-5 col-lg-5 spacer-tall ">Time Sheet Summary </div>
+            <div class="col-5 col-sm-5 col-lg-5 spacer-tall ">Time
+                Sheet Summary</div>
             <table id="timesheetSummaryTable"
                 class="table table-bordered table-condensed table-striped  rt">
                 <thead>

@@ -5,9 +5,7 @@
 <link
     href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-theme.min.css"
     rel="stylesheet" media="screen">
-<link
-    href="${pageContext.request.contextPath}/resources/datepicker/css/datepicker.css"
-    rel="stylesheet" media="screen">
+
 <link rel="stylesheet"
     href="${pageContext.request.contextPath}/resources/css/common.css">
 
@@ -15,8 +13,6 @@
     src="${pageContext.request.contextPath}/resources/jquery/js/jquery-2.0.3.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
-<script
-    src="${pageContext.request.contextPath}/resources/datepicker/js/bootstrap-datepicker.js"></script>
 <script
     src="${pageContext.request.contextPath}/resources/bootstrap/js/respond.js"></script>
 

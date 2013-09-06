@@ -31,11 +31,6 @@ public class DateUtil {
         return date;
     }
 
-    public int getCurrentDay() {
-        Calendar cal = Calendar.getInstance(Locale.getDefault());
-        return cal.get(Calendar.DAY_OF_WEEK);
-    }
-
     public Date getCurrentWeekEndingDate() {
         Calendar cal = Calendar.getInstance(Locale.getDefault());
         return getWeekEndingDate(getAsDate(getAsString(cal.getTime())));
@@ -44,7 +39,7 @@ public class DateUtil {
     public Date getWeekEndingDate(Date today) {
         Calendar cal = Calendar.getInstance(Locale.getDefault());
         cal.setTime(today);
-        int dow = getCurrentDay();
+        int dow = cal.get(Calendar.DAY_OF_WEEK);
         while (dow != Calendar.SUNDAY) {
             int date = cal.get(Calendar.DATE);
             int month = cal.get(Calendar.MONTH);

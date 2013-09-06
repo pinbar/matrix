@@ -95,7 +95,7 @@ public class TimesheetController {
         return gotoTimesheetContentWrapper(model);
     }
 
-    @RequestMapping(value = "weekendings/{weekEnding}", method = RequestMethod.GET)
+ /*   @RequestMapping(value = "weekendings/{weekEnding}", method = RequestMethod.GET)
     public String getTimesheetByWeekEnding(@PathVariable String weekEnding,
             Model model) {
 
@@ -103,18 +103,17 @@ public class TimesheetController {
                 .getAsDate(weekEnding));
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheet);
         return gotoTimesheetPage(model);
-    }
+    }*/
 
-    @RequestMapping(value = "/new/{weekEnding}", method = RequestMethod.GET)
+    @RequestMapping(value = "weekendings/{weekEnding}", method = RequestMethod.GET)
     public String createNewTimesheet(@PathVariable String weekEnding,
             Model model) {
 
         Date weekEndingDate = StringUtils.isBlank(weekEnding) ? dateUtil
                 .getCurrentWeekEndingDate() : dateUtil
                 .getWeekEndingDate(dateUtil.getAsDate(weekEnding));
-        ;
         TimesheetView timesheetView = timesheetService
-                .createTimesheet(weekEndingDate);
+                .getTimesheet(weekEndingDate);
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
         return gotoTimesheetContentWrapper(model);
     }

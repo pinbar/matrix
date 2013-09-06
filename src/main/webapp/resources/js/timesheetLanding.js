@@ -3,7 +3,7 @@ var timesheetLandingController = function() {
     var dataTable, totalRecords,
 
     _init = function() {
-        dataTable = _setupSummaryTable();
+         dataTable = _setupSummaryTable();
         _bindEditTimeSheet();
         _initializeDatePicker();
     },
@@ -15,7 +15,7 @@ var timesheetLandingController = function() {
 
         $('#tsCreateBtn').on('click', function() {
             var tsCreateDate = $('#dp').val();
-            window.location = contextPath + "/timesheet/new/" + tsCreateDate;
+            window.location = contextPath + "/timesheet/weekendings/" + tsCreateDate;
         });
     },
 
@@ -35,7 +35,7 @@ var timesheetLandingController = function() {
 
                     id != null ? window.location = contextPath + '/timesheet/'
                             + id : window.location = contextPath
-                            + '/timesheet/new/' + weekEnding;
+                            + '/timesheet/weekendings/' + weekEnding;
                 });
     },
 
