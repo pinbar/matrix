@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 public class TimesheetView {
@@ -12,6 +13,7 @@ public class TimesheetView {
     private String weekEnding;
     private String status;
     private MultipartFile attachment;
+    private Double hours;
 
     @Valid
     private List<TSCostCenterView> tsCostCenters;
@@ -33,11 +35,19 @@ public class TimesheetView {
     }
 
     public String getStatus() {
-        return status;
+        return StringUtils.capitalize(status);
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Double getHours() {
+        return hours;
+    }
+
+    public void setHours(Double hours) {
+        this.hours = hours;
     }
 
     public MultipartFile getAttachment() {

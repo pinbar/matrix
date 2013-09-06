@@ -82,11 +82,6 @@ public class HrTimesheetController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String getTimesheets(Model model) {
-        List<HrTimesheetView> hrTimesheetViewList = timesheetService
-                .getTimesheetsByStatus("pending");
-        model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST,
-                hrTimesheetViewList);
-        logger.info("TESTING ");
         return "hr/hrTimesheetPage";
     }
 

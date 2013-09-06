@@ -78,14 +78,6 @@ ul#users-inner,ul#groups-inner {
     border-radius: 15px;
 }
  
-#timesheetTable.border{
-    border: 3px solid #808080;
-    padding: 2px;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
-    border-bottom: 3px solid #808080;
-}
 /*responsive table*/
 .cf:after {
     visibility: hidden;
@@ -139,20 +131,23 @@ ul#users-inner,ul#groups-inner {
     #grpListTable,
     #costCenterListTable,
     #clientListTable,
-    #hrTimesheetTable
+    #hrTimesheetTable,
+    #timesheetSummaryTable
         {
         display: block;
         position: relative;
         width: 100%;
     }
+    
     #timesheetTable thead,#empListTable thead,#grpListTable thead,#costCenterListTable thead,
-    #clientListTable thead, #hrTimesheetTable thead
+    #clientListTable thead, #hrTimesheetTable thead, #timesheetSummaryTable thead
         {
         display: block;
         float: left;
     }
+    
     #timesheetTable tbody,#empListTable tbody,#grpListTable tbody, #costCenterListTable tbody, 
-    #clientListTable tbody, #hrTimesheetTable tbody
+    #clientListTable tbody, #hrTimesheetTable tbody, #timesheetSummaryTable tbody
         {
         display: block;
         width: auto;
@@ -160,17 +155,21 @@ ul#users-inner,ul#groups-inner {
         overflow-x: auto;
         white-space: nowrap;
     }
+    
     #timesheetTable thead tr,#empListTable thead tr,#grpListTable thead tr,
-     #costCenterListTable thead tr, #clientListTable thead tr, #hrTimesheetTable thead tr
-        {
+     #costCenterListTable thead tr, #clientListTable thead tr, #hrTimesheetTable thead tr,
+     #timesheetSummaryTable thead tr
+     {
         display: block;
     }
+    
     #timesheetTable th {
         display: block;
         line-height: 3.333333em;
     }
+    
     #empListTable th,#grpListTable th,#costCenterListTable th ,
-     #clientListTable th, #hrTimesheetTable th
+     #clientListTable th, #hrTimesheetTable th, #timesheetSummaryTable th
     {
         display: block;
         background-repeat: no-repeat;
@@ -180,14 +179,16 @@ ul#users-inner,ul#groups-inner {
         margin-left: -1px;
         width: auto;
     }
+
     #timesheetTable tbody tr,#empListTable tbody tr,#grpListTable tbody tr,#costCenterListTable tbody tr,
-     #clientListTable tbody tr, #hrTimesheetTable tbody tr
+     #clientListTable tbody tr, #hrTimesheetTable tbody tr, #timesheetSummaryTable tbody tr
         {
         display: inline-block;
         vertical-align: top;
     }
+
     #timesheetTable td,#empListTable td,#grpListTable td,#costCenterListTable td,
-    #clientListTable td, #hrTimesheetTable td
+    #clientListTable td, #hrTimesheetTable td, #timesheetSummaryTable td
         {
         display: block;
         min-height: 1.25em;
@@ -237,10 +238,7 @@ th.sorting_desc {
     background-image: url(../img/small_asc.gif);
 }
 
-div#grpListTable_paginate a,div#empListTable_paginate a,
-div#costCenterListTable_paginate a,
-div#clientListTable_paginate a,
-div#hrTimesheetTable_paginate a
+div.dataTables_paginate a
     {
     border: 1px solid #aaa;
     -webkit-border-radius: 4px;

@@ -32,7 +32,7 @@
                 <div>
                     <div id="errorMessages" class="text-error">${error}</div>
                     <table id="hrTimesheetTable"
-                        class="table table-bordered table-condensed rt">
+                        class="table table-bordered  table-striped table-condensed rt">
                         <thead>
                             <tr>
                                 <th><input class="selectAll"

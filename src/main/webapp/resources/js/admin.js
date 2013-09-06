@@ -73,13 +73,7 @@ $(document).ready(function() {
     bindEmpResetPassword();
     bindUpdateRows();
     bindDeleteRows();
-    /* override width = 0 for responsive style */
-    updateTableHeaderStyle();
 });
-
-function updateTableHeaderStyle() {
-    $('.rt th').width('auto');
-}
 
 function bindUpdateRows() {
     $("table")
@@ -239,6 +233,12 @@ function initTable(args) {
                             $("#" + args.filterInputId + " label")
                                     .append(
                                             "<span class=\"add-on\"> <span class=\"glyphicon glyphicon-search\"></span></span>");
+                            /*
+                             * override width = 100 and auto width th for
+                             * responsive style
+                             */
+                            $('.rt').width('100%');
+                            $('.rt th').width('auto');
                         },
                         aoColumns : columns
                     });

@@ -23,7 +23,7 @@
                         Home</a></li>
                 <li class="divider-vertical"></li>
                 <li><a
-                    href="${pageContext.request.contextPath}/timesheet/"><i
+                    href="${pageContext.request.contextPath}/timesheet/home"><i
                         class="glyphicon glyphicon-time"></i> Timesheets</a></li>
                 <li class="divider-vertical"></li>
                 <li><a

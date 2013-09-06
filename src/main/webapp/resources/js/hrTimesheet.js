@@ -147,6 +147,8 @@ var hrTimesheetController = function() {
                                 $("#" + tableArgs.filterInputId + " label")
                                         .append(
                                                 "<span class=\"add-on\"> <span class=\"glyphicon glyphicon-search\"></span></span>");
+                                $('.rt').width('100%');
+                                $('.rt th').width('auto');
                             },
                             aoColumns : tableArgs.columnConfig
                         });
@@ -302,7 +304,8 @@ var hrTimesheetController = function() {
             } else {
                 statusChanged = $(e.target).val() !== 'Save';
                 $('#timesheetModal').modal('hide');
-            };
+            }
+            ;
         }).
         // TODO : error styling and error stuff
         fail(function(response, textStatus, jqXHR) {

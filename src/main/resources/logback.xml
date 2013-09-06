@@ -6,32 +6,33 @@
         <rollingPolicy
             class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>logFile.%d{yyyy-MM-dd}.log
+            <fileNamePattern>logs/logFile.%d{yyyy-MM-dd}.log
             </fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
-        <encoder>
-            <pattern>%date{HH:mm:ss.SSS} %5p | %t | %-55logger{55} | %m
-                %n</pattern>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{ISO8601} %-5level [%thread] %logger{35} - %m%n
+            </pattern>
         </encoder>
     </appender>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%date{HH:mm:ss.SSS} %5p | %t | %-55logger{55} | %m
-                %n</pattern>
+            <pattern>%d{ISO8601} %-5level [%thread] %logger{35} - %m%n
+            </pattern>
         </encoder>
     </appender>
-
-    <logger name="com.percipient.matrix" level="INFO">
+    <logger name="com.percipient.matrix" level="DEBUG">
         <appender-ref ref="FILE" />
     </logger>
+    <logger name="org.springframework" level="WARN" >
+     <appender-ref ref="FILE" />
+     </logger>
+    <logger name="org.hibernate" level="WARN" >
+     <appender-ref ref="FILE" />
+    </logger>
 
-    <!-- <logger name="com.percipient" level="ERROR"> <appender-ref ref="CONSOLE" 
-        /> </logger> -->
-
-    <!-- Error from other dependencies -->
     <root level="ERROR">
-        <appender-ref ref="FILE" />
+       <!--  <appender-ref ref="CONSOLE" /> -->
     </root>
 </configuration>

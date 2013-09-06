@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,12 +69,29 @@ public class TimesheetController {
         return "timesheet/timesheetPage";
     }
 
-    @RequestMapping(value = "/getAsJson/{id}", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, value = "/home")
+    public String getTimesheetLanding(Model model) {
+        return "timesheet/timesheetLandingPage";
+    }
+
+    @RequestMapping(value = "/listAsJson", method = RequestMethod.GET)
     @ResponseBody
-    public TimesheetView getTimesheetByIdAsJson(@PathVariable Integer id,
-            @RequestParam(value = "employee") Integer employeeId) {
+    public ObjectNode getTimesheetListAsJson() {
+        List<TimesheetView> tsPreviews = timesheetService.getTimesheets();
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode retObject = mapper.createObjectNode();
+        retObject.putPOJO("timesheets", tsPreviews);
+        retObject.put("iTotalRecords", tsPreviews.size());
+        retObject.put("iTotalDisplayRecords", tsPreviews.size());
+        return retObject;
+
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String getTimesheetByIdAsJson(@PathVariable Integer id, Model model) {
         TimesheetView timesheet = timesheetService.getTimesheet(id);
-        return timesheet;
+        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheet);
+        return gotoTimesheetContentWrapper(model);
     }
 
     @RequestMapping(value = "weekendings/{weekEnding}", method = RequestMethod.GET)
@@ -213,5 +232,13 @@ public class TimesheetController {
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
         return "timesheet/timesheetContent";
+    }
+
+    private String gotoTimesheetContentWrapper(Model model) {
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(userInfo.getEmployeeId());
+        model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
+
+        return "timesheet/timesheetContentWrapper";
     }
 }

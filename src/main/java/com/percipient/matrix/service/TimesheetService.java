@@ -353,6 +353,7 @@ class TimesheetServiceImpl implements TimesheetService {
         timesheetView.setStatus(timesheet.getStatus());
         timesheetView.setWeekEnding(dateUtil.getAsString(timesheet
                 .getWeekEnding()));
+        timesheetView.setHours(getTotalHours(timesheet));
         return timesheetView;
     }
 
@@ -464,4 +465,5 @@ class TimesheetServiceImpl implements TimesheetService {
 
     };
 
+   
 }
