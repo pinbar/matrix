@@ -5,6 +5,18 @@ var timesheetLandingController = function() {
     _init = function() {
         dataTable = _setupSummaryTable();
         _bindEditTimeSheet();
+        _initializeDatePicker();
+    },
+
+    _initializeDatePicker = function() {
+        $('#dp').datepicker({
+            format : 'mm-dd-yyyy'
+        });
+
+        $('#tsCreateBtn').on('click', function() {
+            var tsCreateDate = $('#dp').val();
+            window.location = contextPath + "/timesheet/new/" + tsCreateDate;
+        });
     },
 
     _bindEditTimeSheet = function() {

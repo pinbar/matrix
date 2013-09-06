@@ -58,7 +58,6 @@ var timesheetContentController = function() {
     },
 
     _init = function() {
-        _initializeDatePicker();
         _setUpSubmitTimesheet();
         _setUpActivateTimesheet();
         _disableTimesheet();
@@ -243,44 +242,46 @@ var timesheetContentController = function() {
                         });
     },
 
-    _initializeDatePicker = function() {
-        $('#dp').datepicker({
-            format : 'mm-dd-yyyy'
-        });
-
-        $('#tsCreateBtn').on('click', function() {
-            var tsCreateDate = $('#dp').val();
-            window.location = contextPath + "/timesheet/new/" + tsCreateDate;
-        });
-    },
-
     _setUpSubmitTimesheet = function() {
-        $('.submitTimesheet').on('click', function(e) {
-           $("span.error").remove();
-           if(!_validateTimes()){
-               return false;
-           }
-           var urlFragment = $(e.target).val() === "Save" ? '/timesheet/save':'/timesheet/submit';
-            $.ajax({
-                url : contextPath +urlFragment ,
-                type : "POST",
-                dataType : "html",
-                data : $("#timesheet").serialize()
-            }).done(function(response) {
-                var errNode = null;
-                errNode = $.parseHTML(response).filter(function(node, index) {
-                    return node.id == "errorMessages";
-                })[0];
-                var err = errNode ? errNode.innerHTML.length > 0 : false;
-                if (err) {
-                    $("#errorMessages").show();
-                }
-                $("#timesheetContent").html(response);
-                _init();
-                _validateInvidualTimeInput();
-               
-            });
-        });
+        $('.submitTimesheet')
+                .on(
+                        'click',
+                        function(e) {
+                            $("span.error").remove();
+                            if (!_validateTimes()) {
+                                return false;
+                            }
+                            var urlFragment = $(e.target).val() === "Save" ? '/timesheet/save'
+                                    : '/timesheet/submit';
+                            $
+                                    .ajax({
+                                        url : contextPath + urlFragment,
+                                        type : "POST",
+                                        dataType : "html",
+                                        data : $("#timesheet").serialize()
+                                    })
+                                    .done(
+                                            function(response) {
+                                                var errNode = null;
+                                                errNode = $
+                                                        .parseHTML(response)
+                                                        .filter(
+                                                                function(node,
+                                                                        index) {
+                                                                    return node.id == "errorMessages";
+                                                                })[0];
+                                                var err = errNode ? errNode.innerHTML.length > 0
+                                                        : false;
+                                                if (err) {
+                                                    $("#errorMessages").show();
+                                                }
+                                                $("#timesheetContent").html(
+                                                        response);
+                                                _init();
+                                                _validateInvidualTimeInput();
+
+                                            });
+                        });
     },
 
     _removeFileErrorRow = function(node) {
@@ -299,7 +300,7 @@ var timesheetContentController = function() {
             $(this).closest('td').addClass("warning");
         });
         weekendNodes.each(function() {
-            var text =$(this).siblings('.msg').removeClass('hide').addClass(
+            var text = $(this).siblings('.msg').removeClass('hide').addClass(
                     'error').text();
             $(this).siblings('.msg').removeClass('hide').addClass('error')
                     .html($.trim(text) + "<br> Weekend hours entered");
@@ -307,24 +308,26 @@ var timesheetContentController = function() {
         });
 
     },
-    
-    _validateTimes= function(){
-      var list=[".monHrs",".tueHrs",".wedHrs",".thuHrs",".friHrs",".satHrs",".sunHrs"],
-       valid= true;
-      for(var i=0; i<list.length ; i++){
-       var  validDay= _validateTimeInputForDays(list[i],list[i]+'Th');  
-        valid = valid ? valid=validDay: valid; 
-      }
-      return valid;
-    },
-    _validateTimeInputForDays = function(inputClass, headerClass) {
-        var hrs=0.0; 
+
+    _validateTimes = function() {
+        var list = [ ".monHrs", ".tueHrs", ".wedHrs", ".thuHrs", ".friHrs",
+                ".satHrs", ".sunHrs" ], valid = true;
+        for ( var i = 0; i < list.length; i++) {
+            var validDay = _validateTimeInputForDays(list[i], list[i] + 'Th');
+            valid = valid ? valid = validDay : valid;
+        }
+        return valid;
+    }, _validateTimeInputForDays = function(inputClass, headerClass) {
+        var hrs = 0.0;
         $(inputClass).each(function(i) {
             hrs = hrs + parseFloat(this.value);
         });
-        if (24<hrs){
-            $(headerClass).append('<span class="error" style="display: inline-block;">Hours can not be more than 24</span>').addClass("warning");
-           return (false);
+        if (24 < hrs) {
+            $(headerClass)
+                    .append(
+                            '<span class="error" style="display: inline-block;">Hours can not be more than 24</span>')
+                    .addClass("warning");
+            return (false);
         }
         return true;
     };

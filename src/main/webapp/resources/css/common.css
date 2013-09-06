@@ -1,5 +1,10 @@
 .spacer {
-    margin-top: 5px;
+    margin-top: 7px;
+}
+
+.spacer_tall {
+     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .hide {
@@ -70,14 +75,15 @@ nav-list for sidebar
 ul#users-inner,ul#groups-inner {
     height: 0px;
 }
-.border{
+
+.border {
     border: 3px solid #808080;
     padding: 5px;
     -moz-border-radius: 15px;
     -webkit-border-radius: 15px;
     border-radius: 15px;
 }
- 
+
 /*responsive table*/
 .cf:after {
     visibility: hidden;
@@ -115,7 +121,7 @@ ul#users-inner,ul#groups-inner {
 .rt th {
     text-align: left;
     background-color: #3092BE;
-    color: white;  
+    color: white;
     cursor: pointer;
     font-weight: bold;
     background-repeat: no-repeat;
@@ -126,28 +132,18 @@ ul#users-inner,ul#groups-inner {
 }
 
 @media only screen and (max-width: 40em) { /*640*/
-    #timesheetTable,
-    #empListTable,
-    #grpListTable,
-    #costCenterListTable,
-    #clientListTable,
-    #hrTimesheetTable,
-    #timesheetSummaryTable
+    #timesheetTable,#empListTable,#grpListTable,#costCenterListTable,#clientListTable,#hrTimesheetTable,#timesheetSummaryTable
         {
         display: block;
         position: relative;
         width: 100%;
     }
-    
-    #timesheetTable thead,#empListTable thead,#grpListTable thead,#costCenterListTable thead,
-    #clientListTable thead, #hrTimesheetTable thead, #timesheetSummaryTable thead
+    #timesheetTable thead,#empListTable thead,#grpListTable thead,#costCenterListTable thead,#clientListTable thead,#hrTimesheetTable thead,#timesheetSummaryTable thead
         {
         display: block;
         float: left;
     }
-    
-    #timesheetTable tbody,#empListTable tbody,#grpListTable tbody, #costCenterListTable tbody, 
-    #clientListTable tbody, #hrTimesheetTable tbody, #timesheetSummaryTable tbody
+    #timesheetTable tbody,#empListTable tbody,#grpListTable tbody,#costCenterListTable tbody,#clientListTable tbody,#hrTimesheetTable tbody,#timesheetSummaryTable tbody
         {
         display: block;
         width: auto;
@@ -155,22 +151,16 @@ ul#users-inner,ul#groups-inner {
         overflow-x: auto;
         white-space: nowrap;
     }
-    
-    #timesheetTable thead tr,#empListTable thead tr,#grpListTable thead tr,
-     #costCenterListTable thead tr, #clientListTable thead tr, #hrTimesheetTable thead tr,
-     #timesheetSummaryTable thead tr
-     {
+    #timesheetTable thead tr,#empListTable thead tr,#grpListTable thead tr,#costCenterListTable thead tr,#clientListTable thead tr,#hrTimesheetTable thead tr,#timesheetSummaryTable thead tr
+        {
         display: block;
     }
-    
     #timesheetTable th {
         display: block;
         line-height: 3.333333em;
     }
-    
-    #empListTable th,#grpListTable th,#costCenterListTable th ,
-     #clientListTable th, #hrTimesheetTable th, #timesheetSummaryTable th
-    {
+    #empListTable th,#grpListTable th,#costCenterListTable th,#clientListTable th,#hrTimesheetTable th,#timesheetSummaryTable th
+        {
         display: block;
         background-repeat: no-repeat;
         background-position: center left;
@@ -179,16 +169,12 @@ ul#users-inner,ul#groups-inner {
         margin-left: -1px;
         width: auto;
     }
-
-    #timesheetTable tbody tr,#empListTable tbody tr,#grpListTable tbody tr,#costCenterListTable tbody tr,
-     #clientListTable tbody tr, #hrTimesheetTable tbody tr, #timesheetSummaryTable tbody tr
+    #timesheetTable tbody tr,#empListTable tbody tr,#grpListTable tbody tr,#costCenterListTable tbody tr,#clientListTable tbody tr,#hrTimesheetTable tbody tr,#timesheetSummaryTable tbody tr
         {
         display: inline-block;
         vertical-align: top;
     }
-
-    #timesheetTable td,#empListTable td,#grpListTable td,#costCenterListTable td,
-    #clientListTable td, #hrTimesheetTable td, #timesheetSummaryTable td
+    #timesheetTable td,#empListTable td,#grpListTable td,#costCenterListTable td,#clientListTable td,#hrTimesheetTable td,#timesheetSummaryTable td
         {
         display: block;
         min-height: 1.25em;
@@ -238,8 +224,7 @@ th.sorting_desc {
     background-image: url(../img/small_asc.gif);
 }
 
-div.dataTables_paginate a
-    {
+div.dataTables_paginate a {
     border: 1px solid #aaa;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -249,7 +234,7 @@ div.dataTables_paginate a
     color: #ffffff;
     background-color: #3092BE;
     border-color: #46b8da;
-     cursor: pointer;
+    cursor: pointer;
 }
 
 div.dataTables_paginate a:hover {
@@ -262,11 +247,12 @@ div.dataTables_paginate {
     float: right;
     line-height: 22px;
 }
-div.dataTables_filter input[type="text"] {
-     border: 1px solid #aaa;
+
+input#dp,div.dataTables_filter input[type="text"] {
+    border: 2px solid #aaa;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-    border-radius: 5px; 
+    border-radius: 5px;
 }
 
 .progressBar {

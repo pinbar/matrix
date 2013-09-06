@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,23 +19,35 @@
 <body>
     <jsp:include page="../common/header.jsp" />
     <div class="container">
-            <div class="col-9 col-sm-10 col-lg-12 border">
-                <table id="timesheetSummaryTable"
-                    class="table table-bordered table-condensed table-striped  rt">
-                    <thead>
-                        <tr>
-                            <th>TimeSheet Id</th>
-                            <th>Week Ending</th>
-                            <th>Status</th>
-                            <th>Hours</th>
-                            <th>Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-                <div class="clear"></div>
+        <div class="col-9 col-sm-10 col-lg-12 border">
+            <div class="col-5 col-sm-5 col-lg-5 spacer-tall ">
+                <jsp:useBean id="today" class="java.util.Date"
+                    scope="page" />
+                <div class="input-group control-group">
+                    <input id="dp" type="text" class="input-sm"
+                        value=<fmt:formatDate value="${today}" pattern="MM-dd-yyyy" />
+                        data-date-format="mm-dd-yyyy"> <input
+                        id="tsCreateBtn" type="button"
+                        class="btn btn-info" value="create">
+                </div>
             </div>
+            <div class="col-5 col-sm-5 col-lg-5 spacer-tall ">Time Sheet Summary </div>
+            <table id="timesheetSummaryTable"
+                class="table table-bordered table-condensed table-striped  rt">
+                <thead>
+                    <tr>
+                        <th>TimeSheet Id</th>
+                        <th>Week Ending</th>
+                        <th>Status</th>
+                        <th>Hours</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div class="clear"></div>
         </div>
+    </div>
 </body>
 </html>

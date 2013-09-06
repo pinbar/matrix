@@ -115,7 +115,7 @@ public class TimesheetController {
         TimesheetView timesheetView = timesheetService
                 .createTimesheet(weekEndingDate);
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
-        return gotoTimesheetPage(model);
+        return gotoTimesheetContentWrapper(model);
     }
 
     @RequestMapping(value = "/addCostCodeRow", method = RequestMethod.GET)
