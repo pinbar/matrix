@@ -36,8 +36,7 @@
                         class="btn btn-info" value="create">
                 </div>
             </div>
-            <div class="col-5 col-sm-5 col-lg-5 spacer-tall ">Time
-                Sheet Summary</div>
+            <div class="col-3 col-sm-3 col-lg-5 spacer-tall ">Time Sheet Summary</div>
             <table id="timesheetSummaryTable"
                 class="table table-bordered table-condensed table-striped  rt">
                 <thead>

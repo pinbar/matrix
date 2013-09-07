@@ -42,7 +42,7 @@ var timesheetLandingController = function() {
                 });
     },
 
-    _attachFilterComponent = function() {
+    _attachFilterComponent = function(tableArgs) {
         $("#" + tableArgs.filterInputId + " label").contents().filter(
                 function() {
                     return this.nodeType != 1;
@@ -126,7 +126,7 @@ var timesheetLandingController = function() {
                 return _colorCodeRowsPerStatus(aData, nRow);
             },
             fnInitComplete : function() {
-                _attachFilterComponent();
+                _attachFilterComponent(tableArgs);
                 _overrideTableClassesToMakeResponsive();
             },
             aoColumns : tableArgs.columnConfig
