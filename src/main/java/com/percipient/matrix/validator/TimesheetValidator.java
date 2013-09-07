@@ -19,6 +19,7 @@ public class TimesheetValidator implements Validator {
 
     private static final String TIMESHEET_TOTALHOURS_ERROR_CODE = "timesheet.totalhours.day";
     private static final String TOTAL_HOURS_IN_A_DAY_EXCEEDED = "Total hours in a day cannot be more than 24";
+    private static final String TIMESHEET_HOURS_NEGETIVE = "timesheet.hours.day";
 
     public boolean supports(Class<?> clazz) {
         return TimesheetView.class.equals(clazz);
@@ -40,8 +41,28 @@ public class TimesheetValidator implements Validator {
             validateCostCenterUnique(tsView, errors);
         }
         if (!errors.hasErrors()) {
+            validateNotNegetiveHours(tsView, errors);
+        }
+        if (!errors.hasErrors()) {
             validateDailyHoursMax(tsView, errors);
         }
+    }
+
+    private void validateNotNegetiveHours(TimesheetView tsView, Errors errors) {
+        List<TSCostCenterView> ccViews = tsView.getTsCostCenters();
+        int size = ccViews.size();
+        for (int i = 0; i < size; i++) {
+            if (ccViews.get(i).getMonday().getHours() < 0
+                    || ccViews.get(i).getTuesday().getHours() < 0
+                    || ccViews.get(i).getWednesday().getHours() < 0
+                    || ccViews.get(i).getThursday().getHours() < 0
+                    || ccViews.get(i).getFriday().getHours() < 0
+                    || ccViews.get(i).getSaturday().getHours() < 0
+                    || ccViews.get(i).getSunday().getHours() < 0) {
+                errors.reject(TIMESHEET_HOURS_NEGETIVE);
+            }
+        }
+
     }
 
     private void validateCostCenterUnique(TimesheetView tsView, Errors errors) {
@@ -67,28 +88,28 @@ public class TimesheetValidator implements Validator {
         double fridayHours = 0.00;
         double saturdayHours = 0.00;
         double sundayHours = 0.00;
-     
+
         int size = tsView.getTsCostCenters().size();
         for (int i = 0; i < size; i++) {
             TSCostCenterView tsCCView = tsView.getTsCostCenters().get(i);
             mondayHours = mondayHours + tsCCView.getMonday().getHours();
-            if (mondayHours > 24 ) {
+            if (mondayHours > 24) {
                 populateTotalHoursErrorMesage(errors, "monday");
                 return;
             }
             tuesdayHours = tuesdayHours + tsCCView.getTuesday().getHours();
-            if (tuesdayHours > 24 ) {
+            if (tuesdayHours > 24) {
                 populateTotalHoursErrorMesage(errors, "tuesday");
                 return;
             }
             wednesdayHours = wednesdayHours
                     + tsCCView.getWednesday().getHours();
-            if (wednesdayHours > 24 ) {
+            if (wednesdayHours > 24) {
                 populateTotalHoursErrorMesage(errors, "wednesday");
                 return;
             }
             thursdayHours = thursdayHours + tsCCView.getThursday().getHours();
-            if (thursdayHours > 24 ) {
+            if (thursdayHours > 24) {
                 populateTotalHoursErrorMesage(errors, "thursday");
                 return;
             }
@@ -98,12 +119,12 @@ public class TimesheetValidator implements Validator {
                 return;
             }
             saturdayHours = saturdayHours + tsCCView.getSaturday().getHours();
-            if (saturdayHours > 24 ) {
+            if (saturdayHours > 24) {
                 populateTotalHoursErrorMesage(errors, "saturday");
                 return;
             }
             sundayHours = sundayHours + tsCCView.getSunday().getHours();
-            if (sundayHours > 24 ) {
+            if (sundayHours > 24) {
                 populateTotalHoursErrorMesage(errors, "sunday");
                 return;
             }

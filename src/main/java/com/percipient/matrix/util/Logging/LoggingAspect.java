@@ -20,10 +20,28 @@ public class LoggingAspect {
     public void methodsToBeLogged() {
     }
 
-    @Before("execution(public * com.percipient.matrix..*(..))")
+    @Pointcut("within (com.percipient.matrix.util.Logging.LoggingAspect)")
+    public void methodsInLoggingAspect() {
+    }
+
+    @Pointcut("within (com.percipient.matrix.session.UserInfo)")
+    public void methodsInUserInfo() {
+    }
+
+    @Before("methodsToBeLogged() && !methodsInUserInfo() && !methodsInLoggingAspect()")
     public void displayBefore(JoinPoint jp) {
+
         log.info("Entering method : " + jp.getSignature().getName());
-        log.info("With Arguments : " + jp.getArgs());
+        Object[] args = jp.getArgs();
+        log.info("With Arguments : " + args);
+
+        log.info("With Arguments : ======>");
+        for (int i = 0; i < args.length; i++) {
+            // log.info("Arg: " + args[i]);
+            // System.out.println("Arg: " + args[i]);
+
+        }
+
     }
 
     @After("execution(public * com.percipient.matrix..*(..))")
@@ -36,13 +54,4 @@ public class LoggingAspect {
     public void logAfterThrowing(JoinPoint jp, Throwable error) {
         log.error("Error in  : " + jp.getSignature().getName(), error);
     }
-
-    /*
-     * @AfterReturning(pointcut = "execution(* com.percipient.matrix..*(..))",
-     * returning = "retval") public void displayAfterReturning(JoinPoint jp,
-     * Object retval) { log.info("After Returning Advice by " +
-     * jp.getSignature().getName() + " and returned the value: " + retval);
-     * 
-     * }
-     */
 }

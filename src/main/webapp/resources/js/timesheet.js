@@ -280,7 +280,9 @@ var timesheetContentController = function() {
                                                 _init();
                                                 _validateInvidualTimeInput();
 
-                                            }).fail(function(response, textStatus, jqXHR) {
+                                            }).fail(
+                                            function(response, textStatus,
+                                                    jqXHR) {
                                                 $("body").html(
                                                         response.responseText);
                                                 _init();
@@ -315,14 +317,28 @@ var timesheetContentController = function() {
     },
 
     _validateTimes = function() {
-        var list = [ ".monHrs", ".tueHrs", ".wedHrs", ".thuHrs", ".friHrs",
+        var negetiveTimenodes = $('input[type="number"]').filter(function() {
+            return $(this).val() < 0;
+        }), list = [ ".monHrs", ".tueHrs", ".wedHrs", ".thuHrs", ".friHrs",
                 ".satHrs", ".sunHrs" ], valid = true;
+
+        negetiveTimenodes.each(function() {
+            $(this).siblings('.msg').text("Enter a positive value")
+                    .removeClass('hide').addClass('error');
+            $(this).closest('td').addClass("error");
+            valid = false;
+        });
+        if (!valid) {
+            return valid;
+        }
         for ( var i = 0; i < list.length; i++) {
             var validDay = _validateTimeInputForDays(list[i], list[i] + 'Th');
             valid = valid ? valid = validDay : valid;
         }
         return valid;
-    }, _validateTimeInputForDays = function(inputClass, headerClass) {
+    },
+
+    _validateTimeInputForDays = function(inputClass, headerClass) {
         var hrs = 0.0;
         $(inputClass).each(function(i) {
             hrs = hrs + parseFloat(this.value);
