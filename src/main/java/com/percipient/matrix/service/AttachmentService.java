@@ -39,7 +39,8 @@ class AttachmentServiceImpl implements AttachmentService {
 
     private static final String[] ACCEPTED_CONTENT_TYPES = new String[] {
             "application/pdf", "application/doc", "application/msword",
-            "application/rtf" };
+            "application/rtf", "image/bmp", "image/jpeg", "image/jpg",
+            "image/gif" };
 
     @Autowired
     AttachmentRepository attachmentRepository;
