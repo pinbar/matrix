@@ -46,7 +46,7 @@ public class TimesheetController {
     DateUtil dateUtil;
 
     @Autowired
-    UserInfo userInfo;
+    private javax.inject.Provider<UserInfo> userInfo;
 
     @Autowired
     TimesheetValidator timesheetValidator;
@@ -63,7 +63,8 @@ public class TimesheetController {
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, tsPreviews.get(0));
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
         List<CostCenterView> costCenters = employeeCostCenterService
-                .getCostCenterViewListForEmployees(userInfo.getEmployeeId());
+                .getCostCenterViewListForEmployees(userInfo.get()
+                        .getEmployeeId());
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
         return "timesheet/timesheetPage";
@@ -209,7 +210,8 @@ public class TimesheetController {
         List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
         List<CostCenterView> costCenters = employeeCostCenterService
-                .getCostCenterViewListForEmployees(userInfo.getEmployeeId());
+                .getCostCenterViewListForEmployees(userInfo.get()
+                        .getEmployeeId());
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
         return "timesheet/timesheetPage";
@@ -218,7 +220,8 @@ public class TimesheetController {
     private String gotoTimesheetContent(Model model) {
 
         List<CostCenterView> costCenters = employeeCostCenterService
-                .getCostCenterViewListForEmployees(userInfo.getEmployeeId());
+                .getCostCenterViewListForEmployees(userInfo.get()
+                        .getEmployeeId());
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
         return "timesheet/timesheetContent";
@@ -226,7 +229,8 @@ public class TimesheetController {
 
     private String gotoTimesheetContentWrapper(Model model) {
         List<CostCenterView> costCenters = employeeCostCenterService
-                .getCostCenterViewListForEmployees(userInfo.getEmployeeId());
+                .getCostCenterViewListForEmployees(userInfo.get()
+                        .getEmployeeId());
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
         return "timesheet/timesheetContentWrapper";

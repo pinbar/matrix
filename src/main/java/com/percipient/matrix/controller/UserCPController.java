@@ -27,13 +27,13 @@ public class UserCPController {
     UserCPService userCPService;
 
     @Autowired
-    UserInfo userInfo;
+    private javax.inject.Provider<UserInfo> userInfo;
 
     @RequestMapping(value = "/empcontactinfo", method = RequestMethod.GET)
     public String gotoEmpContactInfo(Model model) {
 
         EmployeeContactInfoView empContactInfoView = userCPService
-                .employeeContactInfoView(userInfo.getUserName());
+                .employeeContactInfoView(userInfo.get().getUserName());
         model.addAttribute(MODEL_ATTRIBUTE_EMP_CONTACT_INFO, empContactInfoView);
         return PAGE_USER_CP;
     }
@@ -56,7 +56,7 @@ public class UserCPController {
     public String gotoChangePassword(Model model) {
 
         ChangePasswordView changePassView = userCPService
-                .getChangePasswordView(userInfo.getUserName());
+                .getChangePasswordView(userInfo.get().getUserName());
         setupChangePassword(changePassView, model);
         return PAGE_USER_CP;
     }
@@ -98,7 +98,7 @@ public class UserCPController {
         }
 
         ChangePasswordView existingUserView = userCPService
-                .getChangePasswordView(userInfo.getUserName());
+                .getChangePasswordView(userInfo.get().getUserName());
 
         if (!existingUserView.getPassword().equalsIgnoreCase(
                 changePassView.getPassword())) {

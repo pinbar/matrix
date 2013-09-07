@@ -2,6 +2,7 @@ package com.percipient.matrix.util.Logging;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -33,12 +34,9 @@ public class LoggingAspect {
 
         log.info("Entering method : " + jp.getSignature().getName());
         Object[] args = jp.getArgs();
-        log.info("With Arguments : " + args);
-
         log.info("With Arguments : ======>");
         for (int i = 0; i < args.length; i++) {
-            // log.info("Arg: " + args[i]);
-            // System.out.println("Arg: " + args[i]);
+            log.info("Arg: " + args[i]);
 
         }
 
@@ -54,4 +52,12 @@ public class LoggingAspect {
     public void logAfterThrowing(JoinPoint jp, Throwable error) {
         log.error("Error in  : " + jp.getSignature().getName(), error);
     }
+
+    @AfterReturning(pointcut = "execution(* com.percipient.matrix..*(..))", returning = "retval")
+    public void displayAfterReturning(JoinPoint jp, Object retval) {
+        log.info("After Returning from:  " + jp.getSignature().getName()
+                + " and returned the value: " + retval);
+
+    }
+
 }

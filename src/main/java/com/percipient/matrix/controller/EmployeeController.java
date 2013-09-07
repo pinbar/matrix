@@ -22,7 +22,6 @@ import com.percipient.matrix.service.EmployeeCostCenterService;
 import com.percipient.matrix.service.EmployeeService;
 import com.percipient.matrix.service.GroupService;
 import com.percipient.matrix.service.UserCPService;
-import com.percipient.matrix.session.UserInfo;
 import com.percipient.matrix.view.AdminEmpPasswordView;
 import com.percipient.matrix.view.ClientView;
 import com.percipient.matrix.view.CostCenterView;
@@ -38,9 +37,6 @@ public class EmployeeController {
     public static final String MODEL_ATTRIBUTE_EMPLOYEES = "employees";
     public static final String MODEL_ATTRIBUTE_GROUPS = "groups";
     public static final String MODEL_ATTRIBUTE_CHANGE_PASS = "changePass";
-
-    @Autowired
-    UserInfo userInfo;
 
     @Autowired
     EmployeeService employeeService;

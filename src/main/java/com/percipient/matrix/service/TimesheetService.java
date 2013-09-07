@@ -70,7 +70,8 @@ class TimesheetServiceImpl implements TimesheetService {
     private TimesheetRepository timesheetRepository;
 
     @Autowired
-    private UserInfo userInfo;
+    // private UserInfo userInfo;
+    private javax.inject.Provider<UserInfo> userInfo;
 
     @Autowired
     DateUtil dateUtil;
@@ -121,7 +122,7 @@ class TimesheetServiceImpl implements TimesheetService {
     public List<TimesheetView> getTimesheetPreview() {
 
         Employee employee = employeeRepository.getEmployeeByUserName(userInfo
-                .getUserName());
+                .get().getUserName());
         List<Timesheet> timesheetList = timesheetRepository
                 .getTimesheets(employee);
         Collections.sort(timesheetList, DateComparator);
@@ -168,7 +169,7 @@ class TimesheetServiceImpl implements TimesheetService {
     public TimesheetView getTimesheet(Date weekEnding) {
 
         Employee employee = employeeRepository.getEmployeeByUserName(userInfo
-                .getUserName());
+                .get().getUserName());
         Timesheet timesheet = timesheetRepository.getTimesheet(employee,
                 weekEnding);
         TimesheetView timesheetView = null;
@@ -184,7 +185,7 @@ class TimesheetServiceImpl implements TimesheetService {
     public List<TimesheetView> getTimesheets() {
 
         Employee employee = employeeRepository.getEmployeeByUserName(userInfo
-                .getUserName());
+                .get().getUserName());
         List<Timesheet> timesheetList = timesheetRepository
                 .getTimesheets(employee);
 
@@ -312,7 +313,7 @@ class TimesheetServiceImpl implements TimesheetService {
         } else {
             timesheet = new Timesheet();
             Employee employee = employeeRepository
-                    .getEmployeeByUserName(userInfo.getUserName());
+                    .getEmployeeByUserName(userInfo.get().getUserName());
             timesheet.setEmployeeId(employee.getId());
             timesheet.setWeekEnding(dateUtil.getAsDate(timesheetView
                     .getWeekEnding()));
@@ -465,5 +466,4 @@ class TimesheetServiceImpl implements TimesheetService {
 
     };
 
-   
 }
