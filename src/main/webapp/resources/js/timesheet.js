@@ -68,7 +68,7 @@ var timesheetContentController = function() {
                             {
                                 maxFileSize : 5000000,
                                 autoUpload : true,
-                                acceptFileTypes : /(\.|\/)(txt|pdf|xls|doc|docx)$/i,
+                                acceptFileTypes : /(\.|\/)(txt|pdf|xls|doc|docx|bmp|jpeg|jpg|gif)$/i,
                                 prependFiles : true,
                                 formData : function() {
                                     return $("form#fileupload")

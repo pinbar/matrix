@@ -130,12 +130,12 @@ public class TimesheetController {
             TimesheetView timesheetView = timesheetService
                     .getTimesheet(dateUtil.getAsDate(weekEnding));
             model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
-            return gotoTimesheetPage(model);
+            return gotoTimesheetContentWrapper(model);
         }
         TimesheetView timesheetView = timesheetService
                 .addCostCodeRow(timesheetId);
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
-        return gotoTimesheetPage(model);
+        return gotoTimesheetContentWrapper(model);
     }
 
     @RequestMapping(value = "/deleteCostCodeRow", method = RequestMethod.GET)
@@ -148,14 +148,14 @@ public class TimesheetController {
         if (timesheetId == null) {
             model.addAttribute("error",
                     "You must save the timesheet before deleting rows.");
-            gotoTimesheetPage(model);
+            gotoTimesheetContentWrapper(model);
         }
 
         timesheetService.deleteCostCodeRow(timesheetId, costCode);
         TimesheetView timesheetView = timesheetService.getTimesheet(dateUtil
                 .getAsDate(weekEnding));
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
-        return gotoTimesheetPage(model);
+        return gotoTimesheetContentWrapper(model);
 
     }
 
