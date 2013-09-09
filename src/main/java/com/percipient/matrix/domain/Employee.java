@@ -40,6 +40,9 @@ public class Employee {
 
     @Column(name = "address")
     private String address;
+    
+    @Column(name = "manager_id")
+    private Integer managerId;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "username", referencedColumnName = "username", insertable = false, updatable = false)
@@ -119,6 +122,14 @@ public class Employee {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Integer getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Integer managerId) {
+        this.managerId = managerId;
     }
 
 }

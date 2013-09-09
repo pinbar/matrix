@@ -61,6 +61,20 @@
                 </form:select>
             </div>
         </div>
+        <div class="control-group">
+            <label class="control-label" for="managerId">Manager Id</label>
+            <div class="controls">
+                <form:input class="form-control" path="managerId" />
+                <form:errors class="text-error" path="managerId"></form:errors>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="managerName">Manager Name</label>
+            <div class="controls">
+                <form:input class="form-control" path="managerName" />
+                <form:errors class="text-error" path="managerName"></form:errors>
+            </div>
+        </div>
 
         <input id="costCodes" name="costCodes" type="hidden"
             value="${employee.costCodesStr}" />

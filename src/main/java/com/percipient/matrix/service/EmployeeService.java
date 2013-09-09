@@ -88,15 +88,15 @@ class EmployeeServiceImpl implements EmployeeService {
     public void saveEmployee(EmployeeView employeeView) {
 
         Employee employee = getEmployeeFromEmployeeView(employeeView);
-         Integer id = employeeRepository.saveEmployee(employee);
-         if (id != null) {
-             employeeView.setId(id);
-         }
-         if (employeeView.getCostCodes() != null
-                 && !employeeView.getCostCodes().isEmpty()) {
-             List<EmployeeCostCenter> empCostCenterList = collateUpdatedCostCenterList(employeeView);
-             employeeCostCenterRepository.save(empCostCenterList);
-         }
+        Integer id = employeeRepository.saveEmployee(employee);
+        if (id != null) {
+            employeeView.setId(id);
+        }
+        if (employeeView.getCostCodes() != null
+                && !employeeView.getCostCodes().isEmpty()) {
+            List<EmployeeCostCenter> empCostCenterList = collateUpdatedCostCenterList(employeeView);
+            employeeCostCenterRepository.save(empCostCenterList);
+        }
     }
 
     @Override
@@ -131,6 +131,7 @@ class EmployeeServiceImpl implements EmployeeService {
         employee.setEmail(employeeView.getEmail());
         employee.setAddress(employeeView.getAddress());
         employee.setUserName(employeeView.getUserName());
+        employee.setManagerId(employeeView.getManagerId());
 
         employee.getUser().setUserName(employeeView.getUserName());
 
@@ -159,6 +160,16 @@ class EmployeeServiceImpl implements EmployeeService {
         employeeView.setActive(user.getEnabled());
         employeeView.setGroupName(group.getName());
 
+        if (employee.getManagerId() != null) {
+            Employee manager = employeeRepository.getEmployee(employee
+                    .getManagerId());
+            if (manager != null) {
+                employeeView.setManagerId(manager.getId());
+                //TODO provide this helper method in employee??
+                employeeView.setManagerName(manager.getFirstName() + " "
+                        + manager.getLastName());
+            }
+        }
         return employeeView;
     }
 
@@ -182,7 +193,9 @@ class EmployeeServiceImpl implements EmployeeService {
             empCostCenterList.add(empCC);
         }
         // delete the remaining, these were unchecked
-        employeeCostCenterRepository.delete(existingEmpCostCenterList);
+        if (!existingEmpCostCenterList.isEmpty()) {
+            employeeCostCenterRepository.delete(existingEmpCostCenterList);
+        }
 
         return empCostCenterList;
     }
