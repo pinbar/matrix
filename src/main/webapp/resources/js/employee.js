@@ -14,8 +14,10 @@ var empCostCodeController = function() {
     getAllCostCodeForEmp = function(e) {
         var employeeId = $('#employeeForm #id').val();
         // from error condition
-        var prePopulatedCostCodes = $("#costCodes").val().split(',');
-        if (!employeeId || prePopulatedCostCodes) {
+        var prePopulatedCostCodes = $("#costCodes").val() !== ("") ? $(
+                "#costCodes").val().split(",") : "";
+        if (!employeeId
+                || (prePopulatedCostCodes && prePopulatedCostCodes !== "")) {
             populateContainer(prePopulatedCostCodes || []);
             return;
         }
@@ -31,6 +33,15 @@ var empCostCodeController = function() {
             populateContainer(response);
         }).fail(function(response, textStatus, jqXHR) {
             alert("error");
+        });
+    },
+
+    getAllManagers = function(selectedId) {
+        adminSidebarController.populateOptions({
+            selectedName : selectedId,
+            alwaysShow : true,
+            url : "/admin/employee/manager/listAsJson",
+            optionsContainer : "#managerId"
         });
     },
 
@@ -104,6 +115,7 @@ var empCostCodeController = function() {
     return ({
         onBeforeSave : onBeforeSave,
         getAllCostCodeForEmp : getAllCostCodeForEmp,
+        getAllManagers:getAllManagers,
         container : container
     });
 }();
@@ -111,8 +123,9 @@ $(document).ready(function() {
     $("#employeeSave").on("click", function(e) {
         empCostCodeController.onBeforeSave();
     });
-    if (!$("#empUpdate").attr("class").indexOf("hide") > -1) {
+    if (!$("#empUpdate").hasClass("hide")) {
         empCostCodeController.getAllCostCodeForEmp();
+        empCostCodeController.getAllManagers($('hiddenManagerId').val());
         adminSidebarController.populateOptions({
             selectedName : $("#hiddenGroupName").val(),
             alwaysShow : true,

@@ -103,18 +103,25 @@ var adminSidebarController = function() {
                                         .each(
                                                 response,
                                                 function(key, value) {
-                                                    var grpName = value.name, grpVal;
-                                                    grpVal = value.costCode ? value.costCode
-                                                            : value.name;
+                                                    var dispName, dispVal;
+                                                    if (value
+                                                            .hasOwnProperty('firstName')) {
+                                                        dispName = value.firstName+" "+value.lastName;
+                                                        dispVal=value.id;
+                                                    } else {
+                                                        dispName = value.name;
+                                                        dispVal = value.costCode ? value.costCode
+                                                                : value.name;
+                                                    }
                                                     html = html
                                                             + "<option value=\""
-                                                            + grpVal
+                                                            + dispVal
                                                             + "\""
                                                             + (args.selectedName
-                                                                    && (grpName === args.selectedName)
-                                                                    || (grpVal === args.selectedName) ? " selected "
+                                                                    && (dispName === args.selectedName)
+                                                                    || (dispVal === args.selectedName) ? " selected "
                                                                     : "")
-                                                            + " >" + grpName
+                                                            + " >" + dispName
                                                             + "</option>";
 
                                                 });

@@ -77,21 +77,20 @@
         </div>
     </div>
     <script
-        src="${pageContext.request.contextPath}/resources/js/adminSidebarController.js"></script>
-    <script
-        src="${pageContext.request.contextPath}/resources/js/employee.js"></script>
-    <script
-        src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
-    <script
         src="${pageContext.request.contextPath}/resources/jquery/js/jquery.dataTables.min.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/jquery/js/dataTables.fnReloadAjax.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/jquery/js/jquery-ui-1.10.3.custom.min.js"></script>
-
     <script
         src="${pageContext.request.contextPath}/resources/jquery-ui-multiselect/js/jquery.multiselect.min.js"></script>
     <script
         src="${pageContext.request.contextPath}/resources/jquery-ui-multiselect/js/jquery.multiselect.filter.min.js"></script>
+        <script
+        src="${pageContext.request.contextPath}/resources/js/adminSidebarController.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/js/employee.js"></script>
+    <script
+        src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.percipient.matrix.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,8 @@ public interface EmployeeService {
     public void saveEmployee(EmployeeView employeeView);
 
     public void deleteEmployee(EmployeeView employeeView);
+
+    public List<EmployeeView> getEmployeesByGroup(String group);
 
 }
 
@@ -85,18 +88,31 @@ class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
+    public List<EmployeeView> getEmployeesByGroup(String group) {
+        List<Employee> employees = employeeRepository
+                .getEmployeesByGroup(StringUtils.capitalize(group));
+        List<EmployeeView> employeeViews = new ArrayList<EmployeeView>();
+        for (Employee employee : employees) {
+            EmployeeView employeeView = getEmployeeViewFromEmployee(employee);
+            employeeViews.add(employeeView);
+        }
+        return employeeViews;
+    }
+
+    @Override
+    @Transactional
     public void saveEmployee(EmployeeView employeeView) {
 
         Employee employee = getEmployeeFromEmployeeView(employeeView);
-         Integer id = employeeRepository.saveEmployee(employee);
-         if (id != null) {
-             employeeView.setId(id);
-         }
-         if (employeeView.getCostCodes() != null
-                 && !employeeView.getCostCodes().isEmpty()) {
-             List<EmployeeCostCenter> empCostCenterList = collateUpdatedCostCenterList(employeeView);
-             employeeCostCenterRepository.save(empCostCenterList);
-         }
+        Integer id = employeeRepository.saveEmployee(employee);
+        if (id != null) {
+            employeeView.setId(id);
+        }
+        if (employeeView.getCostCodes() != null
+                && !employeeView.getCostCodes().isEmpty()) {
+            List<EmployeeCostCenter> empCostCenterList = collateUpdatedCostCenterList(employeeView);
+            employeeCostCenterRepository.save(empCostCenterList);
+        }
     }
 
     @Override
@@ -131,6 +147,7 @@ class EmployeeServiceImpl implements EmployeeService {
         employee.setEmail(employeeView.getEmail());
         employee.setAddress(employeeView.getAddress());
         employee.setUserName(employeeView.getUserName());
+        employee.setManagerId(employeeView.getManagerId());
 
         employee.getUser().setUserName(employeeView.getUserName());
 
@@ -158,7 +175,7 @@ class EmployeeServiceImpl implements EmployeeService {
         employeeView.setUserName(user.getUserName());
         employeeView.setActive(user.getEnabled());
         employeeView.setGroupName(group.getName());
-
+        employeeView.setManagerId(employee.getManagerId());
         return employeeView;
     }
 
@@ -182,8 +199,11 @@ class EmployeeServiceImpl implements EmployeeService {
             empCostCenterList.add(empCC);
         }
         // delete the remaining, these were unchecked
-        employeeCostCenterRepository.delete(existingEmpCostCenterList);
+        if (!existingEmpCostCenterList.isEmpty()) {
+            employeeCostCenterRepository.delete(existingEmpCostCenterList);
+        }
 
         return empCostCenterList;
     }
+
 }

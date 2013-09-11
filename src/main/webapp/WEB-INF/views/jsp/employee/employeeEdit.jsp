@@ -41,27 +41,37 @@
         <div class="control-group">
             <label class="control-label" for="email">Email</label>
             <div class="controls">
-                <form:input class="form-control" path="email" />
+                <form:input class="form-control  form-inline" path="email" />
                 <form:errors class="text-error" path="email"></form:errors>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="address">Address</label>
             <div class="controls">
-                <form:textarea class="form-control" path="address" />
+                <form:textarea class="form-control form-inline" path="address" />
                 <form:errors class="text-error" path="address"></form:errors>
             </div>
         </div>
+         <div class="spacer"></div>
         <div class="control-group">
             <label class="control-label" for="groupName">Group</label>
             <div class="controls">
                 <input id="hiddenGroupName" type="hidden"
                     value="${employee.groupName}" />
-                <form:select path="groupName" class="input-large">
+                <form:select path="groupName" class="input-sm">
                 </form:select>
             </div>
         </div>
-
+        <div class="spacer"></div>
+        <div class="control-group">
+            <label class="control-label" for="managerId">Manager</label>
+            <div class="controls">
+                <input id="hiddenManagerId" type="hidden"
+                    value="${employee.managerId}" />
+                <form:select path="managerId" class="input-sm">
+                </form:select>
+            </div>
+        </div>
         <input id="costCodes" name="costCodes" type="hidden"
             value="${employee.costCodesStr}" />
         <div class="spacer"></div>

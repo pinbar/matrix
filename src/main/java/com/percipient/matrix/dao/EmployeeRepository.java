@@ -26,6 +26,8 @@ public interface EmployeeRepository {
     public void saveGroupMember(GroupMember groupMember);
 
     public void deleteGroupMember(GroupMember groupMember);
+
+    public List<Employee> getEmployeesByGroup(String group);
 }
 
 @Repository
@@ -47,6 +49,14 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
                 Employee.class, employeeId);
     }
 
+    @Override
+    public List<Employee> getEmployeesByGroup(String group) {
+        String query = "from Employee as employee where employee.userName in ("
+                + "select gm.userName from GroupMember as gm, Group as g  where g.name = :group and g.id=gm.groupId )";
+        return (List<Employee>) sessionFactory.getCurrentSession()
+                .createQuery(query).setParameter("group", group).list();
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public List<Employee> getEmployees() {
@@ -57,13 +67,13 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
     @Override
     public Integer saveEmployee(Employee employee) {
-       Integer id =null; 
+        Integer id = null;
         if (employee.getId() != null) {
             sessionFactory.getCurrentSession().saveOrUpdate(employee);
-        }else {
-           id =(Integer)sessionFactory.getCurrentSession().save(employee);
+        } else {
+            id = (Integer) sessionFactory.getCurrentSession().save(employee);
         }
-        return id; 
+        return id;
     }
 
     @Override

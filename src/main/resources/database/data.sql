@@ -2,12 +2,13 @@
 INSERT INTO users (username, password, enabled) VALUES ('pb', 'p', true);
 INSERT INTO users (username, password, enabled) VALUES ('rp', 'r', true);
 INSERT INTO users (username, password, enabled) VALUES ('ap', 'a', true);
+INSERT INTO users (username, password, enabled) VALUES ('tm', 't', true);
 
 --INSERT INTO authorities(username, authority) VALUES ('Pinak', 'ROLE_USER');
 
 INSERT INTO groups(group_name) VALUES ('Administrators');
 INSERT INTO groups(group_name) VALUES ('Employees');
-INSERT INTO groups(group_name) VALUES ('Supervisors');
+INSERT INTO groups(group_name) VALUES ('Manager');
 
 INSERT INTO group_authorities(group_id, authority) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO group_authorities(group_id, authority) VALUES (2, 'ROLE_USER');
@@ -16,12 +17,14 @@ INSERT INTO group_authorities(group_id, authority) VALUES (3, 'ROLE_SUPERVISOR')
 INSERT INTO group_members (username, group_id) VALUES ('pb', 1);
 INSERT INTO group_members (username, group_id) VALUES ('rp', 2);
 INSERT INTO group_members (username, group_id) VALUES ('ap', 3);
+INSERT INTO group_members (username, group_id) VALUES ('tm', 3);
 --end security config
 
 --begin employee tables
 INSERT INTO employees (username, first_name, last_name) VALUES ('pb', 'Pinak', 'Barve');
 INSERT INTO employees (username, first_name, last_name) VALUES ('rp', 'Rohit', 'Panwar');
 INSERT INTO employees (username, first_name, last_name) VALUES ('ap', 'Amit', 'Pant');
+INSERT INTO employees (username, first_name, last_name) VALUES ('tm', 'Test', 'Manager');
 
 INSERT INTO clients (name) VALUES ('Internal');
 INSERT INTO clients (name) VALUES ('Nationwide');

@@ -245,8 +245,10 @@ function initTable(args) {
 }
 
 function populate(container, data) {
-    var selectedGroupName = "";
-    var selectedClientName = "";
+    var selectedGroupName = "",
+    selectedManager="",
+    selectedClientName = "";
+    
     $.each(data,
             function(key, value) {
                 $('[id=' + key + ']', container).val(value);
@@ -261,6 +263,9 @@ function populate(container, data) {
                 if (key === "clientName") {
                     selectedClientName = value;
                 }
+                if(key=="managerId"){
+                    selectedManager=value;
+                }
             });
     if (container.attr("id") == "empUpdate") {
         adminSidebarController.populateOptions({
@@ -270,6 +275,7 @@ function populate(container, data) {
             optionsContainer : "#groupName"
         });
         empCostCodeController.getAllCostCodeForEmp();
+        empCostCodeController.getAllManagers(selectedManager);
     }
     if (container.attr("id") == "costCenterUpdate") {
         adminSidebarController.populateOptions({

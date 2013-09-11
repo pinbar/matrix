@@ -26,6 +26,8 @@ public class EmployeeView {
     private String address;
     @NotNull
     private String groupName;
+    @NotNull
+    private Integer managerId;
 
     private List<String> costCodes;
 
@@ -108,9 +110,17 @@ public class EmployeeView {
     public void setCostCodes(List<String> costCodes) {
         this.costCodes = costCodes;
     }
-    
-    public String  getCostCodesStr() {
-         return StringUtils.join(costCodes, ",");
+
+    public String getCostCodesStr() {
+        return StringUtils.join(costCodes, ",");
+    }
+
+    public Integer getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Integer managerId) {
+        this.managerId = managerId;
     }
 
 }

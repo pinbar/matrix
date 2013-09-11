@@ -193,14 +193,11 @@ var hrTimesheetController = function() {
                     });
                 });
         $('#timesheetModal').on('shown.bs.modal', function() {
-            timesheetContentController.init();
-            timesheetContentController.setUpActivateTimesheet();
-            timesheetContentController.disableTimesheet();
             _setupActionControls();
         });
         $('#timesheetModal').on('hide.bs.modal', function() {
             if (statusChanged) {
-                $('window').load(contextPath + '/hr/timesheets/' + status);
+                window.location.href= contextPath + '/hr/timesheets/' + status;
             }
         });
 
@@ -302,7 +299,9 @@ var hrTimesheetController = function() {
                 $(".modal-body").html(response);
                 _setupActionControls();
             } else {
-                statusChanged = $(e.target).val() !== 'Save';
+                statusChanged = statusChanged || $(e.target).val() !== 'Save';
+                status = statusChanged ? 'submitted': status;
+                _updateTotalHours();
                 $('#timesheetModal').modal('hide');
             }
             ;
@@ -338,6 +337,7 @@ var hrTimesheetController = function() {
                 timesheetContentController.disableTimesheet();
             } else {
                 statusChanged = true;
+                status= "pending";
             }
         })
         // TODO : error styling and error stuff
@@ -393,6 +393,9 @@ var hrTimesheetController = function() {
     },
 
     _setupActionControls = function() {
+        timesheetContentController.init();
+        timesheetContentController.setUpActivateTimesheet();
+        timesheetContentController.disableTimesheet();
         _setupAddCostCodeRowAction();
         _setupSubmitTimesheetAction();
         _setupDeleteCostCodeRowAction();
