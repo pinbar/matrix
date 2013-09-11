@@ -72,6 +72,7 @@
                 </form:select>
             </div>
         </div>
+
         <input id="costCodes" name="costCodes" type="hidden"
             value="${employee.costCodesStr}" />
         <div class="spacer"></div>
