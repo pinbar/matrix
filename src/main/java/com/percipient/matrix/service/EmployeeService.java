@@ -35,9 +35,9 @@ public interface EmployeeService {
 
     public List<EmployeeView> getEmployeesByGroup(String group);
 
-    public List<Integer> getReporteesIdByManagerId(Integer managerId);
-
     public List<EmployeeView> getReporteesByManagerId(Integer managerId);
+
+    public List<Integer> getReporteesIdByManagerId(Integer managerId);
 
 }
 
@@ -138,7 +138,6 @@ class EmployeeServiceImpl implements EmployeeService {
                 .getEmployeesByManager(managerId);
         List<Integer> reporteeIds = new ArrayList<Integer>();
         for (Employee emp : employeeList) {
-            reporteeIds.add(emp.getId());
         }
         return reporteeIds;
     }

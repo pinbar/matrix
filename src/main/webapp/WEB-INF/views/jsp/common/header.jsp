@@ -25,11 +25,13 @@
                 <li><a
                     href="${pageContext.request.contextPath}/timesheet/home"><i
                         class="glyphicon glyphicon-time"></i> Timesheets</a></li>
+                <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERVISOR')">
                 <li class="divider-vertical"></li>
                 <li><a
                     href="${pageContext.request.contextPath}/hr/timesheets"><i
                         class="glyphicon glyphicon-lock"></i> HR
                         Timesheets</a></li>
+               </sec:authorize>
                 <li class="visible-md"><a
                     href="${pageContext.request.contextPath}/database/"><i
                         class="glyphicon glyphicon-hdd"></i> DB Tables</a></li>
