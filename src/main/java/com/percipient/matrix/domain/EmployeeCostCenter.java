@@ -11,6 +11,9 @@ import javax.persistence.Table;
 @Table(name = "employees_cost_centers")
 public class EmployeeCostCenter implements Serializable {
 
+  
+    private static final long serialVersionUID = 745407141548950900L;
+
     @Id
     @Column(name = "employee_id")
     private Integer employeeId;

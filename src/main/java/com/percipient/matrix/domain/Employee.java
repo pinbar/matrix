@@ -40,7 +40,7 @@ public class Employee {
 
     @Column(name = "address")
     private String address;
-    
+
     @Column(name = "manager_id")
     private Integer managerId;
 

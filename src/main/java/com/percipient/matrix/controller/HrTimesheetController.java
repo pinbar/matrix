@@ -1,6 +1,7 @@
 package com.percipient.matrix.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +32,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.percipient.matrix.service.EmployeeCostCenterService;
+import com.percipient.matrix.service.EmployeeService;
 import com.percipient.matrix.service.TimesheetService;
+import com.percipient.matrix.session.UserInfo;
 import com.percipient.matrix.util.DateUtil;
 import com.percipient.matrix.util.Logging.Loggable;
 import com.percipient.matrix.validator.TimesheetValidator;
 import com.percipient.matrix.view.CostCenterView;
+import com.percipient.matrix.view.EmployeeView;
 import com.percipient.matrix.view.HrTimesheetView;
 import com.percipient.matrix.view.TimesheetView;
 
@@ -78,10 +83,16 @@ public class HrTimesheetController {
     TimesheetService timesheetService;
 
     @Autowired
+    EmployeeService employeeService;
+
+    @Autowired
     EmployeeCostCenterService employeeCostCenterService;
 
     @Autowired
     DateUtil dateUtil;
+
+    @Autowired
+    private javax.inject.Provider<UserInfo> userInfo;
 
     @Autowired
     TimesheetValidator timesheetValidator;
@@ -93,21 +104,43 @@ public class HrTimesheetController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String getTimesheets(Model model) {
+        List<EmployeeView> reportees = employeeService
+                .getReporteesByManagerId(userInfo.get().getEmployeeId());
+        model.addAttribute("employees", getEmployListAsJSONString(reportees));
         return "hr/hrTimesheetPage";
     }
 
     @RequestMapping(value = "/listAsJson/{status}")
     public @ResponseBody
     ObjectNode getTimesheetListAsJSON(@PathVariable String status, Model model) {
+
+        EmployeeView employee = employeeService.getEmployee(userInfo.get()
+                .getEmployeeId());
+        List<HrTimesheetView> hrTimesheetViewList = null;
+        if (employee.getGroupName().equalsIgnoreCase("Manager")) {
+            List<Integer> reporteeIds = employeeService
+                    .getReporteesIdByManagerId(userInfo.get().getEmployeeId());
+            hrTimesheetViewList = timesheetService
+                    .getReporteeTimesheetsByStatus(status.toLowerCase(),
+                            reporteeIds);
+        } else {
+            hrTimesheetViewList = timesheetService.getTimesheetsByStatus(status
+                    .toLowerCase());
+        }
+        return getHrTimesheetListAsJSON(hrTimesheetViewList);
+    }
+
+    @RequestMapping(value = "/reportees/listAsJson/{status}")
+    public @ResponseBody
+    ObjectNode getReporteesTimesheetListAsJSON(@PathVariable String status,
+            Model model) {
+
+        List<Integer> reporteeIds = employeeService
+                .getReporteesIdByManagerId(userInfo.get().getEmployeeId());
         List<HrTimesheetView> hrTimesheetViewList = timesheetService
-                .getTimesheetsByStatus(status.toLowerCase());
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode retObject = mapper.createObjectNode();
-        retObject.putPOJO("timesheets", hrTimesheetViewList);
-        retObject.put(TOTAL_RECORDS_VIEW_PROP, hrTimesheetViewList.size());
-        retObject.put(TOTAL_DISPLAY_RECORDS_VIEW_PROP,
-                hrTimesheetViewList.size());
-        return retObject;
+                .getReporteeTimesheetsByStatus(status.toLowerCase(),
+                        reporteeIds);
+        return getHrTimesheetListAsJSON(hrTimesheetViewList);
     }
 
     @RequestMapping(value = "/{status}", method = RequestMethod.GET)
@@ -115,6 +148,9 @@ public class HrTimesheetController {
 
         model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST,
                 new ArrayList<HrTimesheetView>());
+        List<EmployeeView> reportees = employeeService
+                .getReporteesByManagerId(userInfo.get().getEmployeeId());
+        model.addAttribute("employees", getEmployListAsJSONString(reportees));
         return "hr/hrTimesheetPage";
     }
 
@@ -297,6 +333,19 @@ public class HrTimesheetController {
         return "timesheet/timesheetContent";
     }
 
+    @RequestMapping(value = "/create/{weekEnding}/{employee}", method = RequestMethod.POST)
+    public @ResponseBody
+    TimesheetView createNewTimesheet(@PathVariable String weekEnding,
+            @PathVariable Integer employee, Model model) {
+
+        Date weekEndingDate = StringUtils.isBlank(weekEnding) ? dateUtil
+                .getCurrentWeekEndingDate() : dateUtil
+                .getWeekEndingDate(dateUtil.getAsDate(weekEnding));
+        TimesheetView timesheetView = timesheetService.createTimesheet(
+                weekEndingDate, employee);
+        return timesheetView;
+    }
+
     @RequestMapping(value = "/addCostCodeRow", method = RequestMethod.POST)
     public String addCostCodeRow(
             @RequestParam(value = "timesheetId") Integer timesheetId,
@@ -349,4 +398,27 @@ public class HrTimesheetController {
 
     }
 
+    private ObjectNode getHrTimesheetListAsJSON(
+            List<HrTimesheetView> hrTimesheetViewList) {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode retObject = mapper.createObjectNode();
+        retObject.putPOJO("timesheets", hrTimesheetViewList);
+        retObject.put(TOTAL_RECORDS_VIEW_PROP, hrTimesheetViewList.size());
+        retObject.put(TOTAL_DISPLAY_RECORDS_VIEW_PROP,
+                hrTimesheetViewList.size());
+        return retObject;
+    }
+
+    private String getEmployListAsJSONString(List<EmployeeView> reportees) {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode retObject = mapper.createObjectNode();
+        ObjectNode employees = mapper.createObjectNode();// putArray("employeesWithId");
+        ArrayNode employeeNames = retObject.putArray("employees");
+        for (EmployeeView e : reportees) {
+            employees.put(e.getName(), e.getId());
+            employeeNames.add(e.getName());
+        }
+        retObject.put("employeesWithId", employees);
+        return retObject.toString();
+    }
 }

@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,13 +16,16 @@ public interface TimesheetRepository {
 
     public List<Timesheet> getTimesheetsByStatus(String status);
 
+    public List<Timesheet> getReporteeTimesheetsByStatus(String status,
+            List<Integer> employeeIds);
+
     public Timesheet getTimesheet(Integer id);
 
     public Timesheet getTimesheet(Employee employee, Date weekEnding);
 
     public List<Timesheet> getTimesheets(Employee employee);
 
-    public void save(Timesheet ts);
+    public Timesheet save(Timesheet ts);
 
     public void delete(Timesheet ts);
 
@@ -47,6 +49,15 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
         String query = "from Timesheet as timesheet where timesheet.status = :status";
         return (List<Timesheet>) sessionFactory.getCurrentSession()
                 .createQuery(query).setParameter("status", status).list();
+    }
+
+    @Override
+    public List<Timesheet> getReporteeTimesheetsByStatus(String status,
+            List<Integer> employeeIds) {
+        String query = "from Timesheet as timesheet where timesheet.status = :status and timesheet.employeeId in (:employeeIds)";
+        return (List<Timesheet>) sessionFactory.getCurrentSession()
+                .createQuery(query).setParameter("status", status)
+                .setParameterList("employeeIds", employeeIds).list();
     }
 
     @Override
@@ -75,8 +86,14 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
     }
 
     @Override
-    public void save(Timesheet ts) {
-        sessionFactory.getCurrentSession().saveOrUpdate(ts);
+    public Timesheet save(Timesheet ts) {
+
+        if (null != ts.getId()) {
+            sessionFactory.getCurrentSession().saveOrUpdate(ts);
+        } else {
+            ts = (Timesheet) sessionFactory.getCurrentSession().save(ts);
+        }
+        return ts;
     }
 
     @Override

@@ -35,6 +35,10 @@ public interface EmployeeService {
 
     public List<EmployeeView> getEmployeesByGroup(String group);
 
+    public List<Integer> getReporteesIdByManagerId(Integer managerId);
+
+    public List<EmployeeView> getReporteesByManagerId(Integer managerId);
+
 }
 
 @Service
@@ -125,6 +129,31 @@ class EmployeeServiceImpl implements EmployeeService {
         timesheetRepository.delete(timesheets);
         employeeCostCenterRepository.deleteAllForEmployee(employeeView.getId());
         employeeRepository.deleteEmployee(employee);
+    }
+
+    @Override
+    @Transactional
+    public List<Integer> getReporteesIdByManagerId(Integer managerId) {
+        List<Employee> employeeList = employeeRepository
+                .getEmployeesByManager(managerId);
+        List<Integer> reporteeIds = new ArrayList<Integer>();
+        for (Employee emp : employeeList) {
+            reporteeIds.add(emp.getId());
+        }
+        return reporteeIds;
+    }
+
+    @Override
+    @Transactional
+    public List<EmployeeView> getReporteesByManagerId(Integer managerId) {
+        List<Employee> employees = employeeRepository
+                .getEmployeesByManager(managerId);
+        List<EmployeeView> employeeViews = new ArrayList<EmployeeView>();
+        for (Employee employee : employees) {
+            EmployeeView employeeView = getEmployeeViewFromEmployee(employee);
+            employeeViews.add(employeeView);
+        }
+        return employeeViews;
     }
 
     private Employee getEmployeeFromEmployeeView(EmployeeView employeeView) {

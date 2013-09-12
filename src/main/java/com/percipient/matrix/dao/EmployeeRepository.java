@@ -28,6 +28,8 @@ public interface EmployeeRepository {
     public void deleteGroupMember(GroupMember groupMember);
 
     public List<Employee> getEmployeesByGroup(String group);
+
+    public List<Employee> getEmployeesByManager(Integer managerId);
 }
 
 @Repository
@@ -55,6 +57,13 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
                 + "select gm.userName from GroupMember as gm, Group as g  where g.name = :group and g.id=gm.groupId )";
         return (List<Employee>) sessionFactory.getCurrentSession()
                 .createQuery(query).setParameter("group", group).list();
+    }
+
+    @Override
+    public List<Employee> getEmployeesByManager(Integer managerId) {
+        String query = "from Employee as employee where employee.managerId = :managerId";
+        return (List<Employee>) sessionFactory.getCurrentSession().createQuery(query)
+                .setParameter("managerId", managerId).list();
     }
 
     @SuppressWarnings("unchecked")

@@ -205,18 +205,6 @@ public class TimesheetController {
         return getTimesheetPreview(model);
     }
 
-    private String gotoTimesheetPage(Model model) {
-
-        List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
-        model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
-        List<CostCenterView> costCenters = employeeCostCenterService
-                .getCostCenterViewListForEmployees(userInfo.get()
-                        .getEmployeeId());
-        model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
-
-        return "timesheet/timesheetPage";
-    }
-
     private String gotoTimesheetContent(Model model) {
 
         List<CostCenterView> costCenters = employeeCostCenterService

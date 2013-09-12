@@ -7,6 +7,8 @@ public class HrTimesheetView {
     private String status;
     private String employeeName;
     private Integer employeeId;
+    private Integer managerId;
+    private String managerName;
 
     private Double hours;
 
@@ -42,12 +44,28 @@ public class HrTimesheetView {
         this.employeeName = employeeName;
     }
 
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
+
     public Integer getEmployeeId() {
         return employeeId;
     }
 
     public void setEmployeeId(Integer employeeId) {
         this.employeeId = employeeId;
+    }
+
+    public Integer getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Integer id) {
+        this.managerId = id;
     }
 
     public Double getHours() {

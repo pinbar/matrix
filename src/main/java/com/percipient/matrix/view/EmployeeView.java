@@ -122,4 +122,8 @@ public class EmployeeView {
     public void setManagerId(Integer managerId) {
         this.managerId = managerId;
     }
+
+    public String getName() {
+        return this.firstName + " " + this.lastName;
+    }
 }
