@@ -34,6 +34,8 @@ public interface EmployeeService {
     public void deleteEmployee(EmployeeView employeeView);
 
     public List<EmployeeView> getEmployeesByGroup(String group);
+    
+    public List<Integer> getReporteesByManagerId(Integer managerId);
 
 }
 
@@ -127,6 +129,17 @@ class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.deleteEmployee(employee);
     }
 
+    @Override
+    @Transactional
+    public List<Integer> getReporteesByManagerId(Integer managerId) {
+        List<Employee> employeeList = employeeRepository.getEmployeesByManager(managerId);
+        List<Integer> reporteeIds = new ArrayList<Integer>();
+        for(Employee emp : employeeList) {
+            reporteeIds.add(emp.getId());
+        }
+        return reporteeIds;
+    }
+    
     private Employee getEmployeeFromEmployeeView(EmployeeView employeeView) {
 
         Employee employee = null;

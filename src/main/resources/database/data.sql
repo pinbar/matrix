@@ -2,7 +2,9 @@
 INSERT INTO users (username, password, enabled) VALUES ('pb', 'p', true);
 INSERT INTO users (username, password, enabled) VALUES ('rp', 'r', true);
 INSERT INTO users (username, password, enabled) VALUES ('ap', 'a', true);
-INSERT INTO users (username, password, enabled) VALUES ('tm', 't', true);
+INSERT INTO users (username, password, enabled) VALUES ('nb', 'n', true);
+INSERT INTO users (username, password, enabled) VALUES ('sc', 's', true);
+INSERT INTO users (username, password, enabled) VALUES ('uk', 'u', true);
 
 --INSERT INTO authorities(username, authority) VALUES ('Pinak', 'ROLE_USER');
 
@@ -17,14 +19,18 @@ INSERT INTO group_authorities(group_id, authority) VALUES (3, 'ROLE_SUPERVISOR')
 INSERT INTO group_members (username, group_id) VALUES ('pb', 1);
 INSERT INTO group_members (username, group_id) VALUES ('rp', 2);
 INSERT INTO group_members (username, group_id) VALUES ('ap', 3);
-INSERT INTO group_members (username, group_id) VALUES ('tm', 3);
+INSERT INTO group_members (username, group_id) VALUES ('sc', 2);
+INSERT INTO group_members (username, group_id) VALUES ('uk', 2);
+INSERT INTO group_members (username, group_id) VALUES ('nb', 3);
 --end security config
 
 --begin employee tables
 INSERT INTO employees (username, first_name, last_name) VALUES ('pb', 'Pinak', 'Barve');
-INSERT INTO employees (username, first_name, last_name) VALUES ('rp', 'Rohit', 'Panwar');
+INSERT INTO employees (username, first_name, last_name, manager_id) VALUES ('rp', 'Rohit', 'Panwar', 3);
 INSERT INTO employees (username, first_name, last_name) VALUES ('ap', 'Amit', 'Pant');
-INSERT INTO employees (username, first_name, last_name) VALUES ('tm', 'Test', 'Manager');
+INSERT INTO employees (username, first_name, last_name) VALUES ('nb', 'Naga', 'Bheemaneni');
+INSERT INTO employees (username, first_name, last_name, manager_id) VALUES ('sc', 'Shree', 'Chhatwal', 4);
+INSERT INTO employees (username, first_name, last_name, manager_id) VALUES ('uk', 'Uday', 'Katta', 3);
 
 INSERT INTO clients (name) VALUES ('Internal');
 INSERT INTO clients (name) VALUES ('Nationwide');
@@ -44,6 +50,9 @@ INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (2, 'HOL');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (2, 'PTO');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (3, 'HOL');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (3, 'CCL');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (4, 'HOL');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (5, 'HOL');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (6, 'HOL');
 
 --INSERT INTO timesheets (id, week_ending, status, employee_id) VALUES (1, '2012-12-30', 'pending', 1111);
 --INSERT INTO timesheets (id, week_ending, status, employee_id) VALUES (2, '2012-12-23', 'approved', 1111);

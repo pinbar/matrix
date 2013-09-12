@@ -40,7 +40,7 @@ public interface TimesheetService {
 
     public List<TimesheetView> getTimesheets();
 
-    public TimesheetView createTimesheet(Date asDate);
+    public TimesheetView createTimesheet(Date tsDate, Integer employeeId);
 
     public void saveTimesheet(TimesheetView timesheetView);
 
@@ -55,6 +55,9 @@ public interface TimesheetService {
     // HR Timesheet Management functions
 
     public List<HrTimesheetView> getTimesheetsByStatus(String status);
+
+    public List<HrTimesheetView> getReporteeTimesheetsByStatus(String status,
+            List<Integer> reporteeIds);
 
     public void saveTimesheets(List<HrTimesheetView> timesheetViews);
 
@@ -88,6 +91,16 @@ class TimesheetServiceImpl implements TimesheetService {
         return hrTimesheets;
     }
 
+    @Transactional
+    public List<HrTimesheetView> getReporteeTimesheetsByStatus(String status,
+            List<Integer> reporteeIds) {
+
+        List<Timesheet> timesheets = timesheetRepository
+                .getReporteeTimesheetsByStatus(status, reporteeIds);
+        List<HrTimesheetView> hrTimesheets = getHrTimesheetViewListFromTimesheetList(timesheets);
+        return hrTimesheets;
+    }
+
     private List<HrTimesheetView> getHrTimesheetViewListFromTimesheetList(
             List<Timesheet> timesheets) {
         List<HrTimesheetView> hrTimesheetViewList = new ArrayList<HrTimesheetView>();
@@ -105,6 +118,14 @@ class TimesheetServiceImpl implements TimesheetService {
             hrTimesheetView.setEmployeeId(timesheet.getEmployeeId());
             hrTimesheetView.setEmployeeName(employee.getFirstName() + " "
                     + employee.getLastName());
+
+            hrTimesheetView.setManagerId(employee.getManagerId());
+            if (null != employee.getManagerId()) {
+                Employee manager = employeeRepository.getEmployee(employee
+                        .getManagerId());
+                hrTimesheetView.setManagerName(manager.getFirstName() + " "
+                        + manager.getLastName());
+            }
             hrTimesheetViewList.add(hrTimesheetView);
         }
         return hrTimesheetViewList;
@@ -227,9 +248,15 @@ class TimesheetServiceImpl implements TimesheetService {
         timesheetRepository.delete(timesheet);
     }
 
-    @Override
-    @Transactional
-    public TimesheetView createTimesheet(Date weekEndingDate) {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.percipient.matrix.service.TimesheetService#createTimesheet(java.util
+     * .Date) only creates views
+     */
+
+    private TimesheetView createTimesheet(Date weekEndingDate) {
         TimesheetView timesheetView = new TimesheetView();
         timesheetView.setWeekEnding(dateUtil.getAsString(weekEndingDate));
         timesheetView.setStatus("pending");
@@ -240,6 +267,13 @@ class TimesheetServiceImpl implements TimesheetService {
         timesheetView.setTsCostCenters(tsCCViews);
 
         return timesheetView;
+    }
+
+    @Transactional
+    @Override
+    public TimesheetView createTimesheet(Date tsDate, Integer employeeId) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override

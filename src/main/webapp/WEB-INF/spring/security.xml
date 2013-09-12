@@ -9,7 +9,7 @@
     <http pattern="/login.jsp*" security="none" />
     <http auto-config="true" use-expressions="true">
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
-        <intercept-url pattern="/dashboard/**" access="isAuthenticated()" />
+        <intercept-url pattern="/hr/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERVISOR')" />
         <intercept-url pattern="/**" access="isAuthenticated()" />
         <form-login login-processing-url="/login" login-page="/login.jsp"
             default-target-url="/start.jsp" always-use-default-target="true"

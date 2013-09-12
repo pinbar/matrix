@@ -30,11 +30,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.percipient.matrix.service.EmployeeCostCenterService;
+import com.percipient.matrix.service.EmployeeService;
 import com.percipient.matrix.service.TimesheetService;
+import com.percipient.matrix.session.UserInfo;
 import com.percipient.matrix.util.DateUtil;
 import com.percipient.matrix.util.Logging.Loggable;
 import com.percipient.matrix.validator.TimesheetValidator;
 import com.percipient.matrix.view.CostCenterView;
+import com.percipient.matrix.view.EmployeeView;
 import com.percipient.matrix.view.HrTimesheetView;
 import com.percipient.matrix.view.TimesheetView;
 
@@ -78,10 +81,16 @@ public class HrTimesheetController {
     TimesheetService timesheetService;
 
     @Autowired
+    EmployeeService employeeService;
+
+    @Autowired
     EmployeeCostCenterService employeeCostCenterService;
 
     @Autowired
     DateUtil dateUtil;
+
+    @Autowired
+    private javax.inject.Provider<UserInfo> userInfo;
 
     @Autowired
     TimesheetValidator timesheetValidator;
@@ -99,8 +108,39 @@ public class HrTimesheetController {
     @RequestMapping(value = "/listAsJson/{status}")
     public @ResponseBody
     ObjectNode getTimesheetListAsJSON(@PathVariable String status, Model model) {
+
+        EmployeeView employee = employeeService.getEmployee(userInfo.get()
+                .getEmployeeId());
+        List<HrTimesheetView> hrTimesheetViewList = null;
+        if (employee.getGroupName().equalsIgnoreCase("Manager")) {
+            List<Integer> reporteeIds = employeeService
+                    .getReporteesByManagerId(userInfo.get().getEmployeeId());
+            hrTimesheetViewList = timesheetService
+                    .getReporteeTimesheetsByStatus(status.toLowerCase(),
+                            reporteeIds);
+        } else {
+            hrTimesheetViewList = timesheetService.getTimesheetsByStatus(status
+                    .toLowerCase());
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode retObject = mapper.createObjectNode();
+        retObject.putPOJO("timesheets", hrTimesheetViewList);
+        retObject.put(TOTAL_RECORDS_VIEW_PROP, hrTimesheetViewList.size());
+        retObject.put(TOTAL_DISPLAY_RECORDS_VIEW_PROP,
+                hrTimesheetViewList.size());
+        return retObject;
+    }
+
+    @RequestMapping(value = "/reportees/listAsJson/{status}")
+    public @ResponseBody
+    ObjectNode getReporteesTimesheetListAsJSON(@PathVariable String status,
+            Model model) {
+
+        List<Integer> reporteeIds = employeeService
+                .getReporteesByManagerId(userInfo.get().getEmployeeId());
         List<HrTimesheetView> hrTimesheetViewList = timesheetService
-                .getTimesheetsByStatus(status.toLowerCase());
+                .getReporteeTimesheetsByStatus(status.toLowerCase(),
+                        reporteeIds);
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode retObject = mapper.createObjectNode();
         retObject.putPOJO("timesheets", hrTimesheetViewList);

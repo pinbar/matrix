@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,6 +15,9 @@ import com.percipient.matrix.domain.TimesheetItem;
 public interface TimesheetRepository {
 
     public List<Timesheet> getTimesheetsByStatus(String status);
+
+    public List<Timesheet> getReporteeTimesheetsByStatus(String status,
+            List<Integer> employeeIds);
 
     public Timesheet getTimesheet(Integer id);
 
@@ -47,6 +49,15 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
         String query = "from Timesheet as timesheet where timesheet.status = :status";
         return (List<Timesheet>) sessionFactory.getCurrentSession()
                 .createQuery(query).setParameter("status", status).list();
+    }
+
+    @Override
+    public List<Timesheet> getReporteeTimesheetsByStatus(String status,
+            List<Integer> employeeIds) {
+        String query = "from Timesheet as timesheet where timesheet.status = :status and timesheet.employeeId in (:employeeIds)";
+        return (List<Timesheet>) sessionFactory.getCurrentSession()
+                .createQuery(query).setParameter("status", status)
+                .setParameterList("employeeIds", employeeIds).list();
     }
 
     @Override

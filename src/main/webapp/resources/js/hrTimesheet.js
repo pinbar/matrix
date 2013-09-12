@@ -92,6 +92,10 @@ var hrTimesheetController = function() {
                         sTitle : 'Employee'
                     },
                     {
+                        mData : 'managerName',
+                        sTitle : 'Manager'
+                    },
+                    {
                         mData : 'status',
                         sTitle : 'Status'
                     },

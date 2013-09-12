@@ -40,6 +40,7 @@
                                 <th>TimeSheet Id</th>
                                 <th>Week Ending</th>
                                 <th>Employee</th>
+                                <th>Manager</th>
                                 <th>Status</th>
                                 <th>Hours</th>
                                 <th>Edit</th>
