@@ -138,6 +138,7 @@ class EmployeeServiceImpl implements EmployeeService {
                 .getEmployeesByManager(managerId);
         List<Integer> reporteeIds = new ArrayList<Integer>();
         for (Employee emp : employeeList) {
+            reporteeIds.add(emp.getId());
         }
         return reporteeIds;
     }

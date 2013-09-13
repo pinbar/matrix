@@ -7,7 +7,7 @@
     modelAttribute="timesheet"
     action="${pageContext.request.contextPath}/timesheet/save">
     <form:errors class="error"></form:errors>
-    <div id="errorPlaceHolder" class ="hide error"></div>
+    <div id="errorPlaceHolder" class="hide error"></div>
     <table id="timesheetTable" class="table  table-striped cf rt">
         <thead>
             <tr>
@@ -25,10 +25,12 @@
         <tbody>
             <c:if test="${timesheet != null}">
                 <p>
-                    Timesheet for week ending: <b>${timesheet.weekEnding}</b>
+                  Week ending: <strong>${timesheet.weekEnding} </strong> | Employee ID: <strong>${timesheet.employeeId}</strong>
                 </p>
-                <form:hidden path="weekEnding" />
+                <form:hidden path="weekEnding"/>
                 <form:hidden path="id" />
+                <form:hidden path="employeeId"/>
+                <input type="hidden" id="status" value= "${timesheet.status}">
 
                 <c:forEach items="${timesheet.tsCostCenters}"
                     varStatus="status" var="tsCostCenters">
@@ -77,7 +79,7 @@
                                 path="tsCostCenters[${status.index}].tuesday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].tuesday.costCode" />
-                             <div class="msg hide"></div></td>
+                            <div class="msg hide"></div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].wednesday.hours"
                                 type="number"
@@ -88,7 +90,7 @@
                                 path="tsCostCenters[${status.index}].wednesday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].wednesday.costCode" />
-                              <div class="msg hide"></div></td>
+                            <div class="msg hide"></div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].thursday.hours"
                                 type="number"
@@ -99,7 +101,7 @@
                                 path="tsCostCenters[${status.index}].thursday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].thursday.costCode" />
-                              <div class="msg hide"></div></td>
+                            <div class="msg hide"></div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].friday.hours"
                                 type="number"
@@ -110,7 +112,7 @@
                                 path="tsCostCenters[${status.index}].friday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].friday.costCode" />
-                              <div class="msg hide"></div></td>
+                            <div class="msg hide"></div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].saturday.hours"
                                 type="number"
@@ -121,7 +123,7 @@
                                 path="tsCostCenters[${status.index}].saturday.id" />
                             <form:hidden
                                 path="tsCostCenters[${status.index}].saturday.costCode" />
-                              <div class="msg hide"></div></td>
+                            <div class="msg hide"></div></td>
                         <td><form:input
                                 path="tsCostCenters[${status.index}].sunday.hours"
                                 type="number"
@@ -139,7 +141,9 @@
                         </a></td>
                     </tr>
                 </c:forEach>
+
             </c:if>
+        </tbody>
     </table>
     <div class="clear"></div>
     <div class="control-group">
@@ -147,9 +151,10 @@
             href="${pageContext.request.contextPath}/timesheet/addCostCodeRow?timesheetId=${timesheet.id}&weekEnding=${timesheet.weekEnding}">
             <input id="addCostCodeBtn" type="button"
             class="btn btn-info" value="Add Row">
-        </a> <input type="button" id="saveTimesheet" class="submitTimesheet btn btn-success"
-            value="Save"> <input type="button"
-            id="submitTimesheet" class="submitTimesheet btn btn-danger"
+        </a> <input type="button" id="saveTimesheet"
+            class="submitTimesheet btn btn-success" value="Save">
+        <input type="button" id="submitTimesheet"
+            class="submitTimesheet btn btn-danger"
             value="Submit Timesheet">
         <button id="activateTimesheet" type="button"
             class="btn btn-primary">Edit Timesheet</button>

@@ -263,7 +263,8 @@ public class HrTimesheetController {
             return "timesheet/timesheetContent";
         }
         timesheetService.saveTimesheet(timesheetView);
-        timesheetView = timesheetService.getTimesheet(timesheetView.getId());
+        timesheetView = timesheetService.getTimesheet(dateUtil
+                .getAsDate(timesheetView.getWeekEnding()));
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
                 timesheetView);
         return "timesheet/timesheetContent";
@@ -334,8 +335,8 @@ public class HrTimesheetController {
     }
 
     @RequestMapping(value = "/create/{weekEnding}/{employee}", method = RequestMethod.POST)
-    public @ResponseBody
-    TimesheetView createNewTimesheet(@PathVariable String weekEnding,
+    public  // @ResponseBody    TimesheetView
+    String createNewTimesheet(@PathVariable String weekEnding,
             @PathVariable Integer employee, Model model) {
 
         Date weekEndingDate = StringUtils.isBlank(weekEnding) ? dateUtil
@@ -343,7 +344,14 @@ public class HrTimesheetController {
                 .getWeekEndingDate(dateUtil.getAsDate(weekEnding));
         TimesheetView timesheetView = timesheetService.createTimesheet(
                 weekEndingDate, employee);
-        return timesheetView;
+        model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
+                timesheetView);
+        List<CostCenterView> costCenters = employeeCostCenterService
+                .getCostCenterViewListForEmployees(employee);
+        model.addAttribute(
+                TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
+                costCenters);
+        return "timesheet/timesheetContent";
     }
 
     @RequestMapping(value = "/addCostCodeRow", method = RequestMethod.POST)
@@ -412,7 +420,7 @@ public class HrTimesheetController {
     private String getEmployListAsJSONString(List<EmployeeView> reportees) {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode retObject = mapper.createObjectNode();
-        ObjectNode employees = mapper.createObjectNode();// putArray("employeesWithId");
+        ObjectNode employees = mapper.createObjectNode();
         ArrayNode employeeNames = retObject.putArray("employees");
         for (EmployeeView e : reportees) {
             employees.put(e.getName(), e.getId());

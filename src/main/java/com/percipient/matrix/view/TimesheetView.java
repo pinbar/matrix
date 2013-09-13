@@ -14,6 +14,7 @@ public class TimesheetView {
     private String status;
     private MultipartFile attachment;
     private Double hours;
+    private Integer employeeId; 
 
     @Valid
     private List<TSCostCenterView> tsCostCenters;
@@ -24,6 +25,14 @@ public class TimesheetView {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getWeekEnding() {

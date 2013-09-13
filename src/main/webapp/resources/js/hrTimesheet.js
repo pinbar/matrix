@@ -178,75 +178,108 @@ var hrTimesheetController = function() {
         });
     },
 
-    _empListDialogController = (function(){
-       var my={};
-        function onDialogShow(){
-            _styleModalDialog( my.selector);
-        }; 
-        function fetchDataFromDom (){
-            var rawData= $("#employeeBootStrapData").html();
-            my.data = $.parseJSON(rawData);
-            return(my.data.employees);
-        };
-        
-        function getIdFromName(name){
-           return  my.data.employeesWithId[name];
+    _empListDialogController = (function() {
+        var my = {};
+        function onDialogShow() {
+            _styleModalDialog(my.selector);
         }
-        
-        my.init= function(){
+        ;
+        function fetchDataFromDom() {
+            var rawData = $("#employeeBootStrapData").html();
+            my.data = $.parseJSON(rawData);
+            return (my.data.employees);
+        };
+
+        my.getIdFromName = function(name) {
+            return my.data.employeesWithId[name];
+        };
+
+        my.init = function() {
             var localdata = fetchDataFromDom();
             $('#dp').datepicker({
                 format : 'mm-dd-yyyy',
                 orientation : "auto top"
-            }); 
+            });
             $('#employees-auto').typeahead({
-                name: 'employees',
-                local: localdata
-              });
-            $('#employees-auto').on('typeahead:initialized',function(){
-                $('#employees-auto').css('vertical-align',"");  
+                name : 'employees',
+                local : localdata
             });
-            $('#employees-auto').on('typeahead:selected',function(){
-               my.selectedEmployeeId= getIdFromName($('#employees-auto').val());  
+            $('#employees-auto').on('typeahead:initialized', function() {
+                $('#employees-auto').css('vertical-align', "");
             });
-            
         };
-        
-        return my;
-    })() , 
 
-    _setupCreate= function(){
+        return my;
+    })(),
+
+    _setupCreate = function() {
         _empListDialogController.init();
-        $("#createBtn").on('click',function(){
-            var weekEnding= $('#dp').val();
-             employeeId=_empListDialogController.selectedEmployeeId;
-            $.ajax(
-                    {
-                        url : contextPath
-                                + '/hr/timesheets/create/'+ weekEnding+'/'+employeeId ,
-                        type : "POST",
-                        dataType : "json"
-                    }).done(function(response, textStatus, jqXHR) {
-                     status= response.status;
-                     id= response.id;
-                     _clearErrorsMsg();
-                     $('#timesheetModal').modal({
-                         'show' : true,
-                     });
-            }).
-            // TODO : error styling and error stuff
-            fail(function(response, textStatus, jqXHR) {
-               //TODO error 
-            });
-        })
+        $("#createBtn")
+                .on(
+                        'click',
+                        function() {
+                            var weekEnding = $('#dp').val();
+                            employeeId = _empListDialogController
+                                    .getIdFromName($('#employees-auto').val());
+                            $
+                                    .ajax(
+                                            {
+                                                url : contextPath
+                                                        + '/hr/timesheets/create/'
+                                                        + weekEnding + '/'
+                                                        + employeeId,
+                                                type : "POST",
+                                                dataType : "html"
+                                            })
+                                    .done(
+                                            function(response, textStatus,
+                                                    jqXHR) {
+                                                $('#timesheetModal')
+                                                        .off('show.bs.modal',
+                                                                _onTimeSheetModalDialogShow);
+                                                var _onTimeSheetModalDialogShowForCreate = function() {
+                                                    $(
+                                                            '#timesheetModal .modal-body')
+                                                            .html(response);
+                                                    _styleModalDialog('#timesheetModal');
+                                                };
+
+                                                $('#timesheetModal')
+                                                        .on('show.bs.modal',
+                                                                _onTimeSheetModalDialogShowForCreate);
+                                                _clearErrorsMsg();
+                                                $('#timesheetModal').modal({
+                                                    'show' : true
+                                                });
+                                                $('#timesheetModal')
+                                                        .off('show.bs.modal',
+                                                                _onTimeSheetModalDialogShowForCreate);
+                                                $('#timesheetModal')
+                                                        .on('show.bs.modal',
+                                                                _onTimeSheetModalDialogShow);
+                                                _setupActionControls();
+                                                statusChanged = true;
+                                            }).
+                                    // TODO : error styling and error stuff
+                                    fail(function(response, textStatus, jqXHR) {
+                                        // TODO error
+                                    });
+                        })
     },
 
-    _styleModalDialog= function(selector){
+    _styleModalDialog = function(selector) {
         $(selector).find('.modal-dialog').css({
             width : '780px',
             height : 'auto',
             'max-height' : '100%'
         });
+    },
+
+    _onTimeSheetModalDialogShow = function() {
+        var modalBody = $('#timesheetModal .modal-body');
+        modalBody.load(contextPath + '/hr/timesheets/' + status + '/' + id
+                + '?employee=' + employeeId);
+        _styleModalDialog('#timesheetModal');
     },
 
     _init = function(currentStatus) {
@@ -256,22 +289,18 @@ var hrTimesheetController = function() {
         _setupGlobalApproveOrReject();
         _setupCreate();
 
-        $('#timesheetModal').on(
-                'show.bs.modal',
-                function() {
-                    var modalBody = $('#timesheetModal .modal-body');
-                    modalBody.load(contextPath + '/hr/timesheets/' + status
-                            + '/' + id + '?employee=' + employeeId);
-                    _styleModalDialog('#timesheetModal');
-                });
+        $('#timesheetModal').on('show.bs.modal', _onTimeSheetModalDialogShow);
         $('#timesheetModal').on('shown.bs.modal', function() {
             _setupActionControls();
         });
-        $('#timesheetModal').on('hide.bs.modal', function() {
-            if (statusChanged) {
-                window.location.href= contextPath + '/hr/timesheets/' + status;
-            }
-        });
+        $('#timesheetModal').on(
+                'hide.bs.modal',
+                function() {
+                    if (statusChanged) {
+                        window.location.href = contextPath + '/hr/timesheets/'
+                                + status;
+                    }
+                });
 
     },
 
@@ -359,20 +388,16 @@ var hrTimesheetController = function() {
             dataType : "html",
             data : $("#timesheet").serialize()
         }).done(function(response, textStatus, jqXHR) {
-            var errNode = null;
-            errNode = $.parseHTML(response).filter(function(node, index) {
-                return node.id == "errorMessages";
-            })[0];
+            var statusFrmResponse = $('input[id=status]', response).val();
+            var err = $('input[id=errorMessages]', response).val();
 
-            var err = errNode ? errNode.innerHTML.length > 0 : false;
-
+            status = statusFrmResponse ? statusFrmResponse.toLowerCase() : status;
             if (err) {
                 $("#errorMessages").show();
                 $(".modal-body").html(response);
                 _setupActionControls();
             } else {
                 statusChanged = statusChanged || $(e.target).val() !== 'Save';
-                status = statusChanged ? 'submitted': status;
                 _updateTotalHours();
                 $('#timesheetModal').modal('hide');
             }
@@ -409,7 +434,7 @@ var hrTimesheetController = function() {
                 timesheetContentController.disableTimesheet();
             } else {
                 statusChanged = true;
-                status= "pending";
+                status = "pending";
             }
         })
         // TODO : error styling and error stuff
@@ -444,7 +469,7 @@ var hrTimesheetController = function() {
         employeeId = data[0].employeeId;
         _clearErrorsMsg();
         $('#timesheetModal').modal({
-            'show' : true,
+            'show' : true
         });
     },
 

@@ -1,5 +1,6 @@
 package com.percipient.matrix.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +26,7 @@ public interface TimesheetRepository {
 
     public List<Timesheet> getTimesheets(Employee employee);
 
-    public Timesheet save(Timesheet ts);
+    public void save(Timesheet ts);
 
     public void delete(Timesheet ts);
 
@@ -54,6 +55,9 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
     @Override
     public List<Timesheet> getReporteeTimesheetsByStatus(String status,
             List<Integer> employeeIds) {
+        if (employeeIds.isEmpty()) {
+            return new ArrayList<Timesheet>();
+        }
         String query = "from Timesheet as timesheet where timesheet.status = :status and timesheet.employeeId in (:employeeIds)";
         return (List<Timesheet>) sessionFactory.getCurrentSession()
                 .createQuery(query).setParameter("status", status)
@@ -86,14 +90,8 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
     }
 
     @Override
-    public Timesheet save(Timesheet ts) {
-
-        if (null != ts.getId()) {
-            sessionFactory.getCurrentSession().saveOrUpdate(ts);
-        } else {
-            ts = (Timesheet) sessionFactory.getCurrentSession().save(ts);
-        }
-        return ts;
+    public void save(Timesheet ts) {
+        sessionFactory.getCurrentSession().saveOrUpdate(ts);
     }
 
     @Override

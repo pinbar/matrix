@@ -258,7 +258,9 @@ class TimesheetServiceImpl implements TimesheetService {
         TimesheetView timesheetView = new TimesheetView();
         timesheetView.setWeekEnding(dateUtil.getAsString(weekEndingDate));
         timesheetView.setStatus("pending");
-
+        Employee employee = employeeRepository
+                .getEmployeeByUserName(userInfo.get().getUserName());
+        timesheetView.setEmployeeId(employee.getId());
         List<TSCostCenterView> tsCCViews = new ArrayList<TSCostCenterView>();
         TSCostCenterView blankTSCCView = addTSCostCenterView(weekEndingDate);
         tsCCViews.add(blankTSCCView);
@@ -267,8 +269,8 @@ class TimesheetServiceImpl implements TimesheetService {
         return timesheetView;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public TimesheetView createTimesheet(Date weekEnding, Integer employeeId) {
         Employee employee = employeeRepository.getEmployee(employeeId);
         Timesheet timesheet = timesheetRepository.getTimesheet(employee,
@@ -277,13 +279,8 @@ class TimesheetServiceImpl implements TimesheetService {
         if (timesheet != null) {
             timesheetView = getTimeSheetView(timesheet);
         } else {
-            timesheetView = createTimesheet(weekEnding);
-            timesheetView.setStatus("pending");
-            timesheetView.setWeekEnding(dateUtil.getAsString(weekEnding));
-            Timesheet ts = getTimesheetFromView(timesheetView);
-            ts.setEmployeeId(employeeId);
-            ts = timesheetRepository.save(ts);
-            timesheetView.setId(ts.getId());
+           timesheetView = createTimesheet(weekEnding);
+           timesheetView.setEmployeeId(employeeId);
         }
         return timesheetView;
     }
@@ -358,9 +355,7 @@ class TimesheetServiceImpl implements TimesheetService {
 
         } else {
             timesheet = new Timesheet();
-            Employee employee = employeeRepository
-                    .getEmployeeByUserName(userInfo.get().getUserName());
-            timesheet.setEmployeeId(employee.getId());
+            timesheet.setEmployeeId(timesheetView.getEmployeeId());
             timesheet.setWeekEnding(dateUtil.getAsDate(timesheetView
                     .getWeekEnding()));
         }
@@ -397,16 +392,19 @@ class TimesheetServiceImpl implements TimesheetService {
     private TimesheetView getTimeSheetPreview(Timesheet timesheet) {
         TimesheetView timesheetView = new TimesheetView();
         timesheetView.setId(timesheet.getId());
+        timesheetView.setEmployeeId(timesheet.getEmployeeId());
         timesheetView.setStatus(timesheet.getStatus());
         timesheetView.setWeekEnding(dateUtil.getAsString(timesheet
                 .getWeekEnding()));
         timesheetView.setHours(getTotalHours(timesheet));
+        
         return timesheetView;
     }
 
     private TimesheetView getTimeSheetView(Timesheet timesheet) {
         TimesheetView timesheetView = new TimesheetView();
         timesheetView.setId(timesheet.getId());
+        timesheetView.setEmployeeId(timesheet.getEmployeeId());
         timesheetView.setStatus(timesheet.getStatus());
         timesheetView.setWeekEnding(dateUtil.getAsString(timesheet
                 .getWeekEnding()));

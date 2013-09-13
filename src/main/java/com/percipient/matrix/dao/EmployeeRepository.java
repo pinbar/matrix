@@ -61,9 +61,24 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
     @Override
     public List<Employee> getEmployeesByManager(Integer managerId) {
+        if (isAdmin(managerId)){
+            String query = "from Employee";  
+            return (List<Employee>) sessionFactory.getCurrentSession().createQuery(query)
+                   .list();
+        }
         String query = "from Employee as employee where employee.managerId = :managerId";
         return (List<Employee>) sessionFactory.getCurrentSession().createQuery(query)
                 .setParameter("managerId", managerId).list();
+    }
+
+    private boolean isAdmin(Integer id) {
+       
+        String query = "from Employee as employee where employee.id= :id and employee.userName in("
+        +"select gm.userName from GroupMember as gm, Group as g  where g.name = :groupName and g.id=gm.groupId )";
+        Employee employee=  (Employee) sessionFactory.getCurrentSession().createQuery(query)
+                .setParameter("id", id).setParameter("groupName", "Administrators").uniqueResult();
+        
+        return null!=employee ? true: false; 
     }
 
     @SuppressWarnings("unchecked")
