@@ -25,6 +25,8 @@
     <jsp:include page="../common/header.jsp" />
     <div class="container">
         <div class="col-9 col-sm-10 col-lg-12 border">
+          <div class="col-offset-3 col-sm-offset-3 col-lg-offset-5"><h3>Time Sheet Summary</h3></div>
+            <div class="horizontalRule"></div>
             <div class="col-5 col-sm-5 col-lg-5 spacer-tall ">
                 <jsp:useBean id="today" class="java.util.Date"
                     scope="page" />
@@ -36,7 +38,9 @@
                         class="btn btn-info" value="create">
                 </div>
             </div>
-            <div class="col-3 col-sm-3 col-lg-5 spacer-tall ">Time Sheet Summary</div>
+            <div class="clear"></div>
+              <div class="horizontalRule"></div>
+               <div class="spacer-tall"></div>
             <table id="timesheetSummaryTable"
                 class="table table-bordered table-condensed table-striped  rt">
                 <thead>
@@ -51,7 +55,8 @@
                 <tbody>
                 </tbody>
             </table>
-            <div class="clear"></div>
+             <div class="clear"></div>
+             <div class="horizontalRule"></div>
         </div>
     </div>
 </body>

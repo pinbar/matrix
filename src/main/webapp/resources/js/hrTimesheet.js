@@ -180,15 +180,16 @@ var hrTimesheetController = function() {
 
     _empListDialogController = (function() {
         var my = {};
+        
         function onDialogShow() {
             _styleModalDialog(my.selector);
         }
-        ;
+        
         function fetchDataFromDom() {
             var rawData = $("#employeeBootStrapData").html();
             my.data = $.parseJSON(rawData);
             return (my.data.employees);
-        };
+        }
 
         my.getIdFromName = function(name) {
             return my.data.employeesWithId[name];
@@ -221,6 +222,9 @@ var hrTimesheetController = function() {
                             var weekEnding = $('#dp').val();
                             employeeId = _empListDialogController
                                     .getIdFromName($('#employees-auto').val());
+                            if (!weekEnding || !employeeId || weekending==="" || employeeId===""){
+                                return false;
+                            }
                             $
                                     .ajax(
                                             {

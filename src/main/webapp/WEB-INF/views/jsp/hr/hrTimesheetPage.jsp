@@ -72,14 +72,26 @@
                 </div>
                 <div class="horizontalRule"></div>
                 <div>
-                <div id="employeeBootStrapData" class="hide">${employees}</div>
-                <jsp:useBean id="today" class="java.util.Date"
-                    scope="page" />
-                    <input id="dp" type="text" class="input-sm" value=<fmt:formatDate value="${today}" pattern="MM-dd-yyyy"/>>
-                    <input type="text" id="employees-auto" class="input-sm" placeholder="Select an employee">
-                    <input type="button" id="createBtn"
-                        class="btn btn-primary" value="Create Timesheet">
+                    <div
+                        class="col-offset-4 col-sm-offset-4 col-lg-offset-4">
+                        <h4>Create New Timesheet</h4>
+                    </div>
+                    <div id="employeeBootStrapData" class="hide">${employees}</div>
+                    <jsp:useBean id="today" class="java.util.Date"
+                        scope="page" />
+                    <div
+                        class="col-offset-2 col-sm-offset-2 col-lg-offset-2">
+                        <input id="dp" type="text" class="input-sm"
+                            value=<fmt:formatDate value="${today}" pattern="MM-dd-yyyy"/>>
+                        <input type="text" id="employees-auto"
+                            class="input-sm"
+                            placeholder="Select an employee"> <input
+                            type="button" id="createBtn"
+                            class="btn btn-primary"
+                            value="Create Timesheet">
+                    </div>
                 </div>
+                <div class="horizontalRule"></div>
             </div>
         </div>
     </div>
