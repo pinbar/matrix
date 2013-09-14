@@ -100,14 +100,18 @@ var hrTimesheetController = function() {
                         sTitle : 'Status'
                     },
                     {
-                        "fnRender": function ( oObj ) {
+                        "fnRender" : function(oObj) {
                             var hours = oObj.aData.hours;
                             return commonUtils.formatTwoDecimals(hours);
                         },
-                        aTargets: [ 4 ],
+                        aTargets : [ 4 ],
                         mData : 'hours',
                         sTitle : 'Hours',
                         sClass : 'hours'
+                    },
+                    {
+                        bSortable : false,
+                        mData : null
                     },
                     {
                         bSortable : false,
@@ -185,11 +189,11 @@ var hrTimesheetController = function() {
 
     _empListDialogController = (function() {
         var my = {};
-        
+
         function onDialogShow() {
             _styleModalDialog(my.selector);
         }
-        
+
         function fetchDataFromDom() {
             var rawData = $("#employeeBootStrapData").html();
             my.data = $.parseJSON(rawData);
@@ -202,14 +206,14 @@ var hrTimesheetController = function() {
 
         my.init = function() {
             var localdata = fetchDataFromDom();
-            $('#dpStart').on('click',function(){
+            $('#dpStart').on('click', function() {
                 $('#dp').datepicker({
-                  format : "mm-dd-yyyy",
-                  autoclose:"true",
-                  orientation:"top"
-                }) 
+                    format : "mm-dd-yyyy",
+                    autoclose : "true",
+                    orientation : "top"
+                })
                 $('#dp').datepicker('show');
-              });
+            });
             $('#employees-auto').typeahead({
                 name : 'employees',
                 local : localdata
@@ -231,7 +235,8 @@ var hrTimesheetController = function() {
                             var weekEnding = $('#dp').val();
                             employeeId = _empListDialogController
                                     .getIdFromName($('#employees-auto').val());
-                            if (!weekEnding || !employeeId || weekending==="" || employeeId===""){
+                            if (!weekEnding || !employeeId || weekending === ""
+                                    || employeeId === "") {
                                 return false;
                             }
                             $
@@ -400,22 +405,26 @@ var hrTimesheetController = function() {
             type : "POST",
             dataType : "html",
             data : $("#timesheet").serialize()
-        }).done(function(response, textStatus, jqXHR) {
-            var statusFrmResponse = $('input[id=status]', response).val();
-            var err = $('input[id=errorMessages]', response).val();
+        }).done(
+                function(response, textStatus, jqXHR) {
+                    var statusFrmResponse = $('input[id=status]', response)
+                            .val();
+                    var err = $('input[id=errorMessages]', response).val();
 
-            status = statusFrmResponse ? statusFrmResponse.toLowerCase() : status;
-            if (err) {
-                $("#errorMessages").show();
-                $(".modal-body").html(response);
-                _setupActionControls();
-            } else {
-                statusChanged = statusChanged || $(e.target).val() !== 'Save';
-                _updateTotalHours();
-                $('#timesheetModal').modal('hide');
-            }
-            ;
-        }).
+                    status = statusFrmResponse ? statusFrmResponse
+                            .toLowerCase() : status;
+                    if (err) {
+                        $("#errorMessages").show();
+                        $(".modal-body").html(response);
+                        _setupActionControls();
+                    } else {
+                        statusChanged = statusChanged
+                                || $(e.target).val() !== 'Save';
+                        _updateTotalHours();
+                        $('#timesheetModal').modal('hide');
+                    }
+                    ;
+                }).
         // TODO : error styling and error stuff
         fail(function(response, textStatus, jqXHR) {
             _doFail(response);

@@ -52,6 +52,7 @@
                                 <th>Manager</th>
                                 <th>Status</th>
                                 <th>Hours</th>
+                                <th>Info</th>
                                 <th>Edit</th>
                                 <th>Approve</th>
                                 <th>Reject</th>

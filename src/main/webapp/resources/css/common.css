@@ -36,12 +36,16 @@ div.horizontalRule {
     color: #ffffff;
     cursor: pointer;
 }
+
 button.dp-background {
-    height:30px;
+    height: 29
+    +px;
     border: 1px solid #aaa;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius9+8: 0;
 }
 /*
 nav-list for sidebar
