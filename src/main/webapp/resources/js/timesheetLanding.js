@@ -9,10 +9,14 @@ var timesheetLandingController = function() {
     },
 
     _initializeDatePicker = function() {
-        $('#dp').datepicker({
-            format : 'mm-dd-yyyy'
+        $('#dpStart').on('click',function(){
+          $('#dp').datepicker({
+            format : "mm-dd-yyyy",
+            autoclose:"true",
+            orientation:"top"
+          }) 
+          $('#dp').datepicker('show');
         });
-
         $('#tsCreateBtn').on(
                 'click',
                 function() {
@@ -93,6 +97,11 @@ var timesheetLandingController = function() {
                         sTitle : 'Status'
                     },
                     {
+                        "fnRender": function ( oObj ) {
+                            var hours = oObj.aData.hours;
+                            return commonUtils.formatTwoDecimals(hours);
+                        },
+                        aTargets: [ 3],
                         mData : 'hours',
                         sTitle : 'Hours',
                         sClass : 'hours'

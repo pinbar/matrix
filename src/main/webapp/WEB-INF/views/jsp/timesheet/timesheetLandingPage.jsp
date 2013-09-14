@@ -25,22 +25,10 @@
     <jsp:include page="../common/header.jsp" />
     <div class="container">
         <div class="col-9 col-sm-10 col-lg-12 border">
-          <div class="col-offset-3 col-sm-offset-3 col-lg-offset-5"><h3>Time Sheet Summary</h3></div>
+          <div class="col-offset-3 col-sm-offset-3 col-lg-offset-5"><h4>Time Sheet Summary</h4></div>
             <div class="horizontalRule"></div>
-            <div class="col-5 col-sm-5 col-lg-5 spacer-tall ">
-                <jsp:useBean id="today" class="java.util.Date"
-                    scope="page" />
-                <div class="input-group control-group">
-                    <input id="dp" type="text" class="input-sm"
-                        value=<fmt:formatDate value="${today}" pattern="MM-dd-yyyy" />
-                        data-date-format="mm-dd-yyyy"> <input
-                        id="tsCreateBtn" type="button"
-                        class="btn btn-info" value="create">
-                </div>
-            </div>
             <div class="clear"></div>
-              <div class="horizontalRule"></div>
-               <div class="spacer-tall"></div>
+              <div class="spacer-tall"></div>
             <table id="timesheetSummaryTable"
                 class="table table-bordered table-condensed table-striped  rt">
                 <thead>
@@ -57,6 +45,26 @@
             </table>
              <div class="clear"></div>
              <div class="horizontalRule"></div>
+             <div class="spacer-tall ">
+                <jsp:useBean id="today" class="java.util.Date"
+                    scope="page" />
+                    <div class="col-sm-offset-9">
+                     <label>Create a new timesheet :</label>
+                    <div class="input-group">
+                        <span id="dpStart"
+                            class="input-group-addon input-group-addon-sm dp-background"><i
+                            class="glyphicon glyphicon-calendar"></i></span> <input
+                            id="dp" type="text"
+                            class="input-sm form-control"
+                            disabled="disabled"
+                            value=<fmt:formatDate value="${today}"  pattern="MM-dd-yyyy" />
+                            data-date-format="mm-dd-yyyy"><span
+                            id="tsCreateBtn"
+                            class="input-group-addon dp-background">Create</span>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </body>

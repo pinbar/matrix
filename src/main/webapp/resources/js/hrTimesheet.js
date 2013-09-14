@@ -100,6 +100,11 @@ var hrTimesheetController = function() {
                         sTitle : 'Status'
                     },
                     {
+                        "fnRender": function ( oObj ) {
+                            var hours = oObj.aData.hours;
+                            return commonUtils.formatTwoDecimals(hours);
+                        },
+                        aTargets: [ 4 ],
                         mData : 'hours',
                         sTitle : 'Hours',
                         sClass : 'hours'
@@ -197,10 +202,14 @@ var hrTimesheetController = function() {
 
         my.init = function() {
             var localdata = fetchDataFromDom();
-            $('#dp').datepicker({
-                format : 'mm-dd-yyyy',
-                orientation : "auto top"
-            });
+            $('#dpStart').on('click',function(){
+                $('#dp').datepicker({
+                  format : "mm-dd-yyyy",
+                  autoclose:"true",
+                  orientation:"top"
+                }) 
+                $('#dp').datepicker('show');
+              });
             $('#employees-auto').typeahead({
                 name : 'employees',
                 local : localdata

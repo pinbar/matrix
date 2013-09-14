@@ -13,8 +13,8 @@ public class TimesheetView {
     private String weekEnding;
     private String status;
     private MultipartFile attachment;
-    private Double hours;
-    private Integer employeeId; 
+    private Double hours = 0.00;
+    private Integer employeeId;
 
     @Valid
     private List<TSCostCenterView> tsCostCenters;
