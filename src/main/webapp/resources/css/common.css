@@ -38,8 +38,7 @@ div.horizontalRule {
 }
 
 button.dp-background {
-    height: 29
-    +px;
+    height: 29px;
     border: 1px solid #aaa;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
