@@ -4,7 +4,7 @@ var hrTimesheetController = function() {
         timeSheetRejectClicked : ".timesheetReject",
         timesheetApproveClicked : ".timesheetApprove",
         timesheetEditClicked : ".timesheetEdit"
-    }, row, id, status, employeeId, //statusChanged, 
+    }, row, id, status, employeeId, 
     dataTable, totalRecords = 0,
 
     selections = {
@@ -299,7 +299,6 @@ var hrTimesheetController = function() {
                                                         .on('show.bs.modal',
                                                                 _onTimeSheetModalDialogShow);
                                                 _setupActionControls();
-                                                //statusChanged = true;
                                             }).
                                     // TODO : error styling and error stuff
                                     fail(function(response, textStatus, jqXHR) {
@@ -428,7 +427,7 @@ var hrTimesheetController = function() {
                 }).done(function(response, textStatus, jqXHR) {
             $(".modal-body").html(response);
             _setupActionControls();
-            _updateTotalHours();
+           // _updateTotalHours();
         }).
         // TODO : error styling and error stuff
         fail(function(response, textStatus, jqXHR) {
@@ -443,13 +442,13 @@ var hrTimesheetController = function() {
         });
     },
 
-    _updateTotalHours = function() {
+   /* _updateTotalHours = function() {
         var hours = 0.00;
         $('.timesheetHours').each(function(i) {
             hours = hours + parseFloat(this.value);
         });
         $(row).find('.hours').text(hours.toFixed(2));
-    },
+    },*/
 
     _submitTimesheet = function(e) {
         var urlFragment = $(e.target).val() === 'Save' ? '/hr/timesheets/save?employee='
@@ -472,9 +471,6 @@ var hrTimesheetController = function() {
                         $(".modal-body").html(response);
                         _setupActionControls();
                     } else {
-                       /* statusChanged = statusChanged
-                                || $(e.target).val() !== 'Save';
-                        _updateTotalHours();*/
                         $('#timesheetModal').modal('hide');
                     }
                     ;
@@ -509,7 +505,6 @@ var hrTimesheetController = function() {
                 $("#errorMessages").show();
                 timesheetContentController.disableTimesheet();
             } else {
-               // statusChanged = true;
                 status = "pending";
             }
         })
