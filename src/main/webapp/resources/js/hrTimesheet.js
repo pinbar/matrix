@@ -330,7 +330,7 @@ var hrTimesheetController = function() {
                     var row = $(e.target).closest('tr'), data = dataTable
                             ._(row), warnings = data[0].warnings;
 
-                    if ($( e.target).parent().hasClass('popover in') || row.find('div.popover in').length > 0) {
+                    if ($( e.target).parent().hasClass('popover') || row.find('div.popover').length > 0) {
                         $(e.target).popover('destroy');
                         e.stopPropagation();
                         return false;
