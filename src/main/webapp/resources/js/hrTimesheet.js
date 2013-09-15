@@ -4,7 +4,8 @@ var hrTimesheetController = function() {
         timeSheetRejectClicked : ".timesheetReject",
         timesheetApproveClicked : ".timesheetApprove",
         timesheetEditClicked : ".timesheetEdit"
-    }, row, id, status, employeeId, statusChanged, dataTable, totalRecords = 0,
+    }, row, id, status, employeeId, //statusChanged, 
+    dataTable, totalRecords = 0,
 
     selections = {
         all : false,
@@ -298,7 +299,7 @@ var hrTimesheetController = function() {
                                                         .on('show.bs.modal',
                                                                 _onTimeSheetModalDialogShow);
                                                 _setupActionControls();
-                                                statusChanged = true;
+                                                //statusChanged = true;
                                             }).
                                     // TODO : error styling and error stuff
                                     fail(function(response, textStatus, jqXHR) {
@@ -369,11 +370,9 @@ var hrTimesheetController = function() {
         $('#timesheetModal').on(
                 'hide.bs.modal',
                 function() {
-                    if (statusChanged) {
                         window.location.href = contextPath + '/hr/timesheets/'
                                 + status;
-                    }
-                });
+                 });
 
     },
 
@@ -473,9 +472,9 @@ var hrTimesheetController = function() {
                         $(".modal-body").html(response);
                         _setupActionControls();
                     } else {
-                        statusChanged = statusChanged
+                       /* statusChanged = statusChanged
                                 || $(e.target).val() !== 'Save';
-                        _updateTotalHours();
+                        _updateTotalHours();*/
                         $('#timesheetModal').modal('hide');
                     }
                     ;
@@ -510,7 +509,7 @@ var hrTimesheetController = function() {
                 $("#errorMessages").show();
                 timesheetContentController.disableTimesheet();
             } else {
-                statusChanged = true;
+               // statusChanged = true;
                 status = "pending";
             }
         })
