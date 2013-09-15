@@ -11,7 +11,9 @@
     <table id="timesheetTable" class="table  table-striped cf rt">
         <thead>
             <tr>
-                <th>Cost Center</th>
+            <th>Cost Center</th>
+            <c:choose>
+            <c:when test ="${timesheet eq null}">
                 <th class="monHrsTh">Mon</th>
                 <th class="tueHrsTh">Tue</th>
                 <th class="wedHrsTh">Wed</th>
@@ -19,7 +21,19 @@
                 <th class="friHrsTh">Fri</th>
                 <th class="satHrsTh">Sat</th>
                 <th class="sunHrsTh">Sun</th>
+                </c:when>
+                <c:otherwise>
+                <th class="monHrsTh">Mon <br>${timesheet.tsCostCenters[0].monday.date}</th>
+                <th class="tueHrsTh">Tue <br>${timesheet.tsCostCenters[0].tuesday.date}</th>
+                <th class="wedHrsTh">Wed <br>${timesheet.tsCostCenters[0].wednesday.date}</th>
+                <th class="thuHrsTh">Thu <br>${timesheet.tsCostCenters[0].thursday.date}</th>
+                <th class="friHrsTh">Fri <br>${timesheet.tsCostCenters[0].friday.date}</th>
+                <th class="satHrsTh">Sat <br>${timesheet.tsCostCenters[0].saturday.date}</th>
+                <th class="sunHrsTh">Sun <br>${timesheet.tsCostCenters[0].sunday.date}</th>
+                </c:otherwise>
+                </c:choose>
                 <th></th>
+               
             </tr>
         </thead>
         <tbody>

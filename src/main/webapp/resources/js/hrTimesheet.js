@@ -427,7 +427,6 @@ var hrTimesheetController = function() {
                 }).done(function(response, textStatus, jqXHR) {
             $(".modal-body").html(response);
             _setupActionControls();
-           // _updateTotalHours();
         }).
         // TODO : error styling and error stuff
         fail(function(response, textStatus, jqXHR) {
@@ -441,14 +440,6 @@ var hrTimesheetController = function() {
             $(this).empty();
         });
     },
-
-   /* _updateTotalHours = function() {
-        var hours = 0.00;
-        $('.timesheetHours').each(function(i) {
-            hours = hours + parseFloat(this.value);
-        });
-        $(row).find('.hours').text(hours.toFixed(2));
-    },*/
 
     _submitTimesheet = function(e) {
         var urlFragment = $(e.target).val() === 'Save' ? '/hr/timesheets/save?employee='
