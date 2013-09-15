@@ -9,13 +9,13 @@ var timesheetLandingController = function() {
     },
 
     _initializeDatePicker = function() {
-        $('#dpStart').on('click',function(){
-          $('#dp').datepicker({
-            format : "mm-dd-yyyy",
-            autoclose:"true",
-            orientation:"top"
-          }) 
-          $('#dp').datepicker('show');
+        $('#dpStart').on('click', function() {
+            $('#dp').datepicker({
+                format : "mm-dd-yyyy",
+                autoclose : "true",
+                orientation : "top"
+            })
+            $('#dp').datepicker('show');
         });
         $('#tsCreateBtn').on(
                 'click',
@@ -97,13 +97,40 @@ var timesheetLandingController = function() {
                         sTitle : 'Status'
                     },
                     {
-                        "fnRender": function ( oObj ) {
-                            var hours = oObj.aData.hours;
+                        fnRender : function(oObj) {
+                            var hours = oObj.aData.regularHours;
                             return commonUtils.formatTwoDecimals(hours);
                         },
-                        aTargets: [ 3],
-                        mData : 'hours',
-                        sTitle : 'Hours',
+                        aTargets : [3],
+                        mData : 'regularHours',
+                        sTitle : 'Regular Hours',
+                    },
+                    {
+                        "fnRender" : function(oObj) {
+                            var hours = oObj.aData.overTimeHours;
+                            return commonUtils.formatTwoDecimals(hours);
+                        },
+                        aTargets : [4],
+                        mData : 'overTimeHours',
+                        sTitle : 'OverTime Hours',
+                    },
+                    {
+                        "fnRender": function ( oObj ) {
+                            var hours = oObj.aData.ptoHours;
+                            return commonUtils.formatTwoDecimals(hours);
+                        },
+                        aTargets: [5],
+                        mData : 'ptoHours',
+                        sTitle : 'PTO Hours',
+                    },
+                    {
+                        "fnRender" : function(oObj) {
+                            var hours = oObj.aData.totalHours;
+                            return commonUtils.formatTwoDecimals(hours);
+                        },
+                        aTargets : [6],
+                        mData : 'totalHours',
+                        sTitle : 'Total Hours',
                         sClass : 'hours'
                     },
                     {

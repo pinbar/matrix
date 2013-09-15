@@ -13,7 +13,10 @@ public class TimesheetView {
     private String weekEnding;
     private String status;
     private MultipartFile attachment;
-    private Double hours = 0.00;
+    private Double totalHours = 0.00;
+    private Double regularHours = 0.00;
+    private Double overTimeHours = 0.00;
+    private Double ptoHours = 0.00;
     private Integer employeeId;
 
     @Valid
@@ -51,12 +54,36 @@ public class TimesheetView {
         this.status = status;
     }
 
-    public Double getHours() {
-        return hours;
+    public Double getTotalHours() {
+        return totalHours;
     }
 
-    public void setHours(Double hours) {
-        this.hours = hours;
+    public void setTotalHours(Double hours) {
+        this.totalHours = hours;
+    }
+
+    public Double getRegularHours() {
+        return regularHours;
+    }
+
+    public void setRegularHours(Double regularHours) {
+        this.regularHours = regularHours;
+    }
+
+    public Double getOverTimeHours() {
+        return overTimeHours;
+    }
+
+    public void setOverTimeHours(Double overTimeHours) {
+        this.overTimeHours = overTimeHours;
+    }
+
+    public Double getPtoHours() {
+        return ptoHours;
+    }
+
+    public void setPtoHours(Double ptoHours) {
+        this.ptoHours = ptoHours;
     }
 
     public MultipartFile getAttachment() {

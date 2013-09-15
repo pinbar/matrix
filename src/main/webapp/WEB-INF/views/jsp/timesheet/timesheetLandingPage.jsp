@@ -25,10 +25,12 @@
     <jsp:include page="../common/header.jsp" />
     <div class="container">
         <div class="col-9 col-sm-10 col-lg-12 border">
-          <div class="col-offset-3 col-sm-offset-3 col-lg-offset-5"><h4>Time Sheet Summary</h4></div>
+            <div class="col-offset-3 col-sm-offset-3 col-lg-offset-5">
+                <h4>Time Sheet Summary</h4>
+            </div>
             <div class="horizontalRule"></div>
             <div class="clear"></div>
-              <div class="spacer-tall"></div>
+            <div class="spacer-tall"></div>
             <table id="timesheetSummaryTable"
                 class="table table-bordered table-condensed table-striped  rt">
                 <thead>
@@ -36,20 +38,23 @@
                         <th>TimeSheet Id</th>
                         <th>Week Ending</th>
                         <th>Status</th>
-                        <th>Hours</th>
+                        <th>Regular Hours</th>
+                        <th>Overtime Hours</th>
+                        <th>PTO Hours</th>
+                        <th>Total Hours</th>
                         <th>Edit</th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
             </table>
-             <div class="clear"></div>
-             <div class="horizontalRule"></div>
-             <div class="spacer-tall ">
+            <div class="clear"></div>
+            <div class="horizontalRule"></div>
+            <div class="spacer-tall ">
                 <jsp:useBean id="today" class="java.util.Date"
                     scope="page" />
-                    <div class="col-sm-offset-9">
-                     <label>Create a new timesheet :</label>
+                <div class="col-sm-offset-9">
+                    <label>Create a new timesheet :</label>
                     <div class="input-group">
                         <span id="dpStart"
                             class="input-group-addon input-group-addon-sm dp-background"><i
@@ -64,7 +69,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </body>

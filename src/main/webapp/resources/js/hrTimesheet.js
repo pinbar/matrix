@@ -250,14 +250,14 @@ var hrTimesheetController = function() {
 
     _setupCreate = function() {
         _empListDialogController.init();
-        $("#createBtn")
+        $(".createButton")
                 .on(
                         'click',
                         function() {
                             var weekEnding = $('#dp').val();
                             employeeId = _empListDialogController
                                     .getIdFromName($('#employees-auto').val());
-                            if (!weekEnding || !employeeId || weekending === ""
+                            if (!weekEnding || !employeeId || weekEnding === ""
                                     || employeeId === "") {
                                 return false;
                             }
@@ -330,14 +330,13 @@ var hrTimesheetController = function() {
                     var row = $(e.target).closest('tr'), data = dataTable
                             ._(row), warnings = data[0].warnings;
 
-                    if ($( e.target).parent().hasClass('popover') || $( e.target).parent().find('div.popover').length > 0) {
+                    if ($( e.target).parent().hasClass('popover in') || row.find('div.popover in').length > 0) {
                         $(e.target).popover('destroy');
                         e.stopPropagation();
                         return false;
                     } 
-                    
                     $(e.target).popover({
-                        title : "Warnings",
+                        title : "<i style= \"color:#d2322d;\">Warnings</i>",
                         content : function() {
                             var html = '<ul>';
                             $.each(warnings, function(i) {
@@ -347,11 +346,10 @@ var hrTimesheetController = function() {
                             return html;
                         },
                         trigger:'manual',
+                        selector:$( e.target).closest('td') ,
                         html : true,
-                        container:$(e.target).parent()
-                    }).popover('show');
-
-                    
+                       container:$(e.target).parent()
+                    }).popover('toggle');
 
                 });
 
@@ -363,8 +361,7 @@ var hrTimesheetController = function() {
         _setupSelections();
         _setupGlobalApproveOrReject();
         _setupCreate();
-        // _setupWarningDialog();
-
+       
         $('#timesheetModal').on('show.bs.modal', _onTimeSheetModalDialogShow);
         $('#timesheetModal').on('shown.bs.modal', function() {
             _setupActionControls();

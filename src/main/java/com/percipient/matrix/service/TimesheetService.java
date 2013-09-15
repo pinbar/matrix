@@ -152,6 +152,9 @@ class TimesheetServiceImpl implements TimesheetService {
                 populateWeekendWarningMessage(hrTimesheetView, item.getDate());
             }
         }
+        if (hrTimesheetView.getHours() > 40) {
+            populateHoursForWeekExceedWarning(hrTimesheetView);
+        }
     }
 
     private Double getTotalHours(Timesheet timesheet) {
@@ -419,7 +422,7 @@ class TimesheetServiceImpl implements TimesheetService {
         timesheetView.setStatus(timesheet.getStatus());
         timesheetView.setWeekEnding(dateUtil.getAsString(timesheet
                 .getWeekEnding()));
-        timesheetView.setHours(getTotalHours(timesheet));
+        timesheetView.setTotalHours(getTotalHours(timesheet));
 
         return timesheetView;
     }
@@ -538,6 +541,19 @@ class TimesheetServiceImpl implements TimesheetService {
         String formatDate = dateUtil.getAsString(date);
         warnings.add(messageSource.getMessage("timesheet.OT.warning",
                 new Object[] { formatDate }, locale));
+        hrTimesheetView.setWarnings(warnings);
+    }
+
+    private void populateHoursForWeekExceedWarning(
+            HrTimesheetView hrTimesheetView) {
+        List<String> warnings = hrTimesheetView.getWarnings();
+        Locale locale = LocaleContextHolder.getLocale();
+        if (warnings == null) {
+            warnings = new ArrayList<String>();
+        }
+        warnings.add(messageSource.getMessage(
+                "timesheet.overfortyhours.warning",
+                new Object[] { hrTimesheetView.getWeekEnding() }, locale));
         hrTimesheetView.setWarnings(warnings);
     }
 

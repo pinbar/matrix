@@ -14,7 +14,7 @@ public class HrTimesheetView {
     private String managerName;
     private List<String> warnings = new ArrayList<String>();
 
-    private Double hours;
+    private Double hours = 0.00;
 
     public Integer getTimesheetId() {
         return timesheetId;

@@ -97,8 +97,8 @@
                                 <input type="text" id="employees-auto"
                                     class="input-sm"
                                     placeholder="Select an employee">
-                                <button id="createBtn "
-                                    class="dp-background">Create
+                                <button 
+                                    class="dp-background createButton">Create
                                     TimeSheet</button>
                             </div>
 

@@ -44,7 +44,19 @@ button.dp-background {
     -moz-border-radius: 5px;
     border-radius: 5px;
     border-bottom-left-radius: 0;
-    border-top-left-radius9+8: 0;
+    border-top-left-radius9 +8: 0;
+}
+
+.showWarning li {
+    margin-bottom: 3px;
+    list-style: square;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    background-color: #d2322d;
+    border: 1px solid #cccccc;
+     border: 1px solid #aaa;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
 }
 /*
 nav-list for sidebar
