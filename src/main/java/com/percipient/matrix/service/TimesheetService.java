@@ -16,6 +16,8 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,6 +82,9 @@ class TimesheetServiceImpl implements TimesheetService {
     DateUtil dateUtil;
 
     @Autowired
+    private ReloadableResourceBundleMessageSource messageSource;
+
+    @Autowired
     HibernateUtil hibernateUtil;
 
     @Transactional
@@ -126,9 +131,27 @@ class TimesheetServiceImpl implements TimesheetService {
                 hrTimesheetView.setManagerName(manager.getFirstName() + " "
                         + manager.getLastName());
             }
+            setTimeSheetWarnings(timesheet, hrTimesheetView);
             hrTimesheetViewList.add(hrTimesheetView);
         }
         return hrTimesheetViewList;
+    }
+
+    private void setTimeSheetWarnings(Timesheet ts,
+            HrTimesheetView hrTimesheetView) {
+        for (TimesheetItem item : ts.getTimesheetItems()) {
+            if (item.getHours() > 8) {
+                populateOTWarningMessage(hrTimesheetView, item.getDate());
+            }
+            Calendar cal = Calendar
+                    .getInstance(LocaleContextHolder.getLocale());
+            cal.setTime(item.getDate());
+            int dow = cal.get(Calendar.DAY_OF_WEEK);
+            if (item.getHours() > 0
+                    && (dow == Calendar.SUNDAY || dow == Calendar.SATURDAY)) {
+                populateWeekendWarningMessage(hrTimesheetView, item.getDate());
+            }
+        }
     }
 
     private Double getTotalHours(Timesheet timesheet) {
@@ -258,8 +281,8 @@ class TimesheetServiceImpl implements TimesheetService {
         TimesheetView timesheetView = new TimesheetView();
         timesheetView.setWeekEnding(dateUtil.getAsString(weekEndingDate));
         timesheetView.setStatus("pending");
-        Employee employee = employeeRepository
-                .getEmployeeByUserName(userInfo.get().getUserName());
+        Employee employee = employeeRepository.getEmployeeByUserName(userInfo
+                .get().getUserName());
         timesheetView.setEmployeeId(employee.getId());
         List<TSCostCenterView> tsCCViews = new ArrayList<TSCostCenterView>();
         TSCostCenterView blankTSCCView = addTSCostCenterView(weekEndingDate);
@@ -279,8 +302,8 @@ class TimesheetServiceImpl implements TimesheetService {
         if (timesheet != null) {
             timesheetView = getTimeSheetView(timesheet);
         } else {
-           timesheetView = createTimesheet(weekEnding);
-           timesheetView.setEmployeeId(employeeId);
+            timesheetView = createTimesheet(weekEnding);
+            timesheetView.setEmployeeId(employeeId);
         }
         return timesheetView;
     }
@@ -397,7 +420,7 @@ class TimesheetServiceImpl implements TimesheetService {
         timesheetView.setWeekEnding(dateUtil.getAsString(timesheet
                 .getWeekEnding()));
         timesheetView.setHours(getTotalHours(timesheet));
-        
+
         return timesheetView;
     }
 
@@ -473,7 +496,7 @@ class TimesheetServiceImpl implements TimesheetService {
             TimesheetItemView tsItemview, Calendar cal) {
 
         String dayOfWeek = cal.getDisplayName(Calendar.DAY_OF_WEEK,
-                Calendar.LONG, Locale.getDefault());
+                Calendar.LONG, LocaleContextHolder.getLocale());
 
         if (dayOfWeek.equalsIgnoreCase("Monday")) {
             tsCCView.setMonday(tsItemview);
@@ -490,6 +513,32 @@ class TimesheetServiceImpl implements TimesheetService {
         } else if (dayOfWeek.equalsIgnoreCase("Sunday")) {
             tsCCView.setSunday(tsItemview);
         }
+    }
+
+    private void populateWeekendWarningMessage(HrTimesheetView hrTimesheetView,
+            Date date) {
+        List<String> warnings = hrTimesheetView.getWarnings();
+        Locale locale = LocaleContextHolder.getLocale();
+        if (warnings == null) {
+            warnings = new ArrayList<String>();
+        }
+        String formatDate = dateUtil.getAsString(date);
+        warnings.add(messageSource.getMessage("timesheet.weekend.warning",
+                new Object[] { formatDate }, locale));
+        hrTimesheetView.setWarnings(warnings);
+    }
+
+    private void populateOTWarningMessage(HrTimesheetView hrTimesheetView,
+            Date date) {
+        List<String> warnings = hrTimesheetView.getWarnings();
+        Locale locale = LocaleContextHolder.getLocale();
+        if (warnings == null) {
+            warnings = new ArrayList<String>();
+        }
+        String formatDate = dateUtil.getAsString(date);
+        warnings.add(messageSource.getMessage("timesheet.OT.warning",
+                new Object[] { formatDate }, locale));
+        hrTimesheetView.setWarnings(warnings);
     }
 
     private static Comparator<Timesheet> DateComparator = new Comparator<Timesheet>() {

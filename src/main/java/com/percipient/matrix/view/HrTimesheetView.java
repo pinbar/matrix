@@ -1,5 +1,8 @@
 package com.percipient.matrix.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HrTimesheetView {
 
     private Integer timesheetId;
@@ -9,6 +12,7 @@ public class HrTimesheetView {
     private Integer employeeId;
     private Integer managerId;
     private String managerName;
+    private List<String> warnings = new ArrayList<String>();
 
     private Double hours;
 
@@ -76,4 +80,11 @@ public class HrTimesheetView {
         this.hours = hours;
     }
 
+    public List<String> getWarnings() {
+        return warnings;
+    }
+
+    public void setWarnings(List<String> warnings) {
+        this.warnings = warnings;
+    }
 }

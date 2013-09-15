@@ -110,6 +110,22 @@ var hrTimesheetController = function() {
                         sClass : 'hours'
                     },
                     {
+
+                        mData : 'warnings',
+                        sTitle : 'Warnings',
+                        bSearchable : false,
+                        bVisible : false
+                    },
+                    {
+                        "fnRender" : function(oObj) {
+                            var warnings = oObj.aData.warnings, retStr = "";
+                            if (warnings && warnings.length > 0) {
+                                retStr = '<span class="warning showWarning"><i class="glyphicon glyphicon-exclamation-sign"></i></span>'
+                                // retStr="test"
+                            }
+                            return retStr;
+                        },
+                        aTargets : [ 6 ],
                         bSortable : false,
                         mData : null
                     },
@@ -150,6 +166,12 @@ var hrTimesheetController = function() {
                                     fnCallback(json);
                                 });
                             },
+                            fnRowCallback : function(nRow, aData, iDisplayIndex) {
+                                if (aData.warnings && aData.warnings.length > 0) {
+                                    $(nRow).addClass('warning');
+                                }
+                                return nRow;
+                            },
                             fnInitComplete : function() {
                                 $("#" + tableArgs.filterInputId + " label")
                                         .contents().filter(function() {
@@ -162,6 +184,7 @@ var hrTimesheetController = function() {
                                                 "<span class=\"add-on\"> <span class=\"glyphicon glyphicon-search\"></span></span>");
                                 $('.rt').width('100%');
                                 $('.rt th').width('auto');
+                                _setupWarningDialog();
                             },
                             aoColumns : tableArgs.columnConfig
                         });
@@ -300,12 +323,48 @@ var hrTimesheetController = function() {
         _styleModalDialog('#timesheetModal');
     },
 
+    _setupWarningDialog = function() {
+
+        $('.showWarning').on(
+                'click',
+                function(e) {
+                    var row = $(e.target).closest('tr'), data = dataTable
+                            ._(row), warnings = data[0].warnings;
+
+                    if ($('div.popover').length > 0) {
+                        $(e.target).popover('destroy');
+                        e.stopPropagation();
+                        return false;
+                    } 
+                    
+                    $(e.target).popover({
+                        title : "Warnings",
+                        content : function() {
+                            var html = '<ul>';
+                            $.each(warnings, function(i) {
+                                html = html + '<li>' + warnings[i] + '</li>';
+                            });
+                            html = html + '</ul>';
+                            return html;
+                        },
+                        trigger:'manual',
+                        html : true,
+                        container:$(e.target).parent()
+                    }).popover('show');
+
+                    
+
+                });
+
+    },
+
     _init = function(currentStatus) {
         _setCurrentStatus(currentStatus);
         dataTable = _setupHrTimeSheetTable();
         _setupSelections();
         _setupGlobalApproveOrReject();
         _setupCreate();
+        // _setupWarningDialog();
 
         $('#timesheetModal').on('show.bs.modal', _onTimeSheetModalDialogShow);
         $('#timesheetModal').on('shown.bs.modal', function() {

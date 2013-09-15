@@ -3,6 +3,7 @@ package com.percipient.matrix.validator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -10,12 +11,16 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import com.percipient.matrix.util.DateUtil;
 import com.percipient.matrix.view.TSCostCenterView;
 import com.percipient.matrix.view.TimesheetView;
 
 @Component
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "prototype")
 public class TimesheetValidator implements Validator {
+
+    @Autowired
+    private DateUtil dateUtil;
 
     private static final String TIMESHEET_TOTALHOURS_ERROR_CODE = "timesheet.totalhours.day";
     private static final String TOTAL_HOURS_IN_A_DAY_EXCEEDED = "Total hours in a day cannot be more than 24";
@@ -94,38 +99,47 @@ public class TimesheetValidator implements Validator {
             TSCostCenterView tsCCView = tsView.getTsCostCenters().get(i);
             mondayHours = mondayHours + tsCCView.getMonday().getHours();
             if (mondayHours > 24) {
-                populateTotalHoursErrorMesage(errors, "monday");
+                populateTotalHoursErrorMesage(errors,
+                        DateUtil.DAYS_OF_WEEK.MONDAY.getDay());
                 return;
             }
             tuesdayHours = tuesdayHours + tsCCView.getTuesday().getHours();
             if (tuesdayHours > 24) {
-                populateTotalHoursErrorMesage(errors, "tuesday");
+                populateTotalHoursErrorMesage(errors,
+                        DateUtil.DAYS_OF_WEEK.TUESDAY.getDay());
                 return;
             }
             wednesdayHours = wednesdayHours
                     + tsCCView.getWednesday().getHours();
             if (wednesdayHours > 24) {
-                populateTotalHoursErrorMesage(errors, "wednesday");
+                populateTotalHoursErrorMesage(errors,
+                        DateUtil.DAYS_OF_WEEK.WEDNESDAY.getDay());
                 return;
             }
             thursdayHours = thursdayHours + tsCCView.getThursday().getHours();
             if (thursdayHours > 24) {
-                populateTotalHoursErrorMesage(errors, "thursday");
+                populateTotalHoursErrorMesage(errors,
+                        DateUtil.DAYS_OF_WEEK.THURSDAY.getDay());
                 return;
             }
             fridayHours = fridayHours + tsCCView.getFriday().getHours();
             if (fridayHours > 24) {
-                populateTotalHoursErrorMesage(errors, "friday");
+                populateTotalHoursErrorMesage(errors,
+                        DateUtil.DAYS_OF_WEEK.FRIDAY.getDay());
                 return;
             }
             saturdayHours = saturdayHours + tsCCView.getSaturday().getHours();
+
             if (saturdayHours > 24) {
-                populateTotalHoursErrorMesage(errors, "saturday");
+                populateTotalHoursErrorMesage(errors,
+                        DateUtil.DAYS_OF_WEEK.SATURDAY.getDay());
                 return;
             }
             sundayHours = sundayHours + tsCCView.getSunday().getHours();
+
             if (sundayHours > 24) {
-                populateTotalHoursErrorMesage(errors, "sunday");
+                populateTotalHoursErrorMesage(errors,
+                        DateUtil.DAYS_OF_WEEK.SUNDAY.getDay());
                 return;
             }
         }
@@ -135,4 +149,5 @@ public class TimesheetValidator implements Validator {
         errors.reject(TIMESHEET_TOTALHOURS_ERROR_CODE, new Object[] { day },
                 TOTAL_HOURS_IN_A_DAY_EXCEEDED);
     }
+
 }
