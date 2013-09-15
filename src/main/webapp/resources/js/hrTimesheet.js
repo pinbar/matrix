@@ -120,8 +120,7 @@ var hrTimesheetController = function() {
                         "fnRender" : function(oObj) {
                             var warnings = oObj.aData.warnings, retStr = "";
                             if (warnings && warnings.length > 0) {
-                                retStr = '<span class="warning showWarning"><i class="glyphicon glyphicon-exclamation-sign"></i></span>'
-                                // retStr="test"
+                                retStr = '<span class="error showWarning"><i class="glyphicon glyphicon-exclamation-sign"></i></span>'
                             }
                             return retStr;
                         },
