@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -137,19 +138,33 @@ class TimesheetServiceImpl implements TimesheetService {
         return hrTimesheetViewList;
     }
 
-    private void setTimeSheetWarnings(Timesheet ts,
+    private void setTimeSheetWarnings(Timesheet timesheet,
             HrTimesheetView hrTimesheetView) {
-        for (TimesheetItem item : ts.getTimesheetItems()) {
-            if (item.getHours() > 8) {
-                populateOTWarningMessage(hrTimesheetView, item.getDate());
+        Map<Date, Double> dateHoursMap = new HashMap<Date, Double>();
+        Set<TimesheetItem> tsItemList = timesheet.getTimesheetItems();
+        for (TimesheetItem tsItem : tsItemList) {
+            if (dateHoursMap.containsKey(tsItem.getDate())) {
+                dateHoursMap
+                        .put(tsItem.getDate(),
+                                (tsItem.getHours() + dateHoursMap.get(tsItem
+                                        .getDate())));
+            } else {
+                dateHoursMap.put(tsItem.getDate(), tsItem.getHours());
             }
+
             Calendar cal = Calendar
                     .getInstance(LocaleContextHolder.getLocale());
-            cal.setTime(item.getDate());
+            cal.setTime(tsItem.getDate());
             int dow = cal.get(Calendar.DAY_OF_WEEK);
-            if (item.getHours() > 0
+            if (tsItem.getHours() > 0
                     && (dow == Calendar.SUNDAY || dow == Calendar.SATURDAY)) {
-                populateWeekendWarningMessage(hrTimesheetView, item.getDate());
+                populateWeekendWarningMessage(hrTimesheetView, tsItem.getDate());
+            }
+        }
+
+        for (Entry<Date, Double> entry : dateHoursMap.entrySet()) {
+            if (entry.getValue() > 8.00) {
+                populateOTWarningMessage(hrTimesheetView, entry.getKey());
             }
         }
         if (hrTimesheetView.getHours() > 40) {
