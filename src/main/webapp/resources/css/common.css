@@ -47,7 +47,7 @@ button.dp-background {
     border-top-left-radius9 +8: 0;
 }
 
-.showWarning li {
+td li {
     margin-bottom: 3px;
     list-style: square;
     color: white;

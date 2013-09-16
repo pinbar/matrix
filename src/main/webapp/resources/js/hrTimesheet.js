@@ -4,8 +4,7 @@ var hrTimesheetController = function() {
         timeSheetRejectClicked : ".timesheetReject",
         timesheetApproveClicked : ".timesheetApprove",
         timesheetEditClicked : ".timesheetEdit"
-    }, row, id, status, employeeId, 
-    dataTable, totalRecords = 0,
+    }, row, id, status, employeeId, dataTable, totalRecords = 0,
 
     selections = {
         all : false,
@@ -101,7 +100,7 @@ var hrTimesheetController = function() {
                         sTitle : 'Status'
                     },
                     {
-                        "fnRender" : function(oObj) {
+                        fnRender : function(oObj) {
                             var hours = oObj.aData.hours;
                             return commonUtils.formatTwoDecimals(hours);
                         },
@@ -111,17 +110,16 @@ var hrTimesheetController = function() {
                         sClass : 'hours'
                     },
                     {
-
                         mData : 'warnings',
                         sTitle : 'Warnings',
                         bSearchable : false,
                         bVisible : false
                     },
                     {
-                        "fnRender" : function(oObj) {
+                        fnRender : function(oObj) {
                             var warnings = oObj.aData.warnings, retStr = "";
                             if (warnings && warnings.length > 0) {
-                                retStr = '<span class="error showWarning"><i class="glyphicon glyphicon-exclamation-sign"></i></span>'
+                                retStr = '<a class="error showWarning" href="javascript:;"><i class="glyphicon glyphicon-exclamation-sign"></i></span>'
                             }
                             return retStr;
                         },
@@ -323,35 +321,58 @@ var hrTimesheetController = function() {
     },
 
     _setupWarningDialog = function() {
+        $('.showWarning')
+                .on(
+                        'click',
+                        function(e) {
+                            var row = $(e.target).closest('tr'), data = dataTable
+                                    ._(row), warnings = data[0].warnings;
 
-        $('.showWarning').on(
-                'click',
-                function(e) {
-                    var row = $(e.target).closest('tr'), data = dataTable
-                            ._(row), warnings = data[0].warnings;
+                            if ($(e.target).closest('td')
+                                    .find('div.popover.in').length > 0) {
+                                $(e.target).popover('hide');
+                            } else if ($(e.target).closest('td').find(
+                                    'div.popover').length > 0) {
+                                $(e.target).popover('show');
+                            } else {
+                                $(e.target)
+                                        .popover(
+                                                {
+                                                    title : "<i style= \"color:#d2322d;\">Warnings</i>",
+                                                    content : function() {
+                                                        var html = '<ul>';
+                                                        $
+                                                                .each(
+                                                                        warnings,
+                                                                        function(
+                                                                                i) {
+                                                                            html = html
+                                                                                    + '<li>'
+                                                                                    + warnings[i]
+                                                                                    + '</li>';
+                                                                        });
+                                                        html = html + '</ul>';
+                                                        return html;
+                                                    },
+                                                    trigger : 'manual',
+                                                    html : true,
+                                                    container : $(e.target)
+                                                            .closest('td')
+                                                }).popover('show');
+                                $(e.target).on('shown.bs.popover', function() {
+                                    $(document).click(function(e) {
+                                        $('div.popover.in').each(function(){
+                                                $(this).removeClass('in');
+                                        });
+                                        }
+                                    );
+                                    $('div.popover.in').parent().click(function(e) {
+                                        e.stopPropagation();
+                                    });
+                                })
+                            }
 
-                    if ($( e.target).parent().hasClass('popover') || row.find('div.popover').length > 0) {
-                        $(e.target).popover('destroy');
-                        e.stopPropagation();
-                        return false;
-                    } 
-                    $(e.target).popover({
-                        title : "<i style= \"color:#d2322d;\">Warnings</i>",
-                        content : function() {
-                            var html = '<ul>';
-                            $.each(warnings, function(i) {
-                                html = html + '<li>' + warnings[i] + '</li>';
-                            });
-                            html = html + '</ul>';
-                            return html;
-                        },
-                        trigger:'manual',
-                        selector:$( e.target).closest('td') ,
-                        html : true,
-                       container:$(e.target).parent()
-                    }).popover('toggle');
-
-                });
+                        });
 
     },
 
@@ -361,17 +382,14 @@ var hrTimesheetController = function() {
         _setupSelections();
         _setupGlobalApproveOrReject();
         _setupCreate();
-       
+
         $('#timesheetModal').on('show.bs.modal', _onTimeSheetModalDialogShow);
         $('#timesheetModal').on('shown.bs.modal', function() {
             _setupActionControls();
         });
-        $('#timesheetModal').on(
-                'hide.bs.modal',
-                function() {
-                        window.location.href = contextPath + '/hr/timesheets/'
-                                + status;
-                 });
+        $('#timesheetModal').on('hide.bs.modal', function() {
+            window.location.href = contextPath + '/hr/timesheets/' + status;
+        });
 
     },
 
