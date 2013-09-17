@@ -17,6 +17,7 @@ public class TimesheetView {
     private Double regularHours = 0.00;
     private Double overTimeHours = 0.00;
     private Double ptoHours = 0.00;
+    private Double weekendHours = 0.00;
     private Integer employeeId;
 
     @Valid
@@ -84,6 +85,14 @@ public class TimesheetView {
 
     public void setPtoHours(Double ptoHours) {
         this.ptoHours = ptoHours;
+    }
+
+    public Double getWeekendHours() {
+        return weekendHours;
+    }
+
+    public void setWeekendHours(Double weekendHours) {
+        this.weekendHours = weekendHours;
     }
 
     public MultipartFile getAttachment() {

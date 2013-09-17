@@ -41,6 +41,7 @@
                         <th>Regular Hours</th>
                         <th>Overtime Hours</th>
                         <th>PTO Hours</th>
+                        <th>Weekend Hours</th>
                         <th>Total Hours</th>
                         <th>Edit</th>
                     </tr>
