@@ -498,13 +498,13 @@ var hrTimesheetController = function() {
                 function(response, textStatus, jqXHR) {
                     var statusFrmResponse = $('input[id=status]', response)
                             .val();
-                    var err = $('input[id=errorMessages]', response).val();
+                    var err = $('.error', response);
 
                     status = statusFrmResponse ? statusFrmResponse
                             .toLowerCase() : status;
                     if (err) {
-                        $("#errorMessages").show();
                         $(".modal-body").html(response);
+                        $("#errorMessages").show();
                         _setupActionControls();
                     } else {
                         $('#timesheetModal').modal('hide');
