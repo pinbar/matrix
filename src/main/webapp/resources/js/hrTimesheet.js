@@ -288,7 +288,7 @@ var hrTimesheetController = function() {
                                                     // page
                                                     // doesn't
                                                     // pass
-                                                    // this
+                                                    // this id 
                                                     // value
                                                 };
 
@@ -316,7 +316,7 @@ var hrTimesheetController = function() {
 
     _styleModalDialog = function(selector) {
         $(selector).find('.modal-dialog').css({
-            width : '780px',
+            width : '880px',
             height : 'auto',
             'max-height' : '100%'
         });
