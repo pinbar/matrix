@@ -227,7 +227,7 @@ var hrTimesheetController = function() {
 
         my.init = function() {
             var localdata = fetchDataFromDom();
-            //var container = $('#dpStart').parent();
+            // var container = $('#dpStart').parent();
             $('#dpStart').on('click', function() {
                 $('#dpStart').datepicker({
                     format : "mm-dd-yyyy",
@@ -283,14 +283,14 @@ var hrTimesheetController = function() {
                                                             .html(response);
                                                     _styleModalDialog('#timesheetModal');
                                                     id = $('#id').val(); // while
-                                                                            // creating
-                                                                            // the
-                                                                            // landing
-                                                                            // page
-                                                                            // doesn't
-                                                                            // pass
-                                                                            // this
-                                                                            // value
+                                                    // creating
+                                                    // the
+                                                    // landing
+                                                    // page
+                                                    // doesn't
+                                                    // pass
+                                                    // this
+                                                    // value
                                                 };
 
                                                 $('#timesheetModal')
@@ -336,14 +336,42 @@ var hrTimesheetController = function() {
                         'click',
                         function(e) {
                             var row = $(e.target).closest('tr'), data = dataTable
-                                    ._(row), warnings = data[0].warnings;
+                                    ._(row), warnings = data[0].warnings,
+
+                            warningsToggle = function() {
+                                var removePopover = function(e) {
+                                    $('div.popover.in').each(
+                                            function() {
+                                                $(this).parent().off('click',
+                                                        attachStopPropogation);
+                                                $(this).remove();
+                                                $(document).off('click',
+                                                        removePopover);
+                                            });
+                                };
+                                var attachStopPropogation = function(e) {
+                                    if ($('div.popover.in').length > 0) {
+                                        e.stopPropagation();
+                                    }
+                                };
+                                $(document).on('click', removePopover);
+                                $('div.popover.in').parent().on('click',
+                                        attachStopPropogation);
+                            };
+
+                            $(e.target).off('shown.bs.popover', warningsToggle);
+                            $(e.target).on('shown.bs.popover', warningsToggle);
 
                             if ($(e.target).closest('td')
                                     .find('div.popover.in').length > 0) {
-                                $(e.target).popover('hide');
+                                $(e.target).popover('destroy');
                             } else if ($(e.target).closest('td').find(
                                     'div.popover').length > 0) {
+
                                 $(e.target).popover('show');
+                                $(e.target).closest('td')
+                                        .find('div.popover.in').removeClass(
+                                                'hide');
                             } else {
                                 $(e.target)
                                         .popover(
@@ -369,33 +397,8 @@ var hrTimesheetController = function() {
                                                     container : $(e.target)
                                                             .closest('td')
                                                 }).popover('show');
-                                $(e.target)
-                                        .on(
-                                                'shown.bs.popover',
-                                                function() {
-                                                    $(document)
-                                                            .click(
-                                                                    function(e) {
-                                                                        $(
-                                                                                'div.popover.in')
-                                                                                .each(
-                                                                                        function() {
-                                                                                            $(
-                                                                                                    this)
-                                                                                                    .removeClass(
-                                                                                                            'in');
-                                                                                        });
-                                                                    });
-                                                    $('div.popover.in')
-                                                            .parent()
-                                                            .click(
-                                                                    function(e) {
-                                                                        e
-                                                                                .stopPropagation();
-                                                                    });
-                                                })
                             }
-
+                            e.stopPropagation();
                         });
 
     },
