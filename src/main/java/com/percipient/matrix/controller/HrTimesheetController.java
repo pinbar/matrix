@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.percipient.matrix.common.Status;
 import com.percipient.matrix.service.EmployeeCostCenterService;
 import com.percipient.matrix.service.EmployeeService;
 import com.percipient.matrix.service.TimesheetService;
@@ -250,6 +251,7 @@ public class HrTimesheetController {
             @Valid @ModelAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET) TimesheetView timesheetView,
             BindingResult result, Model model,
             @RequestParam(value = "employee") Integer employeeId) {
+
         List<CostCenterView> costCenters = employeeCostCenterService
                 .getCostCenterViewListForEmployees(employeeId);
         model.addAttribute(
@@ -263,8 +265,8 @@ public class HrTimesheetController {
             return "timesheet/timesheetContent";
         }
         timesheetService.saveTimesheet(timesheetView);
-        timesheetView = timesheetService.getTimesheet(dateUtil
-                .getAsDate(timesheetView.getWeekEnding()));
+        timesheetView = timesheetService.getTimesheet(
+                dateUtil.getAsDate(timesheetView.getWeekEnding()), employeeId);
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
                 timesheetView);
         return "timesheet/timesheetContent";
@@ -282,7 +284,7 @@ public class HrTimesheetController {
         model.addAttribute(
                 TimesheetController.MODEL_ATTRIBUTE_COST_CENTER_LIST,
                 costCenters);
-        if ("Approved".equalsIgnoreCase(status)) {
+        if (Status.APPROVED.getVal().equalsIgnoreCase(status)) {
             ObjectError error = new ObjectError("error",
                     "Approved Timesheet cannot be activated..");
             result.addError(error);
@@ -300,7 +302,7 @@ public class HrTimesheetController {
                     timesheetView);
             return "timesheet/timesheetContent";
         }
-        timesheetView.setStatus("Pending");
+        timesheetView.setStatus(StringUtils.capitalize(Status.PENDING.getVal()));
         timesheetService.saveTimesheet(timesheetView);
         timesheetView = timesheetService.getTimesheet(timesheetView.getId());
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
@@ -326,7 +328,7 @@ public class HrTimesheetController {
                     timesheetView);
             return "timesheet/timesheetContent";
         }
-        timesheetView.setStatus("Submitted");
+        timesheetView.setStatus(StringUtils.capitalize(Status.SUBMITTED.getVal()));
         timesheetService.saveTimesheet(timesheetView);
         timesheetView = timesheetService.getTimesheet(timesheetView.getId());
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
@@ -380,10 +382,12 @@ public class HrTimesheetController {
     }
 
     @RequestMapping(value = "/deleteCostCodeRow", method = RequestMethod.GET)
-    public String deleteTimesheetCostCodeRow(Model model,
+    public String deleteTimesheetCostCodeRow(
+            Model model,
             @RequestParam(value = "timesheetId") Integer timesheetId,
             @RequestParam(value = "employee") Integer employeeId,
-            @RequestParam(value = "costCode", required = false) String costCode) {
+            @RequestParam(value = "costCode", required = false) String costCode,
+            @RequestParam(value = "tsItemId", required = false) Integer tsItemId) {
 
         List<CostCenterView> costCenters = employeeCostCenterService
                 .getCostCenterViewListForEmployees(employeeId);
@@ -397,7 +401,9 @@ public class HrTimesheetController {
             return "timesheet/timesheetContent";
         }
 
-        timesheetService.deleteCostCodeRow(timesheetId, costCode);
+        if (null != tsItemId) {
+            timesheetService.deleteCostCodeRow(timesheetId, costCode);
+        }
         TimesheetView timesheetView = timesheetService
                 .getTimesheet(timesheetId);
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,

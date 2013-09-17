@@ -203,6 +203,12 @@ var timesheetContentController = function() {
     },
 
     _setUpActivateTimesheet = function() {
+        var status =  $("#status").val();
+        status=status? status.toLowerCase() : 'pending'; 
+        if ("pending" === status){
+           $("#activateTimesheet").attr("disabled","disabled" ); 
+          return false;
+        }  
         $("#activateTimesheet")
                 .on(
                         "click",

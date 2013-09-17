@@ -10,12 +10,12 @@ var timesheetLandingController = function() {
 
     _initializeDatePicker = function() {
         $('#dpStart').on('click', function() {
-            $('#dpStart').datepicker({
+            $('#dp').datepicker({
                 format : "mm-dd-yyyy",
                 autoclose : "true",
                 orientation : "top"
             })
-             $('#dpStart').datepicker('show');
+             $('#dp').datepicker('show');
         });
         $('.createButton').on(
                 'click',

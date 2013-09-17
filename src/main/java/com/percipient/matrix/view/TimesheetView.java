@@ -7,11 +7,13 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.percipient.matrix.common.Status;
+
 public class TimesheetView {
 
     private Integer id;
     private String weekEnding;
-    private String status;
+    private String status= Status.PENDING.getVal();
     private MultipartFile attachment;
     private Double totalHours = 0.00;
     private Double regularHours = 0.00;

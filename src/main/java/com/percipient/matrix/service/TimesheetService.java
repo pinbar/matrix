@@ -22,6 +22,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.percipient.matrix.common.Status;
 import com.percipient.matrix.dao.EmployeeRepository;
 import com.percipient.matrix.dao.TimesheetRepository;
 import com.percipient.matrix.domain.Employee;
@@ -40,6 +41,8 @@ public interface TimesheetService {
     public List<TimesheetView> getTimesheetPreview();
 
     public TimesheetView getTimesheet(Date weekEnding);
+
+    public TimesheetView getTimesheet(Date weekEnding, Integer employeeId);
 
     public List<TimesheetView> getTimesheets();
 
@@ -251,6 +254,21 @@ class TimesheetServiceImpl implements TimesheetService {
         return timesheetView;
     }
 
+    @Override
+    @Transactional
+    public TimesheetView getTimesheet(Date weekEnding, Integer employeeId) {
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        Timesheet timesheet = timesheetRepository.getTimesheet(employee,
+                weekEnding);
+        TimesheetView timesheetView = null;
+        if (timesheet != null) {
+            timesheetView = getTimeSheetView(timesheet);
+        } else {
+            timesheetView = createTimesheet(weekEnding);
+        }
+        return timesheetView;
+    }
+
     @Transactional
     public List<TimesheetView> getTimesheets() {
 
@@ -306,7 +324,7 @@ class TimesheetServiceImpl implements TimesheetService {
     private TimesheetView createTimesheet(Date weekEndingDate) {
         TimesheetView timesheetView = new TimesheetView();
         timesheetView.setWeekEnding(dateUtil.getAsString(weekEndingDate));
-        timesheetView.setStatus("pending");
+        timesheetView.setStatus(Status.PENDING.getVal());
         Employee employee = employeeRepository.getEmployeeByUserName(userInfo
                 .get().getUserName());
         timesheetView.setEmployeeId(employee.getId());
@@ -395,20 +413,16 @@ class TimesheetServiceImpl implements TimesheetService {
     private Timesheet getTimesheetFromView(TimesheetView timesheetView) {
 
         Timesheet timesheet;
-        String status = "pending";
         if (timesheetView.getId() != null) {
             timesheet = timesheetRepository.getTimesheet(timesheetView.getId());
-            if (StringUtils.isNotBlank(timesheetView.getStatus())) {
-                status = timesheetView.getStatus();
-            }
-
+            
         } else {
             timesheet = new Timesheet();
             timesheet.setEmployeeId(timesheetView.getEmployeeId());
             timesheet.setWeekEnding(dateUtil.getAsDate(timesheetView
                     .getWeekEnding()));
         }
-        timesheet.setStatus(status.toLowerCase());
+        timesheet.setStatus(timesheetView.getStatus().toLowerCase());
         timesheet
                 .setTimesheetItems(getTimesheetItems(timesheetView, timesheet));
 
@@ -455,7 +469,8 @@ class TimesheetServiceImpl implements TimesheetService {
         TimesheetView timesheetView = new TimesheetView();
         timesheetView.setId(timesheet.getId());
         timesheetView.setEmployeeId(timesheet.getEmployeeId());
-        timesheetView.setStatus(timesheet.getStatus());
+        timesheetView.setStatus(null != timesheet.getStatus() ? timesheet
+                .getStatus() : Status.PENDING.getVal());
         timesheetView.setWeekEnding(dateUtil.getAsString(timesheet
                 .getWeekEnding()));
         setTSCostCenterView(timesheet, timesheetView);

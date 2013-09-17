@@ -54,11 +54,11 @@
                 <form:hidden path="employeeId" />
                 <input type="hidden" id="status"
                     value="${timesheet.status}">
-
                 <c:forEach items="${timesheet.tsCostCenters}"
                     varStatus="status" var="tsCostCenters">
                     <tr
-                        data-costcode="${timesheet.tsCostCenters[status.index].costCode}">
+                        data-costcode="${timesheet.tsCostCenters[status.index].costCode}"
+                        data-tsitem-id="${timesheet.tsCostCenters[status.index].sunday.id}">
                         <td><c:choose>
                                 <c:when test="${not empty costCenters}">
                                     <form:select
@@ -158,13 +158,14 @@
                             <form:hidden
                                 path="tsCostCenters[${status.index}].sunday.costCode" />
                             <div class="msg hide"></div></td>
-                        <td><a class="delCostCodeRow"
-                            href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}&weekEnding=${timesheet.weekEnding}">
-                                <span class="glyphicon glyphicon-trash"></span>
-                        </a></td>
+                        <td>    <a class="delCostCodeRow"
+                                    href="${pageContext.request.contextPath}/timesheet/deleteCostCodeRow?timesheetId=${timesheet.id}&costCode=${timesheet.tsCostCenters[status.index].costCode}&weekEnding=${timesheet.weekEnding}&tsItemId=${timesheet.tsCostCenters[status.index].sunday.id}">
+                                    <span
+                                    class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </td>
                     </tr>
                 </c:forEach>
-
             </c:if>
         </tbody>
     </table>

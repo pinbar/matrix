@@ -227,14 +227,13 @@ var hrTimesheetController = function() {
 
         my.init = function() {
             var localdata = fetchDataFromDom();
-            // var container = $('#dpStart').parent();
             $('#dpStart').on('click', function() {
-                $('#dpStart').datepicker({
+                $('#dp').datepicker({
                     format : "mm-dd-yyyy",
                     autoclose : "true",
                     orientation : "top"
                 })
-                $('#dpStart').datepicker('show');
+                $('#dp').datepicker('show');
             });
             $('#employees-auto').typeahead({
                 name : 'employees',
@@ -460,13 +459,18 @@ var hrTimesheetController = function() {
     },
 
     _deleteCostCodeRow = function(e) {
-        var costCode = $(e.target).closest('tr').data('costcode');
+        var row = $(e.target).closest('tr'),
+         
+        costCode = row.data('costcode'),
+         
+        tsItemId=row.data('tsitem-id');
+        
         $.ajax(
                 {
                     url : contextPath
                             + '/hr/timesheets/deleteCostCodeRow?timesheetId='
                             + id + '&employee=' + employeeId + '&costCode='
-                            + costCode,
+                            + costCode+'&tsItemId='+tsItemId,
                     type : "GET",
                     dataType : "html"
                 }).done(function(response, textStatus, jqXHR) {
@@ -497,8 +501,11 @@ var hrTimesheetController = function() {
         }).done(
                 function(response, textStatus, jqXHR) {
                     var statusFrmResponse = $('input[id=status]', response)
-                            .val();
-                    var err = $('.error', response);
+                            .val(),
+                    
+                        errNode = $("#errorMessages", response),
+                        
+                        err = errNode ? errNode.html() : false;
 
                     status = statusFrmResponse ? statusFrmResponse
                             .toLowerCase() : status;
@@ -507,9 +514,13 @@ var hrTimesheetController = function() {
                         $("#errorMessages").show();
                         _setupActionControls();
                     } else {
-                        $('#timesheetModal').modal('hide');
+                        if ($(e.target).val() !== 'Save') {
+                            $('#timesheetModal').modal('hide');
+                        }else{
+                            $(".modal-body").html(response); 
+                            _setupActionControls();
+                        }
                     }
-                    ;
                 }).
         // TODO : error styling and error stuff
         fail(function(response, textStatus, jqXHR) {
@@ -518,6 +529,12 @@ var hrTimesheetController = function() {
     },
 
     _activateTimesheet = function() {
+        var status =  $("#status").val();
+        status=status? status.toLowerCase() : 'pending'; 
+        if ("pending" === status){
+           $("#activateTimesheet").attr("disabled","disabled" ); 
+          return false;
+        } 
         $.ajax(
                 {
                     url : contextPath + '/hr/timesheets/activate?&employee='

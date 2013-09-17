@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.percipient.matrix.common.Status;
 import com.percipient.matrix.service.EmployeeCostCenterService;
 import com.percipient.matrix.service.TimesheetService;
 import com.percipient.matrix.session.UserInfo;
@@ -72,7 +73,8 @@ public class TimesheetController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/home")
     public String getTimesheetLanding(Model model) {
-        model.addAttribute("employee", userInfo.get().getFirstName() + " "+userInfo.get().getLastName());
+        model.addAttribute("employee", userInfo.get().getFirstName() + " "
+                + userInfo.get().getLastName());
         return "timesheet/timesheetLandingPage";
     }
 
@@ -135,7 +137,8 @@ public class TimesheetController {
             Model model,
             @RequestParam(value = "timesheetId", required = false) Integer timesheetId,
             @RequestParam(value = "weekEnding", required = false) String weekEnding,
-            @RequestParam(value = "costCode", required = false) String costCode) {
+            @RequestParam(value = "costCode", required = false) String costCode,
+            @RequestParam(value = "tsItemId", required = false) Integer tsItemId) {
 
         if (timesheetId == null) {
             model.addAttribute("error",
@@ -143,7 +146,9 @@ public class TimesheetController {
             gotoTimesheetContentWrapper(model);
         }
 
-        timesheetService.deleteCostCodeRow(timesheetId, costCode);
+        if (null != tsItemId) {
+            timesheetService.deleteCostCodeRow(timesheetId, costCode);
+        }
         TimesheetView timesheetView = timesheetService.getTimesheet(dateUtil
                 .getAsDate(weekEnding));
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
@@ -174,7 +179,7 @@ public class TimesheetController {
         if (result.hasErrors()) {
             return gotoTimesheetContent(model);
         }
-        timesheetView.setStatus("Submitted");
+        timesheetView.setStatus(StringUtils.capitalize(Status.SUBMITTED.getVal()));
         timesheetService.saveTimesheet(timesheetView);
         timesheetView = timesheetService.getTimesheet(dateUtil
                 .getAsDate(timesheetView.getWeekEnding()));
@@ -188,11 +193,11 @@ public class TimesheetController {
 
         TimesheetView timesheetView = timesheetService
                 .getTimesheet(timesheetId);
-        if ("Approved".equalsIgnoreCase(timesheetView.getStatus())) {
+        if (Status.APPROVED.getVal().equalsIgnoreCase(timesheetView.getStatus())) {
             model.addAttribute("error",
                     "Approved Timesheet cannot be activated..");
         } else {
-            timesheetView.setStatus("pending");
+            timesheetView.setStatus(Status.PENDING.getVal());
             timesheetService.saveTimesheet(timesheetView);
         }
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
