@@ -124,11 +124,20 @@ var timesheetLandingController = function() {
                         sTitle : 'PTO Hours',
                     },
                     {
+                        "fnRender": function ( oObj ) {
+                            var hours = oObj.aData.weekendHours;
+                            return commonUtils.formatTwoDecimals(hours);
+                        },
+                        aTargets: [6],
+                        mData : 'weekendHours',
+                        sTitle : 'Weekend Hours',
+                    },
+                    {
                         "fnRender" : function(oObj) {
                             var hours = oObj.aData.totalHours;
                             return commonUtils.formatTwoDecimals(hours);
                         },
-                        aTargets : [6],
+                        aTargets : [7],
                         mData : 'totalHours',
                         sTitle : 'Total Hours',
                         sClass : 'hours'

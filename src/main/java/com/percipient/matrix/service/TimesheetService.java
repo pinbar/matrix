@@ -152,12 +152,7 @@ class TimesheetServiceImpl implements TimesheetService {
                 dateHoursMap.put(tsItem.getDate(), tsItem.getHours());
             }
 
-            Calendar cal = Calendar
-                    .getInstance(LocaleContextHolder.getLocale());
-            cal.setTime(tsItem.getDate());
-            int dow = cal.get(Calendar.DAY_OF_WEEK);
-            if (tsItem.getHours() > 0
-                    && (dow == Calendar.SUNDAY || dow == Calendar.SATURDAY)) {
+            if (tsItem.getHours() > 0 && isWeekend(tsItem.getDate())) {
                 populateWeekendWarningMessage(hrTimesheetView, tsItem.getDate());
             }
         }
@@ -170,6 +165,19 @@ class TimesheetServiceImpl implements TimesheetService {
         if (hrTimesheetView.getHours() > 40) {
             populateHoursForWeekExceedWarning(hrTimesheetView);
         }
+        if (hrTimesheetView.getHours() < 40) {
+            populateHoursForWeekNotMinimumWarning(hrTimesheetView);
+        }
+    }
+
+    private boolean isWeekend(Date date) {
+        Calendar cal = Calendar.getInstance(LocaleContextHolder.getLocale());
+        cal.setTime(date);
+        int dow = cal.get(Calendar.DAY_OF_WEEK);
+        if (dow == Calendar.SUNDAY || dow == Calendar.SATURDAY) {
+            return true;
+        }
+        return false;
     }
 
     private Double getTotalHours(Timesheet timesheet) {
@@ -437,7 +445,8 @@ class TimesheetServiceImpl implements TimesheetService {
         timesheetView.setStatus(timesheet.getStatus());
         timesheetView.setWeekEnding(dateUtil.getAsString(timesheet
                 .getWeekEnding()));
-        timesheetView.setTotalHours(getTotalHours(timesheet));
+        // TODO implement the same for HRTimesheetView??
+        setHoursByCategory(timesheet, timesheetView);
 
         return timesheetView;
     }
@@ -449,15 +458,13 @@ class TimesheetServiceImpl implements TimesheetService {
         timesheetView.setStatus(timesheet.getStatus());
         timesheetView.setWeekEnding(dateUtil.getAsString(timesheet
                 .getWeekEnding()));
-        List<TSCostCenterView> tsCCViewList = getTSCostCenterView(timesheet);
-        // sort rows by cost code ascending
-        Collections.sort(tsCCViewList, TSItemCostCodeComparator);
-        timesheetView.setTsCostCenters(tsCCViewList);
+        setTSCostCenterView(timesheet, timesheetView);
 
         return timesheetView;
     }
 
-    private List<TSCostCenterView> getTSCostCenterView(Timesheet timesheet) {
+    private void setTSCostCenterView(Timesheet timesheet,
+            TimesheetView timesheetView) {
         List<TSCostCenterView> tsCCViewList = new ArrayList<TSCostCenterView>();
         Map<String, List<TimesheetItemView>> costCodeTimesheetItemsMap = new HashMap<String, List<TimesheetItemView>>();
         for (TimesheetItem tsItem : timesheet.getTimesheetItems()) {
@@ -484,7 +491,44 @@ class TimesheetServiceImpl implements TimesheetService {
             tsCCViewList.add(tsCCView);
         }
 
-        return tsCCViewList;
+        // sort rows by cost code ascending
+        Collections.sort(tsCCViewList, TSItemCostCodeComparator);
+        timesheetView.setTsCostCenters(tsCCViewList);
+    }
+
+    private void setHoursByCategory(Timesheet timesheet,
+            TimesheetView timesheetView) {
+        Double ptoHours = 0.00;
+        Double overTimeHours = 0.00;
+        Double regularHours = 0.00;
+        Double totalHours = 0.00;
+        Double weekendHours = 0.00;
+
+        Set<TimesheetItem> timesheetItems = timesheet.getTimesheetItems();
+        for (TimesheetItem tsItem : timesheetItems) {
+            // TODO get the cost centers for client=PTO (can this be configured)
+            if (tsItem.getCostCode().equalsIgnoreCase("VAC")
+                    || tsItem.getCostCode().equalsIgnoreCase("HOL")
+                    || tsItem.getCostCode().equalsIgnoreCase("SIC")) {
+                ptoHours += tsItem.getHours();
+            } else if (isWeekend(tsItem.getDate())) {
+                weekendHours += tsItem.getHours();
+            } else {
+                if (tsItem.getHours() > 8.00) {
+                    overTimeHours += tsItem.getHours() - 8.00;
+                    regularHours += 8.00;
+                } else {
+                    regularHours += tsItem.getHours();
+                }
+            }
+            totalHours += tsItem.getHours();
+        }
+
+        timesheetView.setPtoHours(ptoHours);
+        timesheetView.setWeekendHours(weekendHours);
+        timesheetView.setOverTimeHours(overTimeHours);
+        timesheetView.setRegularHours(regularHours);
+        timesheetView.setTotalHours(totalHours);
     }
 
     private TimesheetItemView getTimeSheetItemView(TimesheetItem tsItem) {
@@ -568,6 +612,19 @@ class TimesheetServiceImpl implements TimesheetService {
         }
         warnings.add(messageSource.getMessage(
                 "timesheet.overfortyhours.warning",
+                new Object[] { hrTimesheetView.getWeekEnding() }, locale));
+        hrTimesheetView.setWarnings(warnings);
+    }
+
+    private void populateHoursForWeekNotMinimumWarning(
+            HrTimesheetView hrTimesheetView) {
+        List<String> warnings = hrTimesheetView.getWarnings();
+        Locale locale = LocaleContextHolder.getLocale();
+        if (warnings == null) {
+            warnings = new ArrayList<String>();
+        }
+        warnings.add(messageSource.getMessage(
+                "timesheet.underfortyhours.warning",
                 new Object[] { hrTimesheetView.getWeekEnding() }, locale));
         hrTimesheetView.setWarnings(warnings);
     }

@@ -32,27 +32,47 @@ INSERT INTO employees (username, first_name, last_name) VALUES ('nb', 'Naga', 'B
 INSERT INTO employees (username, first_name, last_name, manager_id) VALUES ('sc', 'Shree', 'Chhatwal', 4);
 INSERT INTO employees (username, first_name, last_name, manager_id) VALUES ('uk', 'Uday', 'Katta', 3);
 
+INSERT INTO clients (name) VALUES ('PTO');
 INSERT INTO clients (name) VALUES ('Internal');
 INSERT INTO clients (name) VALUES ('Nationwide');
 INSERT INTO clients (name) VALUES ('Chase');
 INSERT INTO clients (name) VALUES ('Limited');
 INSERT INTO clients (name) VALUES ('Cardinal');
 
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('ADM', 'Administration', 1);
 INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('HOL', 'Holiday', 1);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('PTO', 'Paid Time Off', 1);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('NAW', 'Nationwide', 2);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('CCL', 'Chase Through Collabera', 3);
+INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('SIC', 'Sick Leave', 1);
+INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('VAC', 'Vacation', 1);
+INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('ADM', 'Administration', 2);
+INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('NAW', 'Nationwide', 3);
+INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('CCL', 'Chase Through Collabera', 4);
+INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('VIC', 'Victorias Secret', 5);
+INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('BNN', 'Banana Republic', 5);
+INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('CRD', 'Cardinal Health', 6);
 
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (1, 'HOL');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (1, 'SIC');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (1, 'VAC');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (1, 'NAW');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (1, 'VIC');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (2, 'HOL');
-INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (2, 'PTO');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (2, 'SIC');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (2, 'VAC');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (2, 'NAW');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (2, 'CRD');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (3, 'HOL');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (3, 'SIC');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (3, 'VAC');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (3, 'NAW');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (3, 'CCL');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (4, 'HOL');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (4, 'VAC');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (4, 'NAW');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (5, 'HOL');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (5, 'VAC');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (5, 'NAW');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (6, 'HOL');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (6, 'VAC');
+INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (6, 'NAW');
 
 --INSERT INTO timesheets (id, week_ending, status, employee_id) VALUES (1, '2012-12-30', 'pending', 1111);
 --INSERT INTO timesheets (id, week_ending, status, employee_id) VALUES (2, '2012-12-23', 'approved', 1111);
