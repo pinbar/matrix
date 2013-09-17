@@ -10,14 +10,14 @@ var timesheetLandingController = function() {
 
     _initializeDatePicker = function() {
         $('#dpStart').on('click', function() {
-            $('#dp').datepicker({
+            $('#dpStart').datepicker({
                 format : "mm-dd-yyyy",
                 autoclose : "true",
                 orientation : "top"
             })
-            $('#dp').datepicker('show');
+             $('#dpStart').datepicker('show');
         });
-        $('#tsCreateBtn').on(
+        $('.createButton').on(
                 'click',
                 function() {
                     var tsCreateDate = $('#dp').val();

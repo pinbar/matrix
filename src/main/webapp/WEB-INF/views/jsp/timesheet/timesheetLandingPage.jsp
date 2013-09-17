@@ -50,27 +50,54 @@
             </table>
             <div class="clear"></div>
             <div class="horizontalRule"></div>
-            <div class="spacer-tall ">
-                <jsp:useBean id="today" class="java.util.Date"
-                    scope="page" />
+            <!-- <div class="spacer-tall ">
+             
                 <div class="col-sm-offset-9">
                     <label>Create a new timesheet :</label>
-                    <div class="input-group">
-                        <span id="dpStart"
+                   <div class="input-group" id="dpStart">
+                        <span 
                             class="input-group-addon input-group-addon-sm dp-background"><i
                             class="glyphicon glyphicon-calendar"></i></span> <input
                             id="dp" type="text"
                             class="input-sm form-control"
-                            disabled="disabled"
                             value=<fmt:formatDate value="${today}"  pattern="MM-dd-yyyy" />
                             data-date-format="mm-dd-yyyy"><span
                             id="tsCreateBtn"
-                            class="input-group-addon dp-background">Create</span>
-                    </div>
-                </div>
-            </div>
+                            class="input-group-addon dp-background">Create</span></div> -->
+            <!-- make sure create button is out of tehe dpstart  -->
 
+            <div class="col-offset-4 col-sm-offset-3 col-lg-offset-5">
+                <h4>Create New Timesheet</h4>
+            </div>
+            <div id="employeeBootStrapData" class="hide"></div>
+            <jsp:useBean id="today" class="java.util.Date" scope="page" />
+            <div class="container">
+                <div class="row">
+                        <div
+                            class="col-sm-offset-1 col-sm-6 col-md-offset-2 col-sm-6 col-lg-offset-3 col-lg-7">
+                            <div >
+                            <span id="dpStart">
+                                <button id="dpBtn" class="dp-background"><i
+                                    class="glyphicon glyphicon-calendar"></i></button>
+                                <input id="dp" type="text"
+                                    class="input-sm" style-class="float:right"
+                                    value=<fmt:formatDate value="${today}"  pattern="MM-dd-yyyy" />
+                                    data-date-format="mm-dd-yyyy"> </span><span>
+                                <input type="text" id="employees-auto"
+                                    class="input-sm" disabled="disabled"
+                                    placeholder="${employee}">
+                                <button 
+                                    class="dp-background createButton">Create
+                                    TimeSheet</button></span>
+                            </div>
+
+                        </div>
+                    </div>
+            </div>
+            <div class="spacer-tall "></div>
         </div>
+
+    </div>
     </div>
 </body>
 </html>

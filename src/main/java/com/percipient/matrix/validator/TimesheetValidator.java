@@ -3,7 +3,7 @@ package com.percipient.matrix.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.codehaus.jackson.node.ObjectNode;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -19,18 +19,19 @@ import com.percipient.matrix.view.TimesheetView;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "prototype")
 public class TimesheetValidator implements Validator {
 
-    @Autowired
-    private DateUtil dateUtil;
-
     private static final String TIMESHEET_TOTALHOURS_ERROR_CODE = "timesheet.totalhours.day";
     private static final String TOTAL_HOURS_IN_A_DAY_EXCEEDED = "Total hours in a day cannot be more than 24";
     private static final String TIMESHEET_HOURS_NEGETIVE = "timesheet.hours.day";
 
     public boolean supports(Class<?> clazz) {
-        return TimesheetView.class.equals(clazz);
+        return TimesheetView.class.equals(clazz)
+                || ObjectNode.class.equals(clazz);
     }
 
     public void validate(Object obj, Errors errors) {
+        if (obj instanceof ObjectNode) {
+            return;
+        }
         TimesheetView tsView = (TimesheetView) obj;
         if (tsView.getTsCostCenters() == null) {
             return;

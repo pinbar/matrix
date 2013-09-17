@@ -119,7 +119,7 @@ var hrTimesheetController = function() {
                         fnRender : function(oObj) {
                             var warnings = oObj.aData.warnings, retStr = "";
                             if (warnings && warnings.length > 0) {
-                                retStr = '<a class="error showWarning" href="javascript:;"><i class="glyphicon glyphicon-exclamation-sign"></i></span>'
+                                retStr = '<a class="error showWarning" href="javascript:;"><i class="glyphicon glyphicon-info-sign"></i></span>'
                             }
                             return retStr;
                         },
@@ -227,13 +227,14 @@ var hrTimesheetController = function() {
 
         my.init = function() {
             var localdata = fetchDataFromDom();
+            //var container = $('#dpStart').parent();
             $('#dpStart').on('click', function() {
-                $('#dp').datepicker({
+                $('#dpStart').datepicker({
                     format : "mm-dd-yyyy",
                     autoclose : "true",
                     orientation : "top"
                 })
-                $('#dp').datepicker('show');
+                $('#dpStart').datepicker('show');
             });
             $('#employees-auto').typeahead({
                 name : 'employees',
@@ -281,6 +282,15 @@ var hrTimesheetController = function() {
                                                             '#timesheetModal .modal-body')
                                                             .html(response);
                                                     _styleModalDialog('#timesheetModal');
+                                                    id = $('#id').val(); // while
+                                                                            // creating
+                                                                            // the
+                                                                            // landing
+                                                                            // page
+                                                                            // doesn't
+                                                                            // pass
+                                                                            // this
+                                                                            // value
                                                 };
 
                                                 $('#timesheetModal')
@@ -338,7 +348,7 @@ var hrTimesheetController = function() {
                                 $(e.target)
                                         .popover(
                                                 {
-                                                    title : "<i style= \"color:#d2322d;\">Warnings</i>",
+                                                    title : "<i class=\"glyphicon glyphicon-info-sign\"></i><strong> Warnings</strong>",
                                                     content : function() {
                                                         var html = '<ul>';
                                                         $
@@ -359,17 +369,31 @@ var hrTimesheetController = function() {
                                                     container : $(e.target)
                                                             .closest('td')
                                                 }).popover('show');
-                                $(e.target).on('shown.bs.popover', function() {
-                                    $(document).click(function(e) {
-                                        $('div.popover.in').each(function(){
-                                                $(this).removeClass('in');
-                                        });
-                                        }
-                                    );
-                                    $('div.popover.in').parent().click(function(e) {
-                                        e.stopPropagation();
-                                    });
-                                })
+                                $(e.target)
+                                        .on(
+                                                'shown.bs.popover',
+                                                function() {
+                                                    $(document)
+                                                            .click(
+                                                                    function(e) {
+                                                                        $(
+                                                                                'div.popover.in')
+                                                                                .each(
+                                                                                        function() {
+                                                                                            $(
+                                                                                                    this)
+                                                                                                    .removeClass(
+                                                                                                            'in');
+                                                                                        });
+                                                                    });
+                                                    $('div.popover.in')
+                                                            .parent()
+                                                            .click(
+                                                                    function(e) {
+                                                                        e
+                                                                                .stopPropagation();
+                                                                    });
+                                                })
                             }
 
                         });
@@ -394,7 +418,7 @@ var hrTimesheetController = function() {
     },
 
     _setupAddCostCodeRowAction = function() {
-        $('#addRow').attr('href', 'javascript:;');
+        $('#addRow').attr('href', 'javascript:;'); // the outer <a tag
         $('#addRow').off('click');
         $('#addRow').on('click', function() {
             _addCostCodeRow();

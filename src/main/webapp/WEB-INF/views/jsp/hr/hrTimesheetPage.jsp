@@ -86,20 +86,19 @@
                         <div
                             class="col-sm-offset-1 col-sm-6 col-md-offset-2 col-sm-6 col-lg-offset-3 col-lg-7">
                             <div class="input-group">
-                                <span id="dpStart"
-                                    class="input-group-addon input-group-addon-sm dp-background"><i
-                                    class="glyphicon glyphicon-calendar"></i></span>
+                            <span id="dpStart">
+                                <button class="dp-background"><i
+                                    class="glyphicon glyphicon-calendar"></i></button>
                                 <input id="dp" type="text"
-                                    class="input-sm"
-                                    disabled="disabled"
+                                    class="input-sm" style-class="float:right"
                                     value=<fmt:formatDate value="${today}"  pattern="MM-dd-yyyy" />
-                                    data-date-format="mm-dd-yyyy">
+                                    data-date-format="mm-dd-yyyy"> </span><span>
                                 <input type="text" id="employees-auto"
-                                    class="input-sm"
-                                    placeholder="Select an employee">
+                                    class="input-sm" 
+                                    placeholder="${employee}">
                                 <button 
                                     class="dp-background createButton">Create
-                                    TimeSheet</button>
+                                    TimeSheet</button></span>
                             </div>
 
                         </div>

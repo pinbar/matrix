@@ -252,17 +252,17 @@ class TimesheetServiceImpl implements TimesheetService {
                 .getTimesheets(employee);
 
         List<TimesheetView> timesheetViewList = new ArrayList<TimesheetView>();
-        if (timesheetList.size() == 0 || !hasCurrentWeekEnding(timesheetList)) {
-            TimesheetView tsv = createTimesheet(dateUtil
-                    .getCurrentWeekEndingDate());
-            timesheetViewList.add(tsv);
-        } else {
-            for (Timesheet timesheet : timesheetList) {
-                TimesheetView timesheetView = getTimeSheetPreview(timesheet);
-                timesheetViewList.add(timesheetView);
-            }
+        TimesheetView currentTSV = null;
+        if (!hasCurrentWeekEnding(timesheetList)) {
+            currentTSV = createTimesheet(dateUtil.getCurrentWeekEndingDate());
         }
-
+        for (Timesheet timesheet : timesheetList) {
+            TimesheetView timesheetView = getTimeSheetPreview(timesheet);
+            timesheetViewList.add(timesheetView);
+        }
+        if (null != currentTSV) {
+            timesheetViewList.add(currentTSV);
+        }
         return timesheetViewList;
     }
 

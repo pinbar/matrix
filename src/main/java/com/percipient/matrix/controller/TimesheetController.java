@@ -72,6 +72,7 @@ public class TimesheetController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/home")
     public String getTimesheetLanding(Model model) {
+        model.addAttribute("employee", userInfo.get().getFirstName() + " "+userInfo.get().getLastName());
         return "timesheet/timesheetLandingPage";
     }
 
