@@ -78,7 +78,8 @@ public class TimesheetValidator implements Validator {
         for (int i = 0; i < size; i++) {
             costCode = tsView.getTsCostCenters().get(i).getCostCode();
             if (ccList.contains(costCode)) {
-                errors.reject("timesheet.costcode.unique");
+                errors.rejectValue("tsCostCenters[" + i + "].costCode",
+                        "timesheet.costcode.unique");
                 return;
             }
             ccList.add(costCode);
