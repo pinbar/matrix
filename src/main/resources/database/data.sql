@@ -39,15 +39,15 @@ INSERT INTO clients (name) VALUES ('Chase');
 INSERT INTO clients (name) VALUES ('Limited');
 INSERT INTO clients (name) VALUES ('Cardinal');
 
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('HOL', 'Holiday', 1);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('SIC', 'Sick Leave', 1);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('VAC', 'Vacation', 1);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('ADM', 'Administration', 2);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('NAW', 'Nationwide', 3);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('CCL', 'Chase Through Collabera', 4);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('VIC', 'Victorias Secret', 5);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('BNN', 'Banana Republic', 5);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('CRD', 'Cardinal Health', 6);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('HOL', 'Holiday', true, 1);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('SIC', 'Sick Leave', true, 1);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('VAC', 'Vacation', true, 1);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('ADM', 'Administration', false, 2);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('NAW', 'Nationwide', false, 3);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('CCL', 'Chase Through Collabera', false, 4);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('VIC', 'Victorias Secret', false, 5);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('BNN', 'Banana Republic', false, 5);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('CRD', 'Cardinal Health', false, 6);
 
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (1, 'HOL');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (1, 'SIC');

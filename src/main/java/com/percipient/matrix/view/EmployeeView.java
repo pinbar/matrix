@@ -124,6 +124,7 @@ public class EmployeeView {
     }
 
     public String getName() {
-        return this.firstName + " " + this.lastName;
+        return this.firstName != null ? this.firstName : "" + " "
+                + this.lastName != null ? this.lastName : "";
     }
 }

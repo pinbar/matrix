@@ -43,7 +43,7 @@ public class CostCenterController {
     @RequestMapping(value = "/grouped/listAsJson", produces = "application/json")
     @ResponseBody
     public Map<String, List<CostCenterView>> getGroupsByClient(Model model) {
-        Map<String, List<CostCenterView>> costCenters = costCenterService.getCostCentersGroupedByClient();
+        Map<String, List<CostCenterView>> costCenters = costCenterService.getCostCentersGroups();
         return costCenters;
 
     }

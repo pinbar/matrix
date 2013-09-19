@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.percipient.matrix.domain.CostCenter;
 import com.percipient.matrix.domain.EmployeeCostCenter;
 
 public interface EmployeeCostCenterRepository {
@@ -15,10 +16,11 @@ public interface EmployeeCostCenterRepository {
 
     public List<EmployeeCostCenter> getAllForEmployee(Integer employeeId);
 
+    public List<CostCenter> getCostCentersForEmployee(Integer employeeId);
+
     public void save(EmployeeCostCenter employeeCostCenter);
 
     public void save(List<EmployeeCostCenter> empCCList);
-
 
     public void delete(EmployeeCostCenter employeeCostCenter);
 
@@ -81,6 +83,15 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
         String query = "delete from EmployeeCostCenter as ecc where ecc.employeeId = :employeeId";
         sessionFactory.getCurrentSession().createQuery(query)
                 .setParameter("employeeId", employeeId);
+    }
+
+    @Override
+    public List<CostCenter> getCostCentersForEmployee(Integer employeeId) {
+        String query = "from CostCenter cc where cc.costCode in ("
+                + "select ecc.costCode from EmployeeCostCenter ecc where ecc.employeeId = :employeeId)";
+        return (List<CostCenter>) sessionFactory.getCurrentSession()
+                .createQuery(query).setParameter("employeeId", employeeId)
+                .list();
     }
 
 }

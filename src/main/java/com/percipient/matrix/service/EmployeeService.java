@@ -23,6 +23,8 @@ import com.percipient.matrix.view.EmployeeView;
 
 public interface EmployeeService {
 
+    public EmployeeView getEmployeeByUserName(String userName);
+
     public void setUserInfo(UserInfo user);
 
     public List<EmployeeView> getEmployees();
@@ -65,6 +67,16 @@ class EmployeeServiceImpl implements EmployeeService {
         userInfo.setEmployeeId(employee.getId());
         userInfo.setFirstName(employee.getFirstName());
         userInfo.setLastName(employee.getLastName());
+    }
+
+    @Override
+    @Transactional
+    public EmployeeView getEmployeeByUserName(String userName) {
+
+        Employee employee = employeeRepository.getEmployeeByUserName(userName);
+        EmployeeView employeeView = getEmployeeViewFromEmployee(employee);
+
+        return employeeView;
     }
 
     @Override
