@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class UserInfo {
 
     private EmployeeView employee;
     private Map<String, List<CostCenterView>> costCenters = new HashMap<String, List<CostCenterView>>();
-    private List<Integer> reporteeIds = new ArrayList<Integer>();
+    private Map<Integer, EmployeeView> reportees = new HashMap<Integer, EmployeeView>();
 
     public EmployeeView getEmployee() {
         return employee;
@@ -35,15 +36,23 @@ public class UserInfo {
         this.costCenters = costCenters;
     }
 
-    public List<Integer> getReporteeIds() {
-        return reporteeIds;
+    public Map<Integer, EmployeeView> getReportees() {
+        return reportees;
     }
 
-    public void setReporteeIds(List<Integer> reporteeIds) {
-        this.reporteeIds = reporteeIds;
+    public void setReportees(Map<Integer, EmployeeView> reportees) {
+        this.reportees = reportees;
     }
 
     /** util methods **/
+
+    public Set<Integer> getReporteeIds() {
+        return reportees.keySet();
+    }
+
+    public List<EmployeeView> getReporteeViews() {
+        return new ArrayList<EmployeeView>(reportees.values());
+    }
 
     public List<CostCenterView> getCostCentersFlattened() {
         List<CostCenterView> allCCList = new ArrayList<CostCenterView>();

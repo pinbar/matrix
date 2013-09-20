@@ -10,7 +10,7 @@ INSERT INTO users (username, password, enabled) VALUES ('uk', 'u', true);
 
 INSERT INTO groups(group_name) VALUES ('Administrators');
 INSERT INTO groups(group_name) VALUES ('Employees');
-INSERT INTO groups(group_name) VALUES ('Manager');
+INSERT INTO groups(group_name) VALUES ('Managers');
 
 INSERT INTO group_authorities(group_id, authority) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO group_authorities(group_id, authority) VALUES (2, 'ROLE_USER');

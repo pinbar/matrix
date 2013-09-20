@@ -1,7 +1,9 @@
 package com.percipient.matrix.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import com.percipient.matrix.domain.Timesheet;
 import com.percipient.matrix.security.Group;
 import com.percipient.matrix.security.GroupMember;
 import com.percipient.matrix.security.User;
+import com.percipient.matrix.session.AppConfig;
 import com.percipient.matrix.view.EmployeeView;
 
 public interface EmployeeService {
@@ -34,9 +37,7 @@ public interface EmployeeService {
 
     public List<EmployeeView> getEmployeesByGroup(String group);
 
-    public List<EmployeeView> getReporteesByManagerId(Integer managerId);
-
-    public List<Integer> getReporteesIdByManagerId(Integer managerId);
+    public Map<Integer, EmployeeView> getReportees(EmployeeView employee);
 
 }
 
@@ -132,27 +133,24 @@ class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public List<Integer> getReporteesIdByManagerId(Integer managerId) {
-        List<Employee> employeeList = employeeRepository
-                .getEmployeesByManager(managerId);
-        List<Integer> reporteeIds = new ArrayList<Integer>();
-        for (Employee emp : employeeList) {
-            reporteeIds.add(emp.getId());
-        }
-        return reporteeIds;
-    }
+    public Map<Integer, EmployeeView> getReportees(EmployeeView employeeView) {
 
-    @Override
-    @Transactional
-    public List<EmployeeView> getReporteesByManagerId(Integer managerId) {
-        List<Employee> employees = employeeRepository
-                .getEmployeesByManager(managerId);
-        List<EmployeeView> employeeViews = new ArrayList<EmployeeView>();
-        for (Employee employee : employees) {
-            EmployeeView employeeView = getEmployeeViewFromEmployee(employee);
-            employeeViews.add(employeeView);
+        Map<Integer, EmployeeView> reporteeMap = new HashMap<Integer, EmployeeView>();
+        List<Employee> employees = new ArrayList<Employee>();
+
+        if (employeeView.getGroupName().equalsIgnoreCase(
+                AppConfig.EMPLOYEE_GROUP_NAME_ADMINISTRATOR)) {
+            employees = employeeRepository.getEmployees();
+        } else if (employeeView.getGroupName().equalsIgnoreCase(
+                AppConfig.EMPLOYEE_GROUP_NAME_MANAGER)) {
+            employees = employeeRepository.getEmployeesByManager(employeeView
+                    .getId());
         }
-        return employeeViews;
+        for (Employee employee : employees) {
+            EmployeeView reportee = getEmployeeViewFromEmployee(employee);
+            reporteeMap.put(reportee.getId(), reportee);
+        }
+        return reporteeMap;
     }
 
     private Employee getEmployeeFromEmployeeView(EmployeeView employeeView) {

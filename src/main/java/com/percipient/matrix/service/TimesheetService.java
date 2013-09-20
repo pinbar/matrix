@@ -63,7 +63,7 @@ public interface TimesheetService {
     public List<HrTimesheetView> getTimesheetsByStatus(String status);
 
     public List<HrTimesheetView> getReporteeTimesheetsByStatus(String status,
-            List<Integer> reporteeIds);
+            Set<Integer> reporteeIds);
 
     public void saveTimesheets(List<HrTimesheetView> timesheetViews);
 
@@ -102,7 +102,7 @@ class TimesheetServiceImpl implements TimesheetService {
 
     @Transactional
     public List<HrTimesheetView> getReporteeTimesheetsByStatus(String status,
-            List<Integer> reporteeIds) {
+            Set<Integer> reporteeIds) {
 
         List<Timesheet> timesheets = timesheetRepository
                 .getReporteeTimesheetsByStatus(status, reporteeIds);

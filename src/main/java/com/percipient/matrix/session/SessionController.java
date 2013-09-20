@@ -18,7 +18,7 @@ import com.percipient.matrix.view.EmployeeView;
 
 @Controller
 @Scope("session")
-public class Login {
+public class SessionController {
 
     @Autowired
     UserInfo userInfo;
@@ -41,7 +41,7 @@ public class Login {
         EmployeeView employee = populateEmployee(principal.getName());
         userInfo.setEmployee(employee);
         populateAllCostCentersGrouped(employee);
-        populateReporteesIds(employee);
+        populateReporteess(employee);
 
         return "home";
     }
@@ -64,19 +64,10 @@ public class Login {
         userInfo.setCostCenters(costCenters);
     }
 
-    private void populateReporteesIds(EmployeeView employee) {
+    private void populateReporteess(EmployeeView employeeView) {
 
-        if (employee.getGroupName().equalsIgnoreCase(
-                AppConfig.EMPLOYEE_GROUP_NAME_ADMINISTRATOR)) {
-            List<Integer> reporteeIds = employeeService
-                    .getReporteesIdByManagerId(employee.getId());
-            userInfo.setReporteeIds(reporteeIds);
-        } else if (employee.getGroupName().equalsIgnoreCase(
-                AppConfig.EMPLOYEE_GROUP_NAME_MANAGER)) {
-            List<Integer> reporteeIds = employeeService
-                    .getReporteesIdByManagerId(employee.getId());
-            userInfo.setReporteeIds(reporteeIds);
-        }
-
+        Map<Integer, EmployeeView> reportees = employeeService
+                .getReportees(employeeView);
+        userInfo.setReportees(reportees);
     }
 }

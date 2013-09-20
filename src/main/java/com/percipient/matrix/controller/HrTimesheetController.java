@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -105,8 +106,7 @@ public class HrTimesheetController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String getTimesheets(Model model) {
-        List<EmployeeView> reportees = employeeService
-                .getReporteesByManagerId(userInfo.get().getEmployee().getId());
+        List<EmployeeView> reportees = userInfo.get().getReporteeViews();
         model.addAttribute("employees", getEmployListAsJSONString(reportees));
         return "hr/hrTimesheetPage";
     }
@@ -120,7 +120,7 @@ public class HrTimesheetController {
             hrTimesheetViewList = timesheetService.getTimesheetsByStatus(status
                     .toLowerCase());
         } else {
-            List<Integer> reporteeIds = userInfo.get().getReporteeIds();
+            Set<Integer> reporteeIds = userInfo.get().getReporteeIds();
             hrTimesheetViewList = timesheetService
                     .getReporteeTimesheetsByStatus(status.toLowerCase(),
                             reporteeIds);
@@ -133,7 +133,7 @@ public class HrTimesheetController {
     ObjectNode getReporteesTimesheetListAsJSON(@PathVariable String status,
             Model model) {
 
-        List<Integer> reporteeIds = userInfo.get().getReporteeIds();
+        Set<Integer> reporteeIds = userInfo.get().getReporteeIds();
         List<HrTimesheetView> hrTimesheetViewList = timesheetService
                 .getReporteeTimesheetsByStatus(status.toLowerCase(),
                         reporteeIds);
@@ -145,8 +145,7 @@ public class HrTimesheetController {
 
         model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST,
                 new ArrayList<HrTimesheetView>());
-        List<EmployeeView> reportees = employeeService
-                .getReporteesByManagerId(userInfo.get().getEmployee().getId());
+        List<EmployeeView> reportees = userInfo.get().getReporteeViews();
         model.addAttribute("employees", getEmployListAsJSONString(reportees));
         return "hr/hrTimesheetPage";
     }

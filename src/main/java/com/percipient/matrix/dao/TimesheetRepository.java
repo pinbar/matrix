@@ -17,7 +17,7 @@ public interface TimesheetRepository {
     public List<Timesheet> getTimesheetsByStatus(String status);
 
     public List<Timesheet> getReporteeTimesheetsByStatus(String status,
-            List<Integer> employeeIds);
+            Set<Integer> employeeIds);
 
     public Timesheet getTimesheet(Integer id);
 
@@ -53,7 +53,7 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
 
     @Override
     public List<Timesheet> getReporteeTimesheetsByStatus(String status,
-            List<Integer> employeeIds) {
+            Set<Integer> employeeIds) {
         if (employeeIds.isEmpty()) {
             return new ArrayList<Timesheet>();
         }
@@ -73,8 +73,7 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
     public Timesheet getTimesheet(Integer employeeId, Date weekEnding) {
         String query = "from Timesheet as timesheet where timesheet.employeeId = :employeeId and timesheet.weekEnding = :weekEnding";
         return (Timesheet) sessionFactory.getCurrentSession()
-                .createQuery(query)
-                .setParameter("employeeId", employeeId)
+                .createQuery(query).setParameter("employeeId", employeeId)
                 .setParameter("weekEnding", weekEnding).uniqueResult();
     }
 
@@ -84,8 +83,8 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
 
         String query = "from Timesheet as timesheet where timesheet.employeeId = :employeeId";
         return (List<Timesheet>) sessionFactory.getCurrentSession()
-                .createQuery(query)
-                .setParameter("employeeId", employeeId).list();
+                .createQuery(query).setParameter("employeeId", employeeId)
+                .list();
     }
 
     @Override
@@ -123,6 +122,5 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
         for (Timesheet ts : tsList) {
             sessionFactory.getCurrentSession().saveOrUpdate(ts);
         }
-
     }
 }
