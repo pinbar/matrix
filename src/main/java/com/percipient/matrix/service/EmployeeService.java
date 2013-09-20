@@ -18,14 +18,11 @@ import com.percipient.matrix.domain.Timesheet;
 import com.percipient.matrix.security.Group;
 import com.percipient.matrix.security.GroupMember;
 import com.percipient.matrix.security.User;
-import com.percipient.matrix.session.UserInfo;
 import com.percipient.matrix.view.EmployeeView;
 
 public interface EmployeeService {
 
     public EmployeeView getEmployeeByUserName(String userName);
-
-    public void setUserInfo(UserInfo user);
 
     public List<EmployeeView> getEmployees();
 
@@ -57,17 +54,6 @@ class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private TimesheetRepository timesheetRepository;
-
-    @Override
-    @Transactional
-    public void setUserInfo(UserInfo userInfo) {
-
-        Employee employee = employeeRepository.getEmployeeByUserName(userInfo
-                .getUserName());
-        userInfo.setEmployeeId(employee.getId());
-        userInfo.setFirstName(employee.getFirstName());
-        userInfo.setLastName(employee.getLastName());
-    }
 
     @Override
     @Transactional
@@ -135,9 +121,10 @@ class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     public void deleteEmployee(EmployeeView employeeView) {
 
-        Employee employee = getEmployeeFromEmployeeView(employeeView);
+        Employee employee = new Employee();
+        employee.setId(employeeView.getId());
         List<Timesheet> timesheets = timesheetRepository
-                .getTimesheets(employee);
+                .getTimesheets(employeeView.getId());
         timesheetRepository.delete(timesheets);
         employeeCostCenterRepository.deleteAllForEmployee(employeeView.getId());
         employeeRepository.deleteEmployee(employee);

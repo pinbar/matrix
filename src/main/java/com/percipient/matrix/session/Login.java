@@ -38,12 +38,10 @@ public class Login {
     @RequestMapping(value = "/start")
     public String setUser(Principal principal) {
 
-        userInfo.setUserName(principal.getName());
-        employeeService.setUserInfo(userInfo);
-
         EmployeeView employee = populateEmployee(principal.getName());
         userInfo.setEmployee(employee);
         populateAllCostCentersGrouped(employee);
+        populateReporteesIds(employee);
 
         return "home";
     }
@@ -64,5 +62,21 @@ public class Login {
                     .getCostCenterViewListGroupedForEmployee(employee.getId());
         }
         userInfo.setCostCenters(costCenters);
+    }
+
+    private void populateReporteesIds(EmployeeView employee) {
+
+        if (employee.getGroupName().equalsIgnoreCase(
+                AppConfig.EMPLOYEE_GROUP_NAME_ADMINISTRATOR)) {
+            List<Integer> reporteeIds = employeeService
+                    .getReporteesIdByManagerId(employee.getId());
+            userInfo.setReporteeIds(reporteeIds);
+        } else if (employee.getGroupName().equalsIgnoreCase(
+                AppConfig.EMPLOYEE_GROUP_NAME_MANAGER)) {
+            List<Integer> reporteeIds = employeeService
+                    .getReporteesIdByManagerId(employee.getId());
+            userInfo.setReporteeIds(reporteeIds);
+        }
+
     }
 }

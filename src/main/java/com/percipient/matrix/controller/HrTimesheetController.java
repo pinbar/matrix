@@ -106,7 +106,7 @@ public class HrTimesheetController {
     @RequestMapping(method = RequestMethod.GET)
     public String getTimesheets(Model model) {
         List<EmployeeView> reportees = employeeService
-                .getReporteesByManagerId(userInfo.get().getEmployeeId());
+                .getReporteesByManagerId(userInfo.get().getEmployee().getId());
         model.addAttribute("employees", getEmployListAsJSONString(reportees));
         return "hr/hrTimesheetPage";
     }
@@ -115,18 +115,15 @@ public class HrTimesheetController {
     public @ResponseBody
     ObjectNode getTimesheetListAsJSON(@PathVariable String status, Model model) {
 
-        EmployeeView employee = employeeService.getEmployee(userInfo.get()
-                .getEmployeeId());
         List<HrTimesheetView> hrTimesheetViewList = null;
-        if (employee.getGroupName().equalsIgnoreCase("Manager")) {
-            List<Integer> reporteeIds = employeeService
-                    .getReporteesIdByManagerId(userInfo.get().getEmployeeId());
+        if (userInfo.get().getReporteeIds().isEmpty()) {
+            hrTimesheetViewList = timesheetService.getTimesheetsByStatus(status
+                    .toLowerCase());
+        } else {
+            List<Integer> reporteeIds = userInfo.get().getReporteeIds();
             hrTimesheetViewList = timesheetService
                     .getReporteeTimesheetsByStatus(status.toLowerCase(),
                             reporteeIds);
-        } else {
-            hrTimesheetViewList = timesheetService.getTimesheetsByStatus(status
-                    .toLowerCase());
         }
         return getHrTimesheetListAsJSON(hrTimesheetViewList);
     }
@@ -136,8 +133,7 @@ public class HrTimesheetController {
     ObjectNode getReporteesTimesheetListAsJSON(@PathVariable String status,
             Model model) {
 
-        List<Integer> reporteeIds = employeeService
-                .getReporteesIdByManagerId(userInfo.get().getEmployeeId());
+        List<Integer> reporteeIds = userInfo.get().getReporteeIds();
         List<HrTimesheetView> hrTimesheetViewList = timesheetService
                 .getReporteeTimesheetsByStatus(status.toLowerCase(),
                         reporteeIds);
@@ -150,7 +146,7 @@ public class HrTimesheetController {
         model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST,
                 new ArrayList<HrTimesheetView>());
         List<EmployeeView> reportees = employeeService
-                .getReporteesByManagerId(userInfo.get().getEmployeeId());
+                .getReporteesByManagerId(userInfo.get().getEmployee().getId());
         model.addAttribute("employees", getEmployListAsJSONString(reportees));
         return "hr/hrTimesheetPage";
     }
@@ -302,7 +298,8 @@ public class HrTimesheetController {
                     timesheetView);
             return "timesheet/timesheetContent";
         }
-        timesheetView.setStatus(StringUtils.capitalize(Status.PENDING.getVal()));
+        timesheetView
+                .setStatus(StringUtils.capitalize(Status.PENDING.getVal()));
         timesheetService.saveTimesheet(timesheetView);
         timesheetView = timesheetService.getTimesheet(timesheetView.getId());
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
@@ -328,7 +325,8 @@ public class HrTimesheetController {
                     timesheetView);
             return "timesheet/timesheetContent";
         }
-        timesheetView.setStatus(StringUtils.capitalize(Status.SUBMITTED.getVal()));
+        timesheetView.setStatus(StringUtils.capitalize(Status.SUBMITTED
+                .getVal()));
         timesheetService.saveTimesheet(timesheetView);
         timesheetView = timesheetService.getTimesheet(timesheetView.getId());
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,

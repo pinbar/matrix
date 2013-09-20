@@ -1,5 +1,6 @@
 package com.percipient.matrix.session;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +17,7 @@ public class UserInfo {
 
     private EmployeeView employee;
     private Map<String, List<CostCenterView>> costCenters = new HashMap<String, List<CostCenterView>>();
-
-    private Integer employeeId;
-    private String userName;
-    private String firstName;
-    private String lastName;
+    private List<Integer> reporteeIds = new ArrayList<Integer>();
 
     public EmployeeView getEmployee() {
         return employee;
@@ -38,36 +35,21 @@ public class UserInfo {
         this.costCenters = costCenters;
     }
 
-    public Integer getEmployeeId() {
-        return employeeId;
+    public List<Integer> getReporteeIds() {
+        return reporteeIds;
     }
 
-    public void setEmployeeId(Integer employeeId) {
-        this.employeeId = employeeId;
+    public void setReporteeIds(List<Integer> reporteeIds) {
+        this.reporteeIds = reporteeIds;
     }
 
-    public String getUserName() {
-        return userName;
-    }
+    /** util methods **/
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public List<CostCenterView> getCostCentersFlattened() {
+        List<CostCenterView> allCCList = new ArrayList<CostCenterView>();
+        for (List<CostCenterView> ccList : costCenters.values()) {
+            allCCList.addAll(ccList);
+        }
+        return allCCList;
     }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
 }
