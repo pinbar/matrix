@@ -356,7 +356,9 @@ public class HrTimesheetController {
     @RequestMapping(value = "/addCostCodeRow", method = RequestMethod.POST)
     public String addCostCodeRow(
             @RequestParam(value = "timesheetId") Integer timesheetId,
-            @RequestParam(value = "employee") Integer employeeId, Model model) {
+            @RequestParam(value = "employee") Integer employeeId,
+            @RequestParam(value = "weekEnding") String weekEnding,
+            Model model) {
 
         List<CostCenterView> costCenters = employeeCostCenterService
                 .getCostCenterViewListForEmployees(employeeId);
@@ -367,7 +369,9 @@ public class HrTimesheetController {
         if (timesheetId == null) {
             model.addAttribute("error",
                     "You must save the timesheet before adding rows.");
-
+            TimesheetView timesheetView = timesheetService
+                    .getTimesheet(dateUtil.getAsDate(weekEnding));
+            model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
             return "timesheet/timesheetContent";
         }
         TimesheetView timesheetView = timesheetService
