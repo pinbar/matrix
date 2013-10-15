@@ -21,6 +21,7 @@ import com.percipient.matrix.security.Group;
 import com.percipient.matrix.security.GroupMember;
 import com.percipient.matrix.security.User;
 import com.percipient.matrix.session.AppConfig;
+import com.percipient.matrix.util.DateUtil;
 import com.percipient.matrix.view.EmployeeView;
 
 public interface EmployeeService {
@@ -55,6 +56,9 @@ class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private TimesheetRepository timesheetRepository;
+
+    @Autowired
+    DateUtil dateUtil;
 
     @Override
     @Transactional
@@ -166,9 +170,15 @@ class EmployeeServiceImpl implements EmployeeService {
             user.setPassword(employeeView.getUserName() + "01");
             employee.setUser(user);
             employee.setGroupMember(new GroupMember());
+            employee.setStartDate(dateUtil.getCurrentDate());
         }
         employee.setFirstName(employeeView.getFirstName());
         employee.setLastName(employeeView.getLastName());
+        employee.setStartDate(dateUtil.getAsDate(employeeView.getStartDate()));
+        if (StringUtils.isNotBlank(employeeView.getEndDate())) {
+            employee.setEndDate(dateUtil.getAsDate(employeeView.getEndDate()));
+        }
+
         employee.setPhone(employeeView.getPhone());
         employee.setEmail(employeeView.getEmail());
         employee.setAddress(employeeView.getAddress());
@@ -195,6 +205,12 @@ class EmployeeServiceImpl implements EmployeeService {
         employeeView.setId(employee.getId());
         employeeView.setFirstName(employee.getFirstName());
         employeeView.setLastName(employee.getLastName());
+        employeeView
+                .setStartDate(dateUtil.getAsString(employee.getStartDate()));
+        if (null != employee.getEndDate()) {
+            employeeView
+                    .setEndDate(dateUtil.getAsString(employee.getEndDate()));
+        }
         employeeView.setPhone(employee.getPhone());
         employeeView.setEmail(employee.getEmail());
         employeeView.setAddress(employee.getAddress());

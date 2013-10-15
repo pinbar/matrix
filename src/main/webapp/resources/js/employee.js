@@ -40,7 +40,7 @@ var empCostCodeController = function() {
         adminSidebarController.populateOptions({
             selectedName : selectedId,
             alwaysShow : true,
-            url : "/admin/employee/manager/listAsJson",
+            url : "/admin/employee/managers/listAsJson",
             optionsContainer : "#managerId"
         });
     },

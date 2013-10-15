@@ -19,6 +19,10 @@ public class EmployeeView {
     private String firstName;
     @NotBlank
     private String lastName;
+    @NotBlank
+    private String startDate;
+    private String endDate;
+
     @Pattern(message = "must be a 10 digit number", regexp = "(^$|[0-9]{10})")
     private String phone;
     @Email
@@ -26,7 +30,6 @@ public class EmployeeView {
     private String address;
     @NotNull
     private String groupName;
-    @NotNull
     private Integer managerId;
 
     private List<String> costCodes;
@@ -69,6 +72,22 @@ public class EmployeeView {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public String getPhone() {

@@ -76,6 +76,11 @@ public class DateUtil {
         return getWeekEndingDate(getAsDate(getAsString(cal.getTime())));
     }
 
+    public Date getCurrentDate() {
+        Calendar cal = Calendar.getInstance(LocaleContextHolder.getLocale());
+        return cal.getTime();
+    }
+    
     public Date getWeekEndingDate(Date today) {
         Calendar cal = Calendar.getInstance(LocaleContextHolder.getLocale());
         cal.setTime(today);

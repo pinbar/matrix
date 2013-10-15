@@ -25,12 +25,12 @@ INSERT INTO group_members (username, group_id) VALUES ('nb', 3);
 --end security config
 
 --begin employee tables
-INSERT INTO employees (username, first_name, last_name) VALUES ('pb', 'Pinak', 'Barve');
-INSERT INTO employees (username, first_name, last_name, manager_id) VALUES ('rp', 'Rohit', 'Panwar', 3);
-INSERT INTO employees (username, first_name, last_name) VALUES ('ap', 'Amit', 'Pant');
-INSERT INTO employees (username, first_name, last_name) VALUES ('nb', 'Naga', 'Bheemaneni');
-INSERT INTO employees (username, first_name, last_name, manager_id) VALUES ('sc', 'Shree', 'Chhatwal', 4);
-INSERT INTO employees (username, first_name, last_name, manager_id) VALUES ('uk', 'Uday', 'Katta', 3);
+INSERT INTO employees (username, first_name, last_name, start_date) VALUES ('pb', 'Pinak', 'Barve', '2013-02-02');
+INSERT INTO employees (username, first_name, last_name, start_date, manager_id) VALUES ('rp', 'Rohit', 'Panwar', '2013-06-04', 3);
+INSERT INTO employees (username, first_name, last_name, start_date) VALUES ('ap', 'Amit', 'Pant','2013-03-01');
+INSERT INTO employees (username, first_name, last_name, start_date) VALUES ('nb', 'Naga', 'Bheemaneni', '2013-06-05');
+INSERT INTO employees (username, first_name, last_name, start_date, manager_id) VALUES ('sc', 'Shree', 'Chhatwal', '2013-05-05', 4);
+INSERT INTO employees (username, first_name, last_name, start_date, manager_id) VALUES ('uk', 'Uday', 'Katta', '2013-07-08', 3);
 
 INSERT INTO clients (name) VALUES ('PTO');
 INSERT INTO clients (name) VALUES ('Internal');

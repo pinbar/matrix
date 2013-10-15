@@ -32,6 +32,20 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label" for="startDate">Start Date</label>
+            <div class="controls">
+                <form:input class="form-control" path="startDate" />
+                <form:errors class="text-error" path="startDate"></form:errors>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="endDate">End Date</label>
+            <div class="controls">
+                <form:input class="form-control" path="endDate" />
+                <form:errors class="text-error" path="endDate"></form:errors>
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label" for="phone">Phone</label>
             <div class="controls">
                 <form:input class="form-control" path="phone" />
