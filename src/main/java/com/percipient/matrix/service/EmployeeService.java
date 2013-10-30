@@ -170,7 +170,6 @@ class EmployeeServiceImpl implements EmployeeService {
             user.setPassword(employeeView.getUserName() + "01");
             employee.setUser(user);
             employee.setGroupMember(new GroupMember());
-            employee.setStartDate(dateUtil.getCurrentDate());
         }
         employee.setFirstName(employeeView.getFirstName());
         employee.setLastName(employeeView.getLastName());

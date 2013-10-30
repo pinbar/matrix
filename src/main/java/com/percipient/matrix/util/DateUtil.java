@@ -51,7 +51,7 @@ public class DateUtil {
         }
     };
 
-    private final Format formatter = new SimpleDateFormat("MM-dd-yyyy");
+    private final static Format formatter = new SimpleDateFormat("MM-dd-yyyy");
 
     public String getAsString(Date date) {
 
@@ -76,9 +76,9 @@ public class DateUtil {
         return getWeekEndingDate(getAsDate(getAsString(cal.getTime())));
     }
 
-    public Date getCurrentDate() {
+    public static String getCurrentDate() {
         Calendar cal = Calendar.getInstance(LocaleContextHolder.getLocale());
-        return cal.getTime();
+        return formatter.format(cal.getTime());
     }
     
     public Date getWeekEndingDate(Date today) {

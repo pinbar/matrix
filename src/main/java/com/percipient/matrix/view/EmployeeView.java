@@ -9,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.percipient.matrix.util.DateUtil;
+
 public class EmployeeView {
 
     @NotBlank
@@ -20,7 +22,7 @@ public class EmployeeView {
     @NotBlank
     private String lastName;
     @NotBlank
-    private String startDate;
+    private String startDate = DateUtil.getCurrentDate();
     private String endDate;
 
     @Pattern(message = "must be a 10 digit number", regexp = "(^$|[0-9]{10})")

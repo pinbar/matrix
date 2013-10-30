@@ -52,6 +52,21 @@ create table employees_cost_centers (
   constraint fk_ecc_cc foreign key(cost_code) references cost_centers(cost_code)
 );
 
+create table employees_pto_config (
+  employee_id bigint not null, cost_code varchar(250) not null, 
+  primary key(employee_id, cost_code),
+  yearly_allocated_hours float not null, carry_over_allowed_hours float not null,
+  constraint fk_empcc_pto_config_eid foreign key(employee_id) references employees(id),
+  constraint fk_empcc_pto_config_cc foreign key(cost_code) references cost_centers(cost_code)
+);
+
+create table employees_pto_balance (
+  employee_id bigint not null, cost_code varchar(250) not null, 
+  primary key(employee_id, cost_code),
+  accrued_hours float not null, used_hours float not null,
+  constraint fk_empcc_pto_bal_eid foreign key(employee_id) references employees(id),
+  constraint fk_empcc_pto_bal_cc foreign key(cost_code) references cost_centers(cost_code)
+);
 -- end org chart tables
 
 -- begin timesheet tables
