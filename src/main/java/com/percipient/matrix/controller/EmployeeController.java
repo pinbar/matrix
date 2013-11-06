@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.percipient.matrix.service.EmployeeCostCenterService;
+import com.percipient.matrix.service.EmployeePtoConfigService;
 import com.percipient.matrix.service.EmployeeService;
 import com.percipient.matrix.service.GroupService;
 import com.percipient.matrix.service.UserCPService;
@@ -28,6 +29,7 @@ import com.percipient.matrix.view.AdminEmpPasswordView;
 import com.percipient.matrix.view.ClientView;
 import com.percipient.matrix.view.CostCenterView;
 import com.percipient.matrix.view.EmployeeCostCenterView;
+import com.percipient.matrix.view.EmployeePtoConfigView;
 import com.percipient.matrix.view.EmployeeView;
 import com.percipient.matrix.view.GroupView;
 
@@ -52,6 +54,9 @@ public class EmployeeController {
     @Autowired
     EmployeeCostCenterService employeeCostCenterService;
 
+    @Autowired
+    EmployeePtoConfigService employeePtoConfigService;
+
     @RequestMapping(value = "/listAsJson")
     public @ResponseBody
     List<EmployeeView> getEmployeeListAsJSON(Model model) {
@@ -63,10 +68,11 @@ public class EmployeeController {
     public @ResponseBody
     List<EmployeeView> getEmployeeWithRolesListAsJSON(Model model,
             @PathVariable("group") String group) {
-        if (StringUtils.isBlank(group)){
-          return  new ArrayList<EmployeeView>();
+        if (StringUtils.isBlank(group)) {
+            return new ArrayList<EmployeeView>();
         }
-        List<EmployeeView> employees = employeeService.getEmployeesByGroup(group);
+        List<EmployeeView> employees = employeeService
+                .getEmployeesByGroup(group);
         return employees;
     }
 
@@ -149,6 +155,26 @@ public class EmployeeController {
         employeeCostCenterService.deleteCostCodesForEmployee(employeeId,
                 empCostCenterViewList);
         return null;
+    }
+
+    @RequestMapping(value = "/ptoConfig/listAsJson")
+    public @ResponseBody
+    List<EmployeePtoConfigView> getPtoConfigForEmp(
+            @RequestParam("employeeId") Integer employeeId, Model model) {
+        List<EmployeePtoConfigView> ptoConfigViewList = new ArrayList<EmployeePtoConfigView>();
+        if (null != employeeId) {
+            ptoConfigViewList = employeePtoConfigService
+                    .getPtoConfigForEmployee(employeeId);
+        }
+        return ptoConfigViewList;
+    }
+
+    @RequestMapping(value = "/ptoConfig/save", method = RequestMethod.POST)
+    public @ResponseBody
+    void savePtoConfigForEmp(@RequestParam("employeeId") int employeeId,
+            @RequestBody List<EmployeePtoConfigView> ptoConfigViewList) {
+        employeePtoConfigService.savePtoConfigForEmployee(employeeId,
+                ptoConfigViewList);
     }
 
     public String gotoEmployeeEdit(Model model) {
