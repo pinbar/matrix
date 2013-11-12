@@ -63,9 +63,8 @@ public class TimesheetController {
         List<TimesheetView> tsPreviews = timesheetService.getTimesheetPreview();
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET, tsPreviews.get(0));
         model.addAttribute(MODEL_ATTRIBUTE_TIMESHEET_LIST, tsPreviews);
-        List<CostCenterView> costCenters = employeeCostCenterService
-                .getCostCenterViewListForEmployees(userInfo.get()
-                        .getEmployeeId());
+        List<CostCenterView> costCenters = userInfo.get()
+                .getCostCentersFlattened();
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
         return "timesheet/timesheetPage";
@@ -73,8 +72,7 @@ public class TimesheetController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/home")
     public String getTimesheetLanding(Model model) {
-        model.addAttribute("employee", userInfo.get().getFirstName() + " "
-                + userInfo.get().getLastName());
+        model.addAttribute("employee", userInfo.get().getEmployee().getName());
         return "timesheet/timesheetLandingPage";
     }
 
@@ -179,7 +177,8 @@ public class TimesheetController {
         if (result.hasErrors()) {
             return gotoTimesheetContent(model);
         }
-        timesheetView.setStatus(StringUtils.capitalize(Status.SUBMITTED.getVal()));
+        timesheetView.setStatus(StringUtils.capitalize(Status.SUBMITTED
+                .getVal()));
         timesheetService.saveTimesheet(timesheetView);
         timesheetView = timesheetService.getTimesheet(dateUtil
                 .getAsDate(timesheetView.getWeekEnding()));
@@ -193,7 +192,8 @@ public class TimesheetController {
 
         TimesheetView timesheetView = timesheetService
                 .getTimesheet(timesheetId);
-        if (Status.APPROVED.getVal().equalsIgnoreCase(timesheetView.getStatus())) {
+        if (Status.APPROVED.getVal()
+                .equalsIgnoreCase(timesheetView.getStatus())) {
             model.addAttribute("error",
                     "Approved Timesheet cannot be activated..");
         } else {
@@ -213,18 +213,16 @@ public class TimesheetController {
 
     private String gotoTimesheetContent(Model model) {
 
-        List<CostCenterView> costCenters = employeeCostCenterService
-                .getCostCenterViewListForEmployees(userInfo.get()
-                        .getEmployeeId());
+        List<CostCenterView> costCenters = userInfo.get()
+                .getCostCentersFlattened();
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
         return "timesheet/timesheetContent";
     }
 
     private String gotoTimesheetContentWrapper(Model model) {
-        List<CostCenterView> costCenters = employeeCostCenterService
-                .getCostCenterViewListForEmployees(userInfo.get()
-                        .getEmployeeId());
+        List<CostCenterView> costCenters = userInfo.get()
+                .getCostCentersFlattened();
         model.addAttribute(MODEL_ATTRIBUTE_COST_CENTER_LIST, costCenters);
 
         return "timesheet/timesheetContentWrapper";

@@ -10,7 +10,7 @@ INSERT INTO users (username, password, enabled) VALUES ('uk', 'u', true);
 
 INSERT INTO groups(group_name) VALUES ('Administrators');
 INSERT INTO groups(group_name) VALUES ('Employees');
-INSERT INTO groups(group_name) VALUES ('Manager');
+INSERT INTO groups(group_name) VALUES ('Managers');
 
 INSERT INTO group_authorities(group_id, authority) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO group_authorities(group_id, authority) VALUES (2, 'ROLE_USER');
@@ -25,12 +25,12 @@ INSERT INTO group_members (username, group_id) VALUES ('nb', 3);
 --end security config
 
 --begin employee tables
-INSERT INTO employees (username, first_name, last_name) VALUES ('pb', 'Pinak', 'Barve');
-INSERT INTO employees (username, first_name, last_name, manager_id) VALUES ('rp', 'Rohit', 'Panwar', 3);
-INSERT INTO employees (username, first_name, last_name) VALUES ('ap', 'Amit', 'Pant');
-INSERT INTO employees (username, first_name, last_name) VALUES ('nb', 'Naga', 'Bheemaneni');
-INSERT INTO employees (username, first_name, last_name, manager_id) VALUES ('sc', 'Shree', 'Chhatwal', 4);
-INSERT INTO employees (username, first_name, last_name, manager_id) VALUES ('uk', 'Uday', 'Katta', 3);
+INSERT INTO employees (username, first_name, last_name, start_date) VALUES ('pb', 'Pinak', 'Barve', '2013-02-02');
+INSERT INTO employees (username, first_name, last_name, start_date, manager_id) VALUES ('rp', 'Rohit', 'Panwar', '2013-06-04', 3);
+INSERT INTO employees (username, first_name, last_name, start_date) VALUES ('ap', 'Amit', 'Pant','2013-03-01');
+INSERT INTO employees (username, first_name, last_name, start_date) VALUES ('nb', 'Naga', 'Bheemaneni', '2013-06-05');
+INSERT INTO employees (username, first_name, last_name, start_date, manager_id) VALUES ('sc', 'Shree', 'Chhatwal', '2013-05-05', 4);
+INSERT INTO employees (username, first_name, last_name, start_date, manager_id) VALUES ('uk', 'Uday', 'Katta', '2013-07-08', 3);
 
 INSERT INTO clients (name) VALUES ('PTO');
 INSERT INTO clients (name) VALUES ('Internal');
@@ -39,15 +39,15 @@ INSERT INTO clients (name) VALUES ('Chase');
 INSERT INTO clients (name) VALUES ('Limited');
 INSERT INTO clients (name) VALUES ('Cardinal');
 
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('HOL', 'Holiday', 1);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('SIC', 'Sick Leave', 1);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('VAC', 'Vacation', 1);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('ADM', 'Administration', 2);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('NAW', 'Nationwide', 3);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('CCL', 'Chase Through Collabera', 4);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('VIC', 'Victorias Secret', 5);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('BNN', 'Banana Republic', 5);
-INSERT INTO cost_centers (cost_code, name, client_id) VALUES ('CRD', 'Cardinal Health', 6);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('HOL', 'Holiday', true, 1);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('SIC', 'Sick Leave', true, 1);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('VAC', 'Vacation', true, 1);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('ADM', 'Administration', false, 2);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('NAW', 'Nationwide', false, 3);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('CCL', 'Chase Through Collabera', false, 4);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('VIC', 'Victorias Secret', false, 5);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('BNN', 'Banana Republic', false, 5);
+INSERT INTO cost_centers (cost_code, name, is_pto, client_id) VALUES ('CRD', 'Cardinal Health', false, 6);
 
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (1, 'HOL');
 INSERT INTO employees_cost_centers (employee_id, cost_code) VALUES (1, 'SIC');

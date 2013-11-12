@@ -1,9 +1,13 @@
 package com.percipient.matrix.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +22,14 @@ import com.percipient.matrix.domain.Timesheet;
 import com.percipient.matrix.security.Group;
 import com.percipient.matrix.security.GroupMember;
 import com.percipient.matrix.security.User;
-import com.percipient.matrix.session.UserInfo;
+import com.percipient.matrix.session.AppConfig;
+import com.percipient.matrix.util.DateUtil;
+import com.percipient.matrix.view.EmployeePtoConfigView;
 import com.percipient.matrix.view.EmployeeView;
 
 public interface EmployeeService {
 
-    public void setUserInfo(UserInfo user);
+    public EmployeeView getEmployeeByUserName(String userName);
 
     public List<EmployeeView> getEmployees();
 
@@ -35,9 +41,7 @@ public interface EmployeeService {
 
     public List<EmployeeView> getEmployeesByGroup(String group);
 
-    public List<EmployeeView> getReporteesByManagerId(Integer managerId);
-
-    public List<Integer> getReporteesIdByManagerId(Integer managerId);
+    public Map<Integer, EmployeeView> getReportees(EmployeeView employee);
 
 }
 
@@ -51,20 +55,25 @@ class EmployeeServiceImpl implements EmployeeService {
     private EmployeeCostCenterRepository employeeCostCenterRepository;
 
     @Autowired
+    private EmployeePtoConfigService employeePtoConfigService;
+
+    @Autowired
     private GroupRepository groupRepository;
 
     @Autowired
     private TimesheetRepository timesheetRepository;
 
+    @Autowired
+    DateUtil dateUtil;
+
     @Override
     @Transactional
-    public void setUserInfo(UserInfo userInfo) {
+    public EmployeeView getEmployeeByUserName(String userName) {
 
-        Employee employee = employeeRepository.getEmployeeByUserName(userInfo
-                .getUserName());
-        userInfo.setEmployeeId(employee.getId());
-        userInfo.setFirstName(employee.getFirstName());
-        userInfo.setLastName(employee.getLastName());
+        Employee employee = employeeRepository.getEmployeeByUserName(userName);
+        EmployeeView employeeView = getEmployeeViewFromEmployee(employee);
+
+        return employeeView;
     }
 
     @Override
@@ -109,6 +118,7 @@ class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = getEmployeeFromEmployeeView(employeeView);
         Integer id = employeeRepository.saveEmployee(employee);
+        id = id != null ? id : employee.getId();
         if (id != null) {
             employeeView.setId(id);
         }
@@ -117,15 +127,30 @@ class EmployeeServiceImpl implements EmployeeService {
             List<EmployeeCostCenter> empCostCenterList = collateUpdatedCostCenterList(employeeView);
             employeeCostCenterRepository.save(empCostCenterList);
         }
+        if (StringUtils.isNotBlank(employeeView.getPtosJSONStr())) {
+            List<EmployeePtoConfigView> ptoConfigViewList = new ArrayList<EmployeePtoConfigView>();
+            try {
+                ptoConfigViewList = new ObjectMapper().readValue(
+                        employeeView.getPtosJSONStr(),
+                        new TypeReference<List<EmployeePtoConfigView>>() {
+                        });
+            } catch (Exception e) {
+                throw new RuntimeException("couldn't convert"
+                        + employeeView.getPtosJSONStr() + "to JSON", e);
+            }
+            employeePtoConfigService.savePtoConfigForEmployee(id,
+                    ptoConfigViewList);
+        }
     }
 
     @Override
     @Transactional
     public void deleteEmployee(EmployeeView employeeView) {
 
-        Employee employee = getEmployeeFromEmployeeView(employeeView);
+        Employee employee = new Employee();
+        employee.setId(employeeView.getId());
         List<Timesheet> timesheets = timesheetRepository
-                .getTimesheets(employee);
+                .getTimesheets(employeeView.getId());
         timesheetRepository.delete(timesheets);
         employeeCostCenterRepository.deleteAllForEmployee(employeeView.getId());
         employeeRepository.deleteEmployee(employee);
@@ -133,27 +158,24 @@ class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public List<Integer> getReporteesIdByManagerId(Integer managerId) {
-        List<Employee> employeeList = employeeRepository
-                .getEmployeesByManager(managerId);
-        List<Integer> reporteeIds = new ArrayList<Integer>();
-        for (Employee emp : employeeList) {
-            reporteeIds.add(emp.getId());
-        }
-        return reporteeIds;
-    }
+    public Map<Integer, EmployeeView> getReportees(EmployeeView employeeView) {
 
-    @Override
-    @Transactional
-    public List<EmployeeView> getReporteesByManagerId(Integer managerId) {
-        List<Employee> employees = employeeRepository
-                .getEmployeesByManager(managerId);
-        List<EmployeeView> employeeViews = new ArrayList<EmployeeView>();
-        for (Employee employee : employees) {
-            EmployeeView employeeView = getEmployeeViewFromEmployee(employee);
-            employeeViews.add(employeeView);
+        Map<Integer, EmployeeView> reporteeMap = new HashMap<Integer, EmployeeView>();
+        List<Employee> employees = new ArrayList<Employee>();
+
+        if (employeeView.getGroupName().equalsIgnoreCase(
+                AppConfig.EMPLOYEE_GROUP_NAME_ADMINISTRATOR)) {
+            employees = employeeRepository.getEmployees();
+        } else if (employeeView.getGroupName().equalsIgnoreCase(
+                AppConfig.EMPLOYEE_GROUP_NAME_MANAGER)) {
+            employees = employeeRepository.getEmployeesByManager(employeeView
+                    .getId());
         }
-        return employeeViews;
+        for (Employee employee : employees) {
+            EmployeeView reportee = getEmployeeViewFromEmployee(employee);
+            reporteeMap.put(reportee.getId(), reportee);
+        }
+        return reporteeMap;
     }
 
     private Employee getEmployeeFromEmployeeView(EmployeeView employeeView) {
@@ -172,6 +194,11 @@ class EmployeeServiceImpl implements EmployeeService {
         }
         employee.setFirstName(employeeView.getFirstName());
         employee.setLastName(employeeView.getLastName());
+        employee.setStartDate(dateUtil.getAsDate(employeeView.getStartDate()));
+        if (StringUtils.isNotBlank(employeeView.getEndDate())) {
+            employee.setEndDate(dateUtil.getAsDate(employeeView.getEndDate()));
+        }
+
         employee.setPhone(employeeView.getPhone());
         employee.setEmail(employeeView.getEmail());
         employee.setAddress(employeeView.getAddress());
@@ -198,6 +225,12 @@ class EmployeeServiceImpl implements EmployeeService {
         employeeView.setId(employee.getId());
         employeeView.setFirstName(employee.getFirstName());
         employeeView.setLastName(employee.getLastName());
+        employeeView
+                .setStartDate(dateUtil.getAsString(employee.getStartDate()));
+        if (null != employee.getEndDate()) {
+            employeeView
+                    .setEndDate(dateUtil.getAsString(employee.getEndDate()));
+        }
         employeeView.setPhone(employee.getPhone());
         employeeView.setEmail(employee.getEmail());
         employeeView.setAddress(employee.getAddress());

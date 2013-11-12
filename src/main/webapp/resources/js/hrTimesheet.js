@@ -572,7 +572,8 @@ var hrTimesheetController = function() {
                 {
                     url : contextPath
                             + '/hr/timesheets/addCostCodeRow?timesheetId=' + id
-                            + '&employee=' + employeeId,
+                            + '&employee=' + employeeId
+                            + '&weekEnding='+ $('#weekEnding').val(),
                     type : "POST",
                     dataType : "html"
                 }).done(function(response, textStatus, jqXHR) {

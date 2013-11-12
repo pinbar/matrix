@@ -105,6 +105,7 @@ function bindUpdateRows() {
                                                     + " input[type='submit']").value = "Save";
                                             $("div#" + divToShow).removeClass(
                                                     'hide');
+                                            $("div#" + divToShow).trigger('cssClassChangedVisible'); 
                                         }).
                                 // TODO : error styling and error stuff
                                 fail(function(response, textStatus, jqXHR) {
@@ -274,8 +275,7 @@ function populate(container, data) {
             url : "/admin/group/listAsJson",
             optionsContainer : "#groupName"
         });
-        empCostCodeController.getAllCostCodeForEmp();
-        empCostCodeController.getAllManagers(selectedManager);
+        empCostCodeController.setManager(selectedManager);
     }
     if (container.attr("id") == "costCenterUpdate") {
         adminSidebarController.populateOptions({

@@ -32,6 +32,20 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label" for="startDate">Start Date</label>
+            <div class="controls">
+                <form:input class="form-control" path="startDate" />
+                <form:errors class="text-error" path="startDate"></form:errors>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="endDate">End Date</label>
+            <div class="controls">
+                <form:input class="form-control" path="endDate" />
+                <form:errors class="text-error" path="endDate"></form:errors>
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label" for="phone">Phone</label>
             <div class="controls">
                 <form:input class="form-control" path="phone" />
@@ -78,6 +92,12 @@
         <div class="spacer"></div>
         <div id="projects" class="control-group"></div>
         <div class="spacer"></div>
+        <input id="ptos" name="ptos" type="hidden"
+            value="${employee.ptosJSONStr}" />
+        <div class="spacer"></div>
+        <div id="ptoInput" class="control-group"></div>
+        <div class="spacer"></div>
+       
         <div class="control-group">
             <div class="controls">
                 <input id="employeeSave" type="submit"

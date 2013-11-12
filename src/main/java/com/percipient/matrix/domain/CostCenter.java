@@ -25,6 +25,9 @@ public class CostCenter {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "is_pto")
+    private Boolean pto = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
@@ -51,6 +54,14 @@ public class CostCenter {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getPto() {
+        return pto;
+    }
+
+    public void setPto(Boolean pto) {
+        this.pto = pto;
     }
 
     public Client getClient() {

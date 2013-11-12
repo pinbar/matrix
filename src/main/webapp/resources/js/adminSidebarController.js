@@ -24,6 +24,7 @@ var adminSidebarController = function() {
                 $(data).addClass('hide');
             } else {
                 $(data).removeClass('hide');
+                $(data).trigger('cssClassChangedVisible');
             }
         });
     },
@@ -55,7 +56,8 @@ var adminSidebarController = function() {
         _showHideForms("div#empUpdate");
         $("form#employeeForm").find("input, textarea").not(
                 ':button, :submit, :reset').val("");
-        empCostCodeController.getAllCostCodeForEmp();
+       /* empCostCodeController.getAllCostCodeForEmp();
+        empPtoController.gettAllPtosforEmp(empCostCodeController.groupedOptions);*/
     },
 
     _onEmpList = function(e) {

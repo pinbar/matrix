@@ -95,7 +95,7 @@
                                     data-date-format="mm-dd-yyyy"> </span><span>
                                 <input type="text" id="employees-auto"
                                     class="input-sm" 
-                                    placeholder="${employee}">
+                                    placeholder="Enter the Employee">
                                 <button 
                                     class="dp-background createButton">Create
                                     TimeSheet</button></span>

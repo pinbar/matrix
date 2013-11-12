@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -105,8 +106,7 @@ public class HrTimesheetController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String getTimesheets(Model model) {
-        List<EmployeeView> reportees = employeeService
-                .getReporteesByManagerId(userInfo.get().getEmployeeId());
+        List<EmployeeView> reportees = userInfo.get().getReporteeViews();
         model.addAttribute("employees", getEmployListAsJSONString(reportees));
         return "hr/hrTimesheetPage";
     }
@@ -115,18 +115,15 @@ public class HrTimesheetController {
     public @ResponseBody
     ObjectNode getTimesheetListAsJSON(@PathVariable String status, Model model) {
 
-        EmployeeView employee = employeeService.getEmployee(userInfo.get()
-                .getEmployeeId());
         List<HrTimesheetView> hrTimesheetViewList = null;
-        if (employee.getGroupName().equalsIgnoreCase("Manager")) {
-            List<Integer> reporteeIds = employeeService
-                    .getReporteesIdByManagerId(userInfo.get().getEmployeeId());
+        if (userInfo.get().getReporteeIds().isEmpty()) {
+            hrTimesheetViewList = timesheetService.getTimesheetsByStatus(status
+                    .toLowerCase());
+        } else {
+            Set<Integer> reporteeIds = userInfo.get().getReporteeIds();
             hrTimesheetViewList = timesheetService
                     .getReporteeTimesheetsByStatus(status.toLowerCase(),
                             reporteeIds);
-        } else {
-            hrTimesheetViewList = timesheetService.getTimesheetsByStatus(status
-                    .toLowerCase());
         }
         return getHrTimesheetListAsJSON(hrTimesheetViewList);
     }
@@ -136,8 +133,7 @@ public class HrTimesheetController {
     ObjectNode getReporteesTimesheetListAsJSON(@PathVariable String status,
             Model model) {
 
-        List<Integer> reporteeIds = employeeService
-                .getReporteesIdByManagerId(userInfo.get().getEmployeeId());
+        Set<Integer> reporteeIds = userInfo.get().getReporteeIds();
         List<HrTimesheetView> hrTimesheetViewList = timesheetService
                 .getReporteeTimesheetsByStatus(status.toLowerCase(),
                         reporteeIds);
@@ -149,8 +145,7 @@ public class HrTimesheetController {
 
         model.addAttribute(MODEL_ATTRIBUTE_HR_TIMESHEET_LIST,
                 new ArrayList<HrTimesheetView>());
-        List<EmployeeView> reportees = employeeService
-                .getReporteesByManagerId(userInfo.get().getEmployeeId());
+        List<EmployeeView> reportees = userInfo.get().getReporteeViews();
         model.addAttribute("employees", getEmployListAsJSONString(reportees));
         return "hr/hrTimesheetPage";
     }
@@ -302,7 +297,8 @@ public class HrTimesheetController {
                     timesheetView);
             return "timesheet/timesheetContent";
         }
-        timesheetView.setStatus(StringUtils.capitalize(Status.PENDING.getVal()));
+        timesheetView
+                .setStatus(StringUtils.capitalize(Status.PENDING.getVal()));
         timesheetService.saveTimesheet(timesheetView);
         timesheetView = timesheetService.getTimesheet(timesheetView.getId());
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
@@ -328,7 +324,8 @@ public class HrTimesheetController {
                     timesheetView);
             return "timesheet/timesheetContent";
         }
-        timesheetView.setStatus(StringUtils.capitalize(Status.SUBMITTED.getVal()));
+        timesheetView.setStatus(StringUtils.capitalize(Status.SUBMITTED
+                .getVal()));
         timesheetService.saveTimesheet(timesheetView);
         timesheetView = timesheetService.getTimesheet(timesheetView.getId());
         model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET,
@@ -359,7 +356,9 @@ public class HrTimesheetController {
     @RequestMapping(value = "/addCostCodeRow", method = RequestMethod.POST)
     public String addCostCodeRow(
             @RequestParam(value = "timesheetId") Integer timesheetId,
-            @RequestParam(value = "employee") Integer employeeId, Model model) {
+            @RequestParam(value = "employee") Integer employeeId,
+            @RequestParam(value = "weekEnding") String weekEnding,
+            Model model) {
 
         List<CostCenterView> costCenters = employeeCostCenterService
                 .getCostCenterViewListForEmployees(employeeId);
@@ -370,7 +369,9 @@ public class HrTimesheetController {
         if (timesheetId == null) {
             model.addAttribute("error",
                     "You must save the timesheet before adding rows.");
-
+            TimesheetView timesheetView = timesheetService
+                    .getTimesheet(dateUtil.getAsDate(weekEnding));
+            model.addAttribute(TimesheetController.MODEL_ATTRIBUTE_TIMESHEET, timesheetView);
             return "timesheet/timesheetContent";
         }
         TimesheetView timesheetView = timesheetService

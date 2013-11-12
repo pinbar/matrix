@@ -13,13 +13,17 @@ import com.percipient.matrix.dao.ClientRepository;
 import com.percipient.matrix.dao.CostCenterRepository;
 import com.percipient.matrix.domain.Client;
 import com.percipient.matrix.domain.CostCenter;
+import com.percipient.matrix.session.AppConfig;
 import com.percipient.matrix.view.CostCenterView;
 
 public interface CostCenterService {
 
     public List<CostCenterView> getCostCenters();
 
-    public Map<String, List<CostCenterView>> getCostCentersGroupedByClient();
+    public Map<String, List<CostCenterView>> getCostCentersGroups();
+
+    public Map<String, List<CostCenterView>> groupCostCenters(
+            List<CostCenter> costCenters);
 
     public List<CostCenterView> getCCViewListFromCostCodes(
             List<String> costCodes);
@@ -56,26 +60,12 @@ class CostCenterServiceImpl implements CostCenterService {
 
     @Override
     @Transactional
-    public Map<String, List<CostCenterView>> getCostCentersGroupedByClient() {
+    public Map<String, List<CostCenterView>> getCostCentersGroups() {
 
-        Map<String, List<CostCenterView>> ccGroup = new HashMap<String, List<CostCenterView>>();
-        List<CostCenter> costCenters = costCenterRepository.getCostCenters();
-        for (CostCenter costCenter : costCenters) {
-            CostCenterView costCenterView = new CostCenterView();
-            costCenterView.setCostCode(costCenter.getCostCode());
-            costCenterView.setName(costCenter.getName());
-            Client client = clientRepository.getClient(costCenter.getClient()
-                    .getId());
-            String clientName = client.getName();
-            if (ccGroup.containsKey(clientName)) {
-                ccGroup.get(clientName).add(costCenterView);
-            } else {
-                List<CostCenterView> costCenterViews = new ArrayList<CostCenterView>();
-                costCenterViews.add(costCenterView);
-                ccGroup.put(clientName, costCenterViews);
-            }
-        }
-        return ccGroup;
+        List<CostCenter> allCostCenters = costCenterRepository.getCostCenters();
+        Map<String, List<CostCenterView>> groupedCostCenters = groupCostCenters(allCostCenters);
+
+        return groupedCostCenters;
     }
 
     @Override
@@ -115,12 +105,43 @@ class CostCenterServiceImpl implements CostCenterService {
         costCenterRepository.deleteCostCenter(costCenter);
     }
 
+    @Override
+    @Transactional
+    public Map<String, List<CostCenterView>> groupCostCenters(
+            List<CostCenter> costCenters) {
+        Map<String, List<CostCenterView>> ccGroup = new HashMap<String, List<CostCenterView>>();
+
+        for (CostCenter costCenter : costCenters) {
+            CostCenterView costCenterView = new CostCenterView();
+            costCenterView.setCostCode(costCenter.getCostCode());
+            costCenterView.setName(costCenter.getName());
+            costCenterView.setPto(costCenter.getPto());
+            String groupName = "";
+            if (costCenter.getPto()) {
+                groupName = AppConfig.COST_CENTER_GROUP_NAME_PTO;
+            } else {
+                Client client = clientRepository.getClient(costCenter
+                        .getClient().getId());
+                groupName = client.getName();
+            }
+            if (ccGroup.containsKey(groupName)) {
+                ccGroup.get(groupName).add(costCenterView);
+            } else {
+                List<CostCenterView> costCenterViews = new ArrayList<CostCenterView>();
+                costCenterViews.add(costCenterView);
+                ccGroup.put(groupName, costCenterViews);
+            }
+        }
+        return ccGroup;
+    }
+
     private CostCenterView getCostCenterViewFromCostCenter(CostCenter costCenter) {
 
         CostCenterView costCenterView = new CostCenterView();
         costCenterView.setId(costCenter.getId());
         costCenterView.setCostCode(costCenter.getCostCode());
         costCenterView.setName(costCenter.getName());
+        costCenterView.setPto(costCenter.getPto());
         costCenterView.setClientName(costCenter.getClient().getName());
 
         return costCenterView;
@@ -142,6 +163,7 @@ class CostCenterServiceImpl implements CostCenterService {
         }
         costCenter.setCostCode(costCenterView.getCostCode());
         costCenter.setName(costCenterView.getName());
+        costCenter.setPto(costCenterView.getPto());
 
         if (!costCenter.getClient().getName()
                 .equalsIgnoreCase(costCenterView.getClientName())) {

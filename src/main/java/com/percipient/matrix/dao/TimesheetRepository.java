@@ -9,7 +9,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.percipient.matrix.domain.Employee;
 import com.percipient.matrix.domain.Timesheet;
 import com.percipient.matrix.domain.TimesheetItem;
 
@@ -18,13 +17,13 @@ public interface TimesheetRepository {
     public List<Timesheet> getTimesheetsByStatus(String status);
 
     public List<Timesheet> getReporteeTimesheetsByStatus(String status,
-            List<Integer> employeeIds);
+            Set<Integer> employeeIds);
 
     public Timesheet getTimesheet(Integer id);
 
-    public Timesheet getTimesheet(Employee employee, Date weekEnding);
+    public Timesheet getTimesheet(Integer employeeId, Date weekEnding);
 
-    public List<Timesheet> getTimesheets(Employee employee);
+    public List<Timesheet> getTimesheets(Integer employeeId);
 
     public void save(Timesheet ts);
 
@@ -54,7 +53,7 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
 
     @Override
     public List<Timesheet> getReporteeTimesheetsByStatus(String status,
-            List<Integer> employeeIds) {
+            Set<Integer> employeeIds) {
         if (employeeIds.isEmpty()) {
             return new ArrayList<Timesheet>();
         }
@@ -71,22 +70,21 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
     }
 
     @Override
-    public Timesheet getTimesheet(Employee employee, Date weekEnding) {
+    public Timesheet getTimesheet(Integer employeeId, Date weekEnding) {
         String query = "from Timesheet as timesheet where timesheet.employeeId = :employeeId and timesheet.weekEnding = :weekEnding";
         return (Timesheet) sessionFactory.getCurrentSession()
-                .createQuery(query)
-                .setParameter("employeeId", employee.getId())
+                .createQuery(query).setParameter("employeeId", employeeId)
                 .setParameter("weekEnding", weekEnding).uniqueResult();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Timesheet> getTimesheets(Employee employee) {
+    public List<Timesheet> getTimesheets(Integer employeeId) {
 
         String query = "from Timesheet as timesheet where timesheet.employeeId = :employeeId";
         return (List<Timesheet>) sessionFactory.getCurrentSession()
-                .createQuery(query)
-                .setParameter("employeeId", employee.getId()).list();
+                .createQuery(query).setParameter("employeeId", employeeId)
+                .list();
     }
 
     @Override
@@ -124,6 +122,5 @@ class TimesheetRepositoryImpl implements TimesheetRepository {
         for (Timesheet ts : tsList) {
             sessionFactory.getCurrentSession().saveOrUpdate(ts);
         }
-
     }
 }

@@ -33,7 +33,8 @@ public class UserCPController {
     public String gotoEmpContactInfo(Model model) {
 
         EmployeeContactInfoView empContactInfoView = userCPService
-                .employeeContactInfoView(userInfo.get().getUserName());
+                .employeeContactInfoView(userInfo.get().getEmployee()
+                        .getUserName());
         model.addAttribute(MODEL_ATTRIBUTE_EMP_CONTACT_INFO, empContactInfoView);
         return PAGE_USER_CP;
     }
@@ -56,7 +57,8 @@ public class UserCPController {
     public String gotoChangePassword(Model model) {
 
         ChangePasswordView changePassView = userCPService
-                .getChangePasswordView(userInfo.get().getUserName());
+                .getChangePasswordView(userInfo.get().getEmployee()
+                        .getUserName());
         setupChangePassword(changePassView, model);
         return PAGE_USER_CP;
     }
@@ -98,7 +100,8 @@ public class UserCPController {
         }
 
         ChangePasswordView existingUserView = userCPService
-                .getChangePasswordView(userInfo.get().getUserName());
+                .getChangePasswordView(userInfo.get().getEmployee()
+                        .getUserName());
 
         if (!existingUserView.getPassword().equalsIgnoreCase(
                 changePassView.getPassword())) {

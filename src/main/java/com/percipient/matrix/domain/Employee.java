@@ -1,5 +1,7 @@
 package com.percipient.matrix.domain;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +33,12 @@ public class Employee {
 
     @Column(name = "username")
     private String userName;
+
+    @Column(name = "start_date")
+    private Date startDate;
+
+    @Column(name = "end_date")
+    private Date endDate;
 
     @Column(name = "phone")
     private String phone;
@@ -98,6 +106,22 @@ public class Employee {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public String getPhone() {

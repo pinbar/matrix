@@ -1,47 +1,64 @@
 package com.percipient.matrix.session;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import com.percipient.matrix.view.CostCenterView;
+import com.percipient.matrix.view.EmployeeView;
 
 @Component
 @Scope(value = "session")
 public class UserInfo {
 
-    private Integer employeeId;
-    private String userName;
-    private String firstName;
-    private String lastName;
+    private EmployeeView employee;
+    private Map<String, List<CostCenterView>> costCenters = new HashMap<String, List<CostCenterView>>();
+    private Map<Integer, EmployeeView> reportees = new HashMap<Integer, EmployeeView>();
 
-    public Integer getEmployeeId() {
-        return employeeId;
+    public EmployeeView getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeId(Integer employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployee(EmployeeView employee) {
+        this.employee = employee;
     }
 
-    public String getUserName() {
-        return userName;
+    public Map<String, List<CostCenterView>> getCostCenters() {
+        return costCenters;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setCostCenters(Map<String, List<CostCenterView>> costCenters) {
+        this.costCenters = costCenters;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public Map<Integer, EmployeeView> getReportees() {
+        return reportees;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setReportees(Map<Integer, EmployeeView> reportees) {
+        this.reportees = reportees;
     }
 
-    public String getLastName() {
-        return lastName;
+    /** util methods **/
+
+    public Set<Integer> getReporteeIds() {
+        return reportees.keySet();
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public List<EmployeeView> getReporteeViews() {
+        return new ArrayList<EmployeeView>(reportees.values());
     }
 
+    public List<CostCenterView> getCostCentersFlattened() {
+        List<CostCenterView> allCCList = new ArrayList<CostCenterView>();
+        for (List<CostCenterView> ccList : costCenters.values()) {
+            allCCList.addAll(ccList);
+        }
+        return allCCList;
+    }
 }

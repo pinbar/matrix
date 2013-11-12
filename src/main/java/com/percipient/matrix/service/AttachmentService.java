@@ -71,8 +71,7 @@ class AttachmentServiceImpl implements AttachmentService {
             out.flush();
             out.close();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException("couldn't download ", e);
         }
     }
 
@@ -88,8 +87,7 @@ class AttachmentServiceImpl implements AttachmentService {
                 attachment.setContent(hibernateUtil.getBlobFromByteArray(file
                         .getBytes()));
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                throw new RuntimeException("couldn't uload ", e);
             }
             attachment.setContentType(file.getContentType());
             attachment.setFileName(file.getOriginalFilename());

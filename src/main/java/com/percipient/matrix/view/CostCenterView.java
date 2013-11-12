@@ -9,6 +9,9 @@ public class CostCenterView {
     private String costCode;
     @NotBlank
     private String name;
+
+    private Boolean pto = false;
+
     @NotBlank
     private String clientName;
 
@@ -34,6 +37,14 @@ public class CostCenterView {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getPto() {
+        return pto;
+    }
+
+    public void setPto(Boolean pto) {
+        this.pto = pto;
     }
 
     public String getClientName() {

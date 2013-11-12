@@ -9,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.percipient.matrix.util.DateUtil;
+
 public class EmployeeView {
 
     @NotBlank
@@ -19,6 +21,10 @@ public class EmployeeView {
     private String firstName;
     @NotBlank
     private String lastName;
+    @NotBlank
+    private String startDate = DateUtil.getCurrentDate();
+    private String endDate;
+
     @Pattern(message = "must be a 10 digit number", regexp = "(^$|[0-9]{10})")
     private String phone;
     @Email
@@ -26,10 +32,11 @@ public class EmployeeView {
     private String address;
     @NotNull
     private String groupName;
-    @NotNull
     private Integer managerId;
 
     private List<String> costCodes;
+
+    private String ptosJSONStr;
 
     public String getUserName() {
         return userName;
@@ -69,6 +76,22 @@ public class EmployeeView {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public String getPhone() {
@@ -115,6 +138,14 @@ public class EmployeeView {
         return StringUtils.join(costCodes, ",");
     }
 
+    public void setPtosJSONStr(String ptos) {
+        this.ptosJSONStr = ptos;
+    }
+
+    public String getPtosJSONStr() {
+        return ptosJSONStr;
+    }
+
     public Integer getManagerId() {
         return managerId;
     }
@@ -124,6 +155,7 @@ public class EmployeeView {
     }
 
     public String getName() {
-        return this.firstName + " " + this.lastName;
+        return this.firstName != null ? this.firstName : "" + " "
+                + this.lastName != null ? this.lastName : "";
     }
 }
