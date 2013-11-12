@@ -20,7 +20,6 @@ public interface EmployeePtoConfigService {
             List<EmployeePtoConfigView> ptoConfigList);
 
     public void deletePtoConfigForEmployee(Integer employeeId);
-  
 }
 
 @Service

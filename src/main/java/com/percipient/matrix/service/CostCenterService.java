@@ -115,7 +115,10 @@ class CostCenterServiceImpl implements CostCenterService {
             CostCenterView costCenterView = new CostCenterView();
             costCenterView.setCostCode(costCenter.getCostCode());
             costCenterView.setName(costCenter.getName());
+<<<<<<< HEAD
             costCenterView.setPto(costCenter.getPto());
+=======
+>>>>>>> 842f2dff4ae86e344de4bae3936f29afecc11bc2
             String groupName = "";
             if (costCenter.getPto()) {
                 groupName = AppConfig.COST_CENTER_GROUP_NAME_PTO;
