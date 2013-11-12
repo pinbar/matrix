@@ -167,9 +167,9 @@ var empPtoController = function() {
           $.each(args,function(index,arg){
               var totalHrs=parseFloat(arg["carryOverAllowedHours"])+ arg["yearlyAllocatedHours"];
            html = html+'<tr><td><h5 name="costCode">'+arg["costCode"]+'</h5></td>'
-           +'<td><input type="number" name="yearlyAllocatedHours" class="form-control" value="'+arg["yearlyAllocatedHours"]+'"></td>'
-           +'<td><input type="number" name="carryOverAllowedHours" class="form-control" value="'+arg["carryOverAllowedHours"]+'"></td>'
-           +'<td><input type="number"  class="form-control" disabled value="'+totalHrs+'"></td>'
+           +'<td><input type="number" name="yearlyAllocatedHours" class="form-control ptoInput" value="'+arg["yearlyAllocatedHours"]+'"></td>'
+           +'<td><input type="number" name="carryOverAllowedHours" class="form-control ptoInput" value="'+arg["carryOverAllowedHours"]+'"></td>'
+           +'<td><input type="number"  class="form-control ptoTotal" disabled value="'+totalHrs+'"></td>'
            +'</tr>'
           });
       html+'</tbody></table>';
@@ -246,6 +246,15 @@ $(document).ready(function() {
     
     empCostCodeController.container.on("costCodesLoaded",function(e,args){
         empPtoController.gettAllPtosforEmp(args);
+   });
+    
+   $(document).on("blur",".ptoInput", function(e){
+       var row = $(e.target).closest('tr');
+       var totalElement = $('.ptoTotal',row)[0];
+       totalElement.value=0.00;
+       row.find('.ptoInput').each(function(){
+           totalElement.value = parseFloat(totalElement.value) +parseFloat($(this).val());
+       })
    });
 
 });
