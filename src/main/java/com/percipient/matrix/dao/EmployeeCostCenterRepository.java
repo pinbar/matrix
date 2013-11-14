@@ -27,6 +27,8 @@ public interface EmployeeCostCenterRepository {
     public void delete(List<EmployeeCostCenter> empCCList);
 
     public void deleteAllForEmployee(Integer employeeId);
+    
+    public void deactivate(List<EmployeeCostCenter> empCCList);
 
 }
 
@@ -39,7 +41,7 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
     @Override
     public EmployeeCostCenter getEmployeeCostCenter(Integer employeeId,
             String costCode) {
-        String query = "from EmployeeCostCenter as ecc where ecc.employeeId = :employeeId and ecc.costCode = :costCode";
+        String query = "from EmployeeCostCenter as ecc where ecc.employeeId = :employeeId and ecc.costCode = :costCode and ecc.active = true";
         return (EmployeeCostCenter) sessionFactory.getCurrentSession()
                 .createQuery(query).setParameter("employeeId", employeeId)
                 .setParameter("costCode", costCode).uniqueResult();
@@ -47,7 +49,7 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
 
     @Override
     public List<EmployeeCostCenter> getAllForEmployee(Integer employeeId) {
-        String query = "from EmployeeCostCenter as ecc where ecc.employeeId = :employeeId";
+        String query = "from EmployeeCostCenter as ecc where ecc.employeeId = :employeeId and ecc.active = true";
         return (List<EmployeeCostCenter>) sessionFactory.getCurrentSession()
                 .createQuery(query).setParameter("employeeId", employeeId)
                 .list();
@@ -66,6 +68,14 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
 
     }
 
+    @Override
+    public void deactivate(List<EmployeeCostCenter> empCCList) {
+        for (EmployeeCostCenter empCC : empCCList) {
+            empCC.setActive(false);
+            sessionFactory.getCurrentSession().update(empCC);
+        }
+    }
+    
     @Override
     public void delete(List<EmployeeCostCenter> empCCList) {
         for (EmployeeCostCenter empCC : empCCList) {
@@ -88,7 +98,7 @@ class EmployeeCostCenterRepositoryImpl implements EmployeeCostCenterRepository {
     @Override
     public List<CostCenter> getCostCentersForEmployee(Integer employeeId) {
         String query = "from CostCenter cc where cc.costCode in ("
-                + "select ecc.costCode from EmployeeCostCenter ecc where ecc.employeeId = :employeeId)";
+                + "select ecc.costCode from EmployeeCostCenter ecc where ecc.employeeId = :employeeId and ecc.active = true)";
         return (List<CostCenter>) sessionFactory.getCurrentSession()
                 .createQuery(query).setParameter("employeeId", employeeId)
                 .list();

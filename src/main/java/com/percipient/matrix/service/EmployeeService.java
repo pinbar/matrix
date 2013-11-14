@@ -255,14 +255,15 @@ class EmployeeServiceImpl implements EmployeeService {
                 empCC = new EmployeeCostCenter();
                 empCC.setCostCode(costCode);
                 empCC.setEmployeeId(employeeView.getId());
+                empCC.setActive(true);
             } else {
                 existingEmpCostCenterList.remove(empCC);
             }
             empCostCenterList.add(empCC);
         }
-        // delete the remaining, these were unchecked
+        // deactivate the remaining, these were unchecked
         if (!existingEmpCostCenterList.isEmpty()) {
-            employeeCostCenterRepository.delete(existingEmpCostCenterList);
+            employeeCostCenterRepository.deactivate(existingEmpCostCenterList);
         }
 
         return empCostCenterList;

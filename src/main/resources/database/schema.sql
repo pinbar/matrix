@@ -48,6 +48,7 @@ create table cost_centers (
 create table employees_cost_centers (
   employee_id bigint not null, cost_code varchar(250) not null, 
   primary key(employee_id, cost_code),
+  active boolean not null,
   constraint fk_ecc_eid foreign key(employee_id) references employees(id),
   constraint fk_ecc_cc foreign key(cost_code) references cost_centers(cost_code)
 );

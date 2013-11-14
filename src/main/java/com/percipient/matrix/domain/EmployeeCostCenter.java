@@ -11,7 +11,6 @@ import javax.persistence.Table;
 @Table(name = "employees_cost_centers")
 public class EmployeeCostCenter implements Serializable {
 
-  
     private static final long serialVersionUID = 745407141548950900L;
 
     @Id
@@ -21,6 +20,9 @@ public class EmployeeCostCenter implements Serializable {
     @Id
     @Column(name = "cost_code")
     private String costCode;
+
+    @Column(name = "active")
+    private Boolean active;
 
     public Integer getEmployeeId() {
         return employeeId;
@@ -37,4 +39,13 @@ public class EmployeeCostCenter implements Serializable {
     public void setCostCode(String costCode) {
         this.costCode = costCode;
     }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
 }
