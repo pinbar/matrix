@@ -83,9 +83,20 @@ var empCostCodeController = function() {
         return html;
     },
     
-    
     setManager = function(arg){
         managerId = arg;
+    },
+    
+    selectCostCode= function(costCode){
+        $("#costCodeListSelect").multiselect("widget").find(":checkbox").each(function(){
+           if ($(this).val()=== costCode){
+               $(this).attr("checked", "checked");
+               $(this).attr('aria-selected','true');
+           };
+         });
+       var length =  $("#costCodeListSelect").multiselect("widget").find('input[checked="checked"]').length;
+       $("button.ui-multiselect span:nth-child(2)").html(length + " selected");
+        
     }
 
     populateContainer = function(response) {
@@ -105,7 +116,7 @@ var empCostCodeController = function() {
 
     onBeforeSave = function() {
         var selected = [];
-        $(".ui-multiselect-menu input[aria-selected='true' ]").each(
+        $("#costCodeListSelect").multiselect("widget").find('input[checked="checked"]').each(
                 function(index, node) {
                     selected.push(($(node).attr("value")));
                 });
@@ -136,6 +147,7 @@ var empCostCodeController = function() {
         getAllManagers:getAllManagers,
         groupedOptions: groupedOptions,
         setManager: setManager,
+        selectCostCode: selectCostCode,
         container : container
     });
 }();
@@ -163,13 +175,12 @@ var empPtoController = function() {
     },
     
     getHtml= function(args){
-      var html = '<table id="ptoTable" class="table  table-striped cf rt"> <thead> <tr><th>Cost Code</th><th>Yearly Hours</th><th>Carried Over Hours</th><th>Total Hours</th></tr><tbody>';
+      var html = '<table id="ptoTable" class="table  table-striped cf rt"> <thead> <tr><th>Cost Code</th><th>Yearly Hours</th><th>Yearly Carry Over Allowed</th><tbody>';
           $.each(args,function(index,arg){
               var totalHrs=parseFloat(arg["carryOverAllowedHours"])+ arg["yearlyAllocatedHours"];
-           html = html+'<tr><td><h5 name="costCode">'+arg["costCode"]+'</h5></td>'
-           +'<td><input type="number" name="yearlyAllocatedHours" class="form-control ptoInput" value="'+arg["yearlyAllocatedHours"]+'"></td>'
+           html = html+'<tr><td><h5 class="costCode" name="costCode">'+arg["costCode"]+'</h5></td>'
+           +'<td><input type="number" name="yearlyAllocatedHours" class="form-control ptoInput ptoEnable" value="'+arg["yearlyAllocatedHours"]+'"></td>'
            +'<td><input type="number" name="carryOverAllowedHours" class="form-control ptoInput" value="'+arg["carryOverAllowedHours"]+'"></td>'
-           +'<td><input type="number"  class="form-control ptoTotal" disabled value="'+totalHrs+'"></td>'
            +'</tr>'
           });
       html+'</tbody></table>';
@@ -248,13 +259,12 @@ $(document).ready(function() {
         empPtoController.gettAllPtosforEmp(args);
    });
     
-   $(document).on("blur",".ptoInput", function(e){
+   $(document).on("blur",".ptoEnable", function(e){
        var row = $(e.target).closest('tr');
-       var totalElement = $('.ptoTotal',row)[0];
-       totalElement.value=0.00;
-       row.find('.ptoInput').each(function(){
-           totalElement.value = parseFloat(totalElement.value) +parseFloat($(this).val());
-       })
+       var costCode = $($('.costCode',row)[0]).text();
+       if (parseFloat($(e.target).val()) > 0 ){
+           empCostCodeController.selectCostCode(costCode); 
+       }
    });
 
 });

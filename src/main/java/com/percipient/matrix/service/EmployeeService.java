@@ -119,14 +119,7 @@ class EmployeeServiceImpl implements EmployeeService {
         Employee employee = getEmployeeFromEmployeeView(employeeView);
         Integer id = employeeRepository.saveEmployee(employee);
         id = id != null ? id : employee.getId();
-        if (id != null) {
-            employeeView.setId(id);
-        }
-        if (employeeView.getCostCodes() != null
-                && !employeeView.getCostCodes().isEmpty()) {
-            List<EmployeeCostCenter> empCostCenterList = collateUpdatedCostCenterList(employeeView);
-            employeeCostCenterRepository.save(empCostCenterList);
-        }
+        employeeView.setId(id);
         if (StringUtils.isNotBlank(employeeView.getPtosJSONStr())) {
             List<EmployeePtoConfigView> ptoConfigViewList = new ArrayList<EmployeePtoConfigView>();
             try {
@@ -140,6 +133,11 @@ class EmployeeServiceImpl implements EmployeeService {
             }
             employeePtoConfigService.savePtoConfigForEmployee(id,
                     ptoConfigViewList);
+        }
+        if (employeeView.getCostCodes() != null
+                && !employeeView.getCostCodes().isEmpty()) {
+            List<EmployeeCostCenter> empCostCenterList = collateUpdatedCostCenterList(employeeView);
+            employeeCostCenterRepository.save(empCostCenterList);
         }
     }
 
