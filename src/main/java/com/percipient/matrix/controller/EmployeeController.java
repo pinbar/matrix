@@ -91,7 +91,7 @@ public class EmployeeController {
         String ptos = request.getParameter("ptos") != null ? request
                 .getParameter("ptos") : null;
 
-        String[] costCodes = costCodeStr != null ? costCodeStr.split(",")
+        String[] costCodes = StringUtils.isNotBlank(costCodeStr) ? costCodeStr.split(",")
                 : null;
         if (null != costCodes && costCodes.length > 0) {
             employeeView.setCostCodes(Arrays.asList(costCodes));
