@@ -93,23 +93,17 @@ var empCostCodeController = function() {
                     if ($(this).val() === costCode && select ) {
                         $(this).attr("checked", "checked");
                         $(this).attr('aria-selected', 'true');
-                        var opt = $('option[value='+costCode+']')[0],
+                        var opt = $('option[value='+costCode+']'),
                              rplhtml = $("<div>").append(opt.clone()).html(); 
-                                 rplhtml.replace(/\>/, ' selected="selected">');
+                        rplhtml= rplhtml.replace(/\>/,'selected="selected">');
                         opt.replaceWith(rplhtml); 
                     } else if ($(this).val() === costCode && !select  ){
                         $(this).removeAttr("checked");
                         $(this).removeAttr('aria-selected');
-                        $('option[value='+costCode+']')[0].removeAttr('selected');
+                        $('option[value='+costCode+']').removeAttr('selected');
                     }
                 });
-        
-      
-      /*  var length = $("#costCodeListSelect").multiselect("widget").find(
-                'input[checked="checked"]').length;
-        
-        $("button.ui-multiselect span:nth-child(2)").html(length + " selected");*/
-      $("#costCodeListSelect").multiselect("refresh");
+          $("#costCodeListSelect").multiselect("refresh");
     }
 
     populateContainer = function(response) {
@@ -130,7 +124,7 @@ var empCostCodeController = function() {
     onBeforeSave = function() {
         var selected = [];
         $("#costCodeListSelect").multiselect("widget").find(
-                'input[checked="checked"]').each(function(index, node) {
+                'input[aria-selected="true"]').each(function(index, node) {
             selected.push(($(node).attr("value")));
         });
         $("#costCodes").val(selected.join(','));
@@ -264,7 +258,7 @@ var empPtoController = function() {
     resetPTOPerCostCodeChange = function(arg) {
         var costCode = arg;
         var allocated = $('[data-costcode=' + costCode + '] .ptoEnable');
-        allocated.value=parseFloat("0.00");
+        allocated.val("0.00");
     },
 
     gettAllPtosforEmp = function(args) {
