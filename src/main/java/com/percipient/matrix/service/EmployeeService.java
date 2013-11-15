@@ -122,11 +122,8 @@ class EmployeeServiceImpl implements EmployeeService {
         if (id != null) {
             employeeView.setId(id);
         }
-        if (employeeView.getCostCodes() != null
-                && !employeeView.getCostCodes().isEmpty()) {
-            List<EmployeeCostCenter> empCostCenterList = collateUpdatedCostCenterList(employeeView);
-            employeeCostCenterRepository.save(empCostCenterList);
-        }
+        List<EmployeeCostCenter> empCostCenterList = collateUpdatedCostCenterList(employeeView);
+        employeeCostCenterRepository.save(empCostCenterList);
         if (StringUtils.isNotBlank(employeeView.getPtosJSONStr())) {
             List<EmployeePtoConfigView> ptoConfigViewList = new ArrayList<EmployeePtoConfigView>();
             try {
